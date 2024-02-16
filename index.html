@@ -7,7 +7,21 @@
     <title>Mobiscroll jQuery Demos</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div class="app-header mbsc-font">
+      <div class="app-back" id="app-back">
+        <a class="app-link" href="/">
+          <span class="mbsc-icon mbsc-font-icon mbsc-icon-ion-ios7-arrow-back"></span>
+        </a>
+      </div>
+      <div class="app-title">
+        <h1 id="app-title">Mobiscroll jQuery Demos</h1>
+      </div>
+    </div>
+    <div id="app-wrapper" mbsc-page>
+      <div class="app-page" id="app"></div>
+    </div>
+    <div class="app-footer mbsc-font"><div class="app-path" id="app-path"></div></div>
+
     <script type="module" src="/main.js"></script>
   </body>
 </html>
