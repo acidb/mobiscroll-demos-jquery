@@ -1,4 +1,4 @@
-import * as mobiscroll from '@mobiscroll/jquery/dist/js/mobiscroll.jquery.min.js';
+import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
 import moment from 'moment';
 

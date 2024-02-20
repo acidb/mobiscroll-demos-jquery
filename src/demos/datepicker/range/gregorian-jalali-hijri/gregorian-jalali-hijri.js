@@ -1,4 +1,4 @@
-import * as mobiscroll from '@mobiscroll/jquery/dist/js/mobiscroll.jquery.min.js';
+import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
 
 export default {
@@ -15,7 +15,6 @@ export default {
           controls: ['calendar'],
           select: 'range',
           display: 'inline',
-          calendarSystem: mobiscroll.gregorianCalendar,
           locale: mobiscroll.locale.en,
         });
 
