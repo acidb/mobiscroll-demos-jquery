@@ -1,4 +1,4 @@
-import * as mobiscroll from '@mobiscroll/jquery/dist/js/mobiscroll.jquery.min.js';
+import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
 
 export default {
@@ -18,7 +18,6 @@ export default {
             agenda: { type: 'month' },
           },
           renderEvent: function (data) {
-            console.log(data);
             return (
               '<div class="md-full-event"><img class="md-full-event-img" src="https://img.mobiscroll.com/demos/' +
               data.original.img +

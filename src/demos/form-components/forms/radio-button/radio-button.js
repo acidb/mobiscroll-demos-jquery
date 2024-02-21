@@ -1,4 +1,4 @@
-import * as mobiscroll from '@mobiscroll/jquery/dist/js/mobiscroll.jquery.min.js';
+import * as mobiscroll from '@mobiscroll/jquery';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
