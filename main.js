@@ -54,6 +54,8 @@ registerComponent(Stepper);
 registerComponent(Switch);
 registerComponent(Popup);
 
+window.isMbscDemo = true;
+
 var router = new Router();
 
 var app = document.getElementById('app');
