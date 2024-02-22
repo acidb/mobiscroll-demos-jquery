@@ -19,9 +19,9 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "@mobiscroll/calendar-integration": "^5.29.0",
+    "@mobiscroll/calendar-integration": "file:src/addons/calendar-integration",
     "@mobiscroll/jquery": "^5.29.0",
-    "@mobiscroll/print": "^5.29.0",
+    "@mobiscroll/print": "file:src/addons/print",
     "html5-history-router": "^1.1.0",
     "jquery": "^3.7.1",
     "moment-timezone": "^0.5.43"
