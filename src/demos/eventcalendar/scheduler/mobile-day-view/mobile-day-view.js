@@ -18,6 +18,12 @@ export default {
           view: {
             schedule: { type: 'day' },
           },
+          onEventClick: function (args) {
+            mobiscroll.toast({
+              // context,
+              message: args.event.title,
+            });
+          },
         })
         .mobiscroll('getInst');
 
