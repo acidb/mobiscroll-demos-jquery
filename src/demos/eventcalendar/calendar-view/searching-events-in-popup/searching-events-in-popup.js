@@ -23,7 +23,7 @@ export default {
           },
           showControls: false,
           onEventClick: function (args) {
-            calendar.navigate(args.event.start);
+            calendar.navigateToEvent(args.event);
             calendar.setSelectedEvents([args.event]);
             popup.close();
           },

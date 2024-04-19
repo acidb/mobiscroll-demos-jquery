@@ -349,7 +349,7 @@ export default {
                 calendar.updateEvent(tempEvent);
 
                 // navigate the calendar to the correct view
-                calendar.navigate(tempEvent.start);
+                calendar.navigateToEvent(tempEvent);
 
                 deleteEvent = false;
                 popup.close();
