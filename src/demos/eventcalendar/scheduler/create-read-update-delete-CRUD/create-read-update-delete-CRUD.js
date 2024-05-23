@@ -26,6 +26,7 @@ export default {
       var $statusBusy = $('#event-status-busy');
       var $deleteButton = $('#event-delete');
       var $color = $('#event-color');
+      var $travelTime = $('#travel-time-selection');
       var datePickerResponsive = {
         medium: {
           controls: ['calendar'],
@@ -46,6 +47,7 @@ export default {
           title: "Lunch @ Butcher's",
           description: '',
           allDay: false,
+          bufferBefore: 15,
           free: true,
           color: '#009788',
         },
@@ -53,9 +55,10 @@ export default {
           id: 2,
           start: 'dyndatetime(y,m,d,15)',
           end: 'dyndatetime(y,m,d,16)',
-          title: 'General orientation',
+          title: 'Conference',
           description: '',
           allDay: false,
+          bufferBefore: 30,
           free: false,
           color: '#ff9900',
         },
@@ -63,9 +66,10 @@ export default {
           id: 3,
           start: 'dyndatetime(y,m,d-1,18)',
           end: 'dyndatetime(y,m,d-1,22)',
-          title: 'Dexter BD',
+          title: 'Site Visit',
           description: '',
           allDay: false,
+          bufferBefore: 60,
           free: true,
           color: '#3f51b5',
         },
@@ -97,6 +101,7 @@ export default {
               text: 'Add',
               keyCode: 'enter',
               handler: function () {
+                tempEvent.bufferBefore = $travelTime.val();
                 calendar.updateEvent(tempEvent);
                 // navigate the calendar to the correct view
                 calendar.navigateToEvent(tempEvent);
@@ -111,7 +116,7 @@ export default {
         // fill popup with a new event data
         $title.mobiscroll('getInst').value = tempEvent.title;
         $description.mobiscroll('getInst').value = '';
-        $allDay.mobiscroll('getInst').checked = tempEvent.allDay;
+        $allDay.mobiscroll('getInst').checked = false;
         range.setVal([tempEvent.start, tempEvent.end]);
         $statusBusy.mobiscroll('getInst').checked = true;
         range.setOptions({
@@ -119,6 +124,7 @@ export default {
           responsive: tempEvent.allDay ? datePickerResponsive : datetimePickerResponsive,
         });
         selectColor('', true);
+        $travelTime.val(0);
 
         // set anchor for the popup
         popup.setOptions({ anchor: elm });
@@ -149,6 +155,7 @@ export default {
                   title: $title.val(),
                   description: $description.val(),
                   allDay: $allDay.mobiscroll('getInst').checked,
+                  bufferBefore: $travelTime.val(),
                   start: date[0],
                   end: date[1],
                   free: $statusFree.mobiscroll('getInst').checked,
@@ -172,6 +179,7 @@ export default {
         $allDay.mobiscroll('getInst').checked = ev.allDay || false;
         range.setVal([ev.start, ev.end]);
         selectColor(ev.color, true);
+        $travelTime.val(ev.bufferBefore !== undefined ? ev.bufferBefore : 0);
 
         if (ev.free) {
           $statusFree.mobiscroll('getInst').checked = true;
@@ -269,6 +277,13 @@ export default {
 
       $allDay.on('change', function () {
         var checked = this.checked;
+
+        if (checked) {
+          $('#travel-time-group').hide();
+          $travelTime.val(0);
+        } else {
+          $('#travel-time-group').show();
+        }
 
         // change range settings based on the allDay
         range.setOptions({
@@ -416,6 +431,17 @@ export default {
         <label>
             Ends
             <input mbsc-input id="end-input" />
+        </label>
+        <label id="travel-time-group">
+          <select data-label="Travel time" mbsc-dropdown id="travel-time-selection">
+              <option value="0">None</option>
+              <option value="5">5 minutes</option>
+              <option value="15">15 minutes</option>
+              <option value="30">30 minutes</option>
+              <option value="60">1 hour</option>
+              <option value="90">1.5 hours</option>
+              <option value="120">2 hours</option>
+          </select>
         </label>
         <div id="event-date"></div>
         <div id="event-color-picker" class="event-color-c">
