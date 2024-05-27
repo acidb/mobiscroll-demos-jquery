@@ -3,7 +3,7 @@ import { demos } from '../demos';
 var html = '';
 
 demos.forEach(function (main) {
-  html += '<div>';
+  html += '<div class="app-' + main.unique + '">';
   html += '<h2>' + main.name + '</h2>';
   main.items.forEach(function (sub) {
     html += '<div>';
