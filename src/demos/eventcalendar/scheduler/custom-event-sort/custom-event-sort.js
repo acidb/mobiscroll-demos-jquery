@@ -18,14 +18,10 @@ export default {
         .mobiscroll()
         .eventcalendar({
           // context,
-          // drag,
           view: {
-            calendar: {
+            schedule: {
               type: 'week',
             },
-          },
-          eventOrder: function (event) {
-            return event.accepted ? 1 : -1;
           },
           data: [
             {

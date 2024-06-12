@@ -130,64 +130,68 @@ export default {
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-  .mds-tasks-resource-name {
-    padding: 15px 0 8px 0;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
-  }
+.mds-tasks-resource-name {
+  padding: 15px 0 8px 0;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
 
-  .mds-tasks-resource-description {
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 16px;
-  }
+.mds-tasks-resource-description {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
 
-  .mds-tasks-event-title {
-    padding: 16px 8px 0 8px;
-    white-space: normal;
-    word-break: normal;
-    line-height: 24px;
-    font-size: 16px;
-    font-weight: 700;
-  }
+.mds-tasks-event-title {
+  padding: 16px 8px 0 8px;
+  white-space: normal;
+  word-break: normal;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 700;
+}
 
-  .mds-tasks-event-subtitle {
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 8px 0 8px;
-  }
+.mds-tasks-event-subtitle {
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 8px 0 8px;
+}
 
-  .mds-tasks-event-list {
-    margin: 8px 8px 16px;
-    border-radius: 0.25em;
-    background-color: #ffffff69;
-  }
+.mds-tasks-event-list {
+  margin: 8px 8px 16px;
+  border-radius: 0.25em;
+  background-color: #ffffff69;
+}
 
-  .mds-tasks-event-list-item {
-    padding: 8px;
-    white-space: normal;
-    font-size: 12px;
-    line-height: 16px;
-    color: #000;
-    border-bottom: 1px solid #00000033;
-    font-weight: 400;
-  }
+.mds-tasks-event-list-item {
+  padding: 8px;
+  white-space: normal;
+  font-size: 12px;
+  line-height: 16px;
+  color: #000;
+  border-bottom: 1px solid #00000033;
+  font-weight: 400;
+}
 
-  .mds-tasks-event-add {
-    padding-top: 4px;
-    border-bottom: none;
-    font-weight: 700;
-  }
+.mds-tasks-event-add {
+  padding-top: 4px;
+  border-bottom: none;
+  font-weight: 700;
+}
 
-  .mds-tasks-event-add:hover {
-    color: #0000EE;
-    text-decoration: underline;
-  }
+.mds-tasks-event-add:hover {
+  color: #0000EE;
+  text-decoration: underline;
+}
 
-  .mds-tasks-calendar .mbsc-schedule-event-inner {
-    display: block;
-    height: auto;
-  }
+.mds-tasks-calendar .mbsc-timeline-row {
+  height: 174px;
+}
+
+.mds-tasks-calendar .mbsc-schedule-event-inner {
+  display: block;
+  height: auto;
+}
   `,
 };
