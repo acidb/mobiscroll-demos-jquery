@@ -24,9 +24,6 @@ export default {
               type: 'week',
             },
           },
-          eventOrder: function (event) {
-            return event.accepted ? 1 : -1;
-          },
           data: [
             {
               start: new Date(now.getFullYear(), now.getMonth(), monday),
@@ -163,5 +160,13 @@ export default {
   // eslint-disable-next-line es5/no-template-literals
   markup: `
 <div id="demo-custom-event-sort"></div>
+  `,
+  // eslint-disable-next-line es5/no-template-literals
+  css: `
+  /*<hidden>*/
+  .demo-custom-event-sort {
+      height: 270px;
+  }
+  /*</hidden>*/
   `,
 };

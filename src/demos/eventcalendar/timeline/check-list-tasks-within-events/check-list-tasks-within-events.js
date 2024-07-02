@@ -50,12 +50,12 @@ export default {
               event.original.tasks.reduce(function (list, task) {
                 return list + '<div class="mds-tasks-event-list-item">' + task + '</div>';
               }, '') +
-              '<div class="mds-tasks-event-list-item mds-tasks-event-add" id="demo-check-list-tasks-add-button">+ Add task</div>' +
+              '<div class="mds-tasks-event-list-item mds-tasks-event-add">+ Add task</div>' +
               '</div>'
             );
           },
           onEventClick: function (args) {
-            if (args.domEvent.target.id === 'demo-check-list-tasks-add-button') {
+            if (args.domEvent.target.classList.contains('mds-tasks-event-add')) {
               var ev = args.event;
               mobiscroll.prompt({
                 title: 'Add new task to ' + ev.title,

@@ -57,7 +57,12 @@ export default {
 
       $('#demo-custom-empty-agenda').on('click', function (e) {
         if (e.target.id === 'md-agenda-btn') {
-          mobiscroll.toast({ message: 'Add button clicked' });
+          mobiscroll.toast({
+            //<hidden>
+            // theme,//</hidden>
+            // context,
+            message: 'Add button clicked',
+          });
         }
       });
     });
