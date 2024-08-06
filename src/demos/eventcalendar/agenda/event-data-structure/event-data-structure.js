@@ -11,13 +11,11 @@ export default {
 
     $(function () {
       var now = new Date();
-      var cal = $('#demo')
+      var calendar = $('#demo-event-data')
         .mobiscroll()
         .eventcalendar({
           view: {
-            agenda: {
-              type: 'month',
-            },
+            agenda: { type: 'month' },
           },
           data: [
             {
@@ -30,7 +28,7 @@ export default {
         })
         .mobiscroll('getInst');
 
-      $('#add-event').on('click', function () {
+      $('#demo-event-data-add').on('click', function () {
         var newEvent = {
           // base properties
           title: 'Product planning',
@@ -43,8 +41,8 @@ export default {
           location: 'Office',
         };
 
-        cal.addEvent(newEvent);
-        cal.navigateToEvent(newEvent);
+        calendar.addEvent(newEvent);
+        calendar.navigateToEvent(newEvent);
 
         mobiscroll.toast({
           //<hidden>
@@ -57,9 +55,19 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo"></div>
-<div class="mbsc-button-group-block">
-    <button mbsc-button id="add-event">Add event to calendar</button>
+<div mbsc-page class="mds-full-height">
+  <div class="mds-full-height mbsc-flex-col">
+    <div class="mbsc-flex-none">
+      <button mbsc-button id="demo-event-data-add" data-start-icon="plus">Add event to calendar</button>
+    </div>
+    <div id="demo-event-data" class="mbsc-flex-1-1"></div>
+  </div>
 </div>
+  `,
+  // eslint-disable-next-line es5/no-template-literals
+  css: `
+.mds-full-height {
+  height: 100%;
+}
   `,
 };

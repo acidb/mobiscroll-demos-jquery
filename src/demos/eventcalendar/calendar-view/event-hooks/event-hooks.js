@@ -73,6 +73,12 @@ export default {
           onEventDragEnd: function () {
             // Logic for event drag end
           },
+          onEventDragEnter: function () {
+            // Logic for event drag enter
+          },
+          onEventDragLeave: function () {
+            // Logic for event drag leave
+          },
           onEventHoverIn: function () {
             // Logic for event hover in
           },

@@ -10,31 +10,58 @@ export default {
     });
 
     $(function () {
-      var formatDate = mobiscroll.formatDate;
-      var currentEvent;
-      var timer;
-      var $tooltip = $('#custom-event-tooltip-popup');
-      var $deleteButton = $('#tooltip-event-delete');
-      var $fileButton = $('#tooltip-event-view');
-      var $statusButton = $('#tooltip-event-status');
-      var $header = $('#tooltip-event-header');
-      var $data = $('#tooltip-event-name-age');
-      var $time = $('#tooltip-event-time');
-      var $status = $('#tooltip-event-title');
-      var $reason = $('#tooltip-event-reason');
-      var $location = $('#tooltip-event-location');
+      function openTooltip(args) {
+        var formatDate = mobiscroll.formatDate;
+        var event = args.event;
+        var time = formatDate('hh:mm A', new Date(event.start)) + ' - ' + formatDate('hh:mm A', new Date(event.end));
+        var buttonText;
+        var buttonType;
 
-      var calendar = $('#demo-custom-event-tooltip')
+        if (event.confirmed) {
+          buttonText = 'Cancel appointment';
+          buttonType = 'warning';
+        } else {
+          buttonText = 'Confirm appointment';
+          buttonType = 'success';
+        }
+
+        appointment = event;
+        $appointmentInfo.text(event.title + ', Age: ' + event.age);
+        $appointmentLocation.text(event.location);
+        $appointmentReason.text(event.reason);
+        $appointmentTime.text(time);
+        $appointmentStatus.text(event.confirmed ? 'Confirmed' : 'Canceled');
+
+        $btnStatus.text(buttonText);
+        $btnStatus.mobiscroll('setOptions', { color: buttonType });
+
+        $tooltipHeader.css('background-color', event.color);
+
+        clearTimeout(timer);
+        timer = null;
+
+        tooltip.setOptions({ anchor: args.domEvent.target.closest('.mbsc-event') });
+        tooltip.open();
+      }
+
+      var appointment;
+      var $appointmentInfo = $('#demo-tooltip-info');
+      var $appointmentLocation = $('#demo-tooltip-location');
+      var $appointmentReason = $('#demo-tooltip-reason');
+      var $appointmentStatus = $('#demo-tooltip-status');
+      var $appointmentTime = $('#demo-tooltip-time');
+      var $btnDelete = $('#demo-tooltip-delete');
+      var $btnStatus = $('#demo-tooltip-status-update');
+      var $btnView = $('#demo-tooltip-view');
+      var timer;
+      var $tooltip = $('#demo-tooltip-popup');
+      var $tooltipHeader = $('#demo-tooltip-header');
+
+      var calendar = $('#demo-tooltip-calendar')
         .mobiscroll()
         .eventcalendar({
           // context,
-          view: {
-            agenda: {
-              type: 'week',
-              startDay: 1,
-              endDay: 5,
-            },
-          },
+          view: { agenda: { type: 'week' } },
           data: [
             {
               title: 'Jude Chester',
@@ -458,38 +485,8 @@ export default {
             },
           ],
           showEventTooltip: false,
-          onEventHoverIn: function (args) {
-            var event = args.event;
-            var time = formatDate('hh:mm A', new Date(event.start)) + ' - ' + formatDate('hh:mm A', new Date(event.end));
-            var button = {};
-
-            currentEvent = event;
-
-            if (event.confirmed) {
-              button.text = 'Cancel appointment';
-              button.type = 'warning';
-            } else {
-              button.text = 'Confirm appointment';
-              button.type = 'success';
-            }
-
-            $header.css('background-color', event.color);
-            $data.text(event.title + ', Age: ' + event.age);
-            $time.text(time);
-
-            $status.text(event.confirmed ? 'Confirmed' : 'Canceled');
-            $reason.text(event.reason);
-            $location.text(event.location);
-
-            $statusButton.text(button.text);
-            $statusButton.mobiscroll('setOptions', { color: button.type });
-
-            clearTimeout(timer);
-            timer = null;
-
-            tooltip.setOptions({ anchor: args.domEvent.target });
-            tooltip.open();
-          },
+          onEventClick: openTooltip,
+          onEventHoverIn: openTooltip,
           onEventHoverOut: function () {
             if (!timer) {
               timer = setTimeout(function () {
@@ -497,53 +494,48 @@ export default {
               }, 200);
             }
           },
-          onEventClick: function () {
-            tooltip.open();
-          },
         })
         .mobiscroll('getInst');
 
       var tooltip = $tooltip
         .mobiscroll()
         .popup({
-          display: 'anchored',
-          touchUi: false,
-          showOverlay: false,
           contentPadding: false,
-          closeOnOverlayClick: false,
+          display: 'anchored',
+          scrollLock: false,
+          showOverlay: false,
+          touchUi: false,
           width: 350,
         })
         .mobiscroll('getInst');
 
-      $tooltip.mouseenter(function () {
+      $tooltip.on('mouseenter', function () {
         if (timer) {
           clearTimeout(timer);
           timer = null;
         }
       });
 
-      $tooltip.mouseleave(function () {
+      $tooltip.on('mouseleave', function () {
         timer = setTimeout(function () {
           tooltip.close();
         }, 200);
       });
 
-      $statusButton.on('click', function () {
+      $btnStatus.on('click', function () {
+        appointment.confirmed = !appointment.confirmed;
+        calendar.updateEvent(appointment);
         tooltip.close();
-        currentEvent.confirmed = !currentEvent.confirmed;
-        calendar.updateEvent(currentEvent);
-
         mobiscroll.toast({
           //<hidden>
           // theme,//</hidden>
           // context,
-          message: 'Appointment ' + (currentEvent.confirmed ? 'confirmed' : 'canceled'),
+          message: 'Appointment ' + (appointment.confirmed ? 'confirmed' : 'canceled'),
         });
       });
 
-      $fileButton.on('click', function () {
+      $btnView.on('click', function () {
         tooltip.close();
-
         mobiscroll.toast({
           //<hidden>
           // theme,//</hidden>
@@ -552,11 +544,9 @@ export default {
         });
       });
 
-      $deleteButton.on('click', function () {
-        calendar.removeEvent(currentEvent);
-
+      $btnDelete.on('click', function () {
+        calendar.removeEvent(appointment);
         tooltip.close();
-
         mobiscroll.toast({
           //<hidden>
           // theme,//</hidden>
@@ -568,78 +558,52 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="custom-event-tooltip-popup" class="md-tooltip">
-    <div id="tooltip-event-header" class="md-tooltip-header">
-        <span id="tooltip-event-name-age" class="md-tooltip-name-age"></span>
-        <span id="tooltip-event-time" class="md-tooltip-time"></span>
+<div id="demo-tooltip-calendar"></div>
+<div id="demo-tooltip-popup" class="mds-tooltip mds-popup">
+  <div id="demo-tooltip-header" class="mds-tooltip-header">
+    <span id="demo-tooltip-info"></span>
+    <span id="demo-tooltip-time" class="mbsc-pull-right"></span>
+  </div>
+  <div class="mbsc-padding">
+    <div class="mds-tooltip-label mbsc-margin">
+      Status: <span id="demo-tooltip-status" class="mbsc-light"></span>
+      <button id="demo-tooltip-status-update" mbsc-button data-color="warning" data-variant="outline" class="mds-tooltip-button mbsc-pull-right">
+      </button>
     </div>
-    <div class="md-tooltip-info">
-        <div class="md-tooltip-title">
-            Status: <span id="tooltip-event-title" class="md-tooltip-status md-tooltip-text"></span>
-            <button id="tooltip-event-status" mbsc-button data-color="warning" data-variant="outline" class="md-tooltip-status-button"></button>
-        </div>
-        <div class="md-tooltip-title">Reason for visit: <span id="tooltip-event-reason" class="md-tooltip-reason md-tooltip-text"></span></div>
-        <div class="md-tooltip-title">Location: <span id="tooltip-event-location" class="md-tooltip-location md-tooltip-text"></span></div>
-        <button id="tooltip-event-view" mbsc-button data-color="secondary" class="md-tooltip-view-button">View patient file</button>
-        <button id="tooltip-event-delete" mbsc-button data-color="danger" data-variant="outline" class="md-tooltip-delete-button">Delete appointment</button>
-    </div>
+    <div class="mds-tooltip-label mbsc-margin">Reason for visit: <span id="demo-tooltip-reason" class="mbsc-light"></span></div>
+    <div class="mds-tooltip-label mbsc-margin">Location: <span id="demo-tooltip-location" class="mbsc-light"></span></div>
+    <button id="demo-tooltip-view" mbsc-button data-color="secondary" class="mds-tooltip-button">
+      View patient file
+    </button>
+    <button id="demo-tooltip-delete" mbsc-button data-color="danger" data-variant="outline" class="mds-tooltip-button mbsc-pull-right">
+      Delete appointment
+    </button>
+  </div>
 </div>
-<div id="demo-custom-event-tooltip"></div>
-  `,
+`,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.md-tooltip .mbsc-popup-content {
-    padding: 0;
+.mds-tooltip {
+  font-size: 15px;
+  font-weight: 600;
 }
 
-.md-tooltip {
-    font-size: 15px;
-    font-weight: 600;
+.mds-tooltip-header {
+  padding: 12px 16px;
+  color: #eee;
 }
 
-.md-tooltip-header {
-    padding: 12px 16px;
-    color: #eee;
+.mds-tooltip-label {
+  line-height: 32px;
 }
 
-.md-tooltip-info {
-    padding: 16px 16px 60px 16px;
-    position: relative;
-    line-height: 32px;
+.mds-tooltip-button.mbsc-button {
+  font-size: 14px;
+  margin: 0;
 }
 
-.md-tooltip-time,
-.md-tooltip-status-button {
-    float: right;
+.mds-tooltip-button.mbsc-material {
+  font-size: 12px;
 }
-
-.md-tooltip-title {
-    margin-bottom: 15px;
-}
-
-.md-tooltip-text {
-    font-weight: 300;
-}
-
-.md-tooltip-info .mbsc-button {
-    font-size: 14px;
-    margin: 0;
-}
-
-.md-tooltip-info .mbsc-button.mbsc-material {
-    font-size: 12px;
-}
-
-.md-tooltip-view-button {
-    position: absolute;
-    bottom: 16px;
-    left: 16px;
-}
-
-.md-tooltip-delete-button {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-}
-  `,
+`,
 };

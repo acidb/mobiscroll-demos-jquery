@@ -12,15 +12,13 @@ export default {
     $(function () {
       var timer;
 
-      var list = $('#demo-search-list')
+      var list = $('#demo-search-results')
         .mobiscroll()
         .eventcalendar({
           view: {
-            agenda: {
-              type: 'year',
-              size: 5,
-            },
+            agenda: { type: 'year', size: 5 },
           },
+          refDate: new Date(),
           showControls: false,
           onEventClick: function (args) {
             calendar.navigateToEvent(args.event);
@@ -39,19 +37,19 @@ export default {
           dragToResize: false,
           selectMultipleEvents: true,
           view: {
-            calendar: {
-              labels: true,
-            },
+            calendar: { labels: true },
           },
           renderHeader: function () {
             return (
               '<div mbsc-calendar-nav></div>' +
-              '<div class="md-seach-header-bar mbsc-flex-1-0">' +
-              '<label><input id="md-search-demo-input" mbsc-input data-start-icon="material-search" data-input-style="box" placeholder="Search events"></input></label>' +
+              '<div class="mds-search-bar mbsc-flex-1-0">' +
+              '<label>' +
+              '<input id="demo-search-input" mbsc-input autocomplete="off" data-start-icon="material-search" data-input-style="box" placeholder="Search events" />' +
+              '</label>' +
               '</div>' +
-              '<div mbsc-calendar-prev></div>' +
-              '<div mbsc-calendar-today></div>' +
-              '<div mbsc-calendar-next></div>'
+              '<button mbsc-calendar-prev></button>' +
+              '<button mbsc-calendar-today></button>' +
+              '<button mbsc-calendar-next></button>'
             );
           },
           onPageLoading: function (args) {
@@ -69,30 +67,32 @@ export default {
         })
         .mobiscroll('getInst');
 
-      var $searchInput = $('#md-search-demo-input');
+      var $searchInput = $('#demo-search-input');
 
       var popup = $('#demo-search-popup')
         .mobiscroll()
         .popup({
+          anchor: $searchInput[0],
+          contentPadding: false,
           display: 'anchored',
+          focusElm: $searchInput[0],
+          focusOnClose: false,
+          focusOnOpen: false,
+          maxHeight: 500,
+          scrollLock: false,
           showArrow: false,
           showOverlay: false,
-          scrollLock: false,
-          contentPadding: false,
-          focusOnOpen: false,
-          focusOnClose: false,
-          focusElm: $searchInput[0],
-          anchor: $searchInput[0],
+          width: 400,
         })
         .mobiscroll('getInst');
 
       $searchInput.on('input', function (ev) {
-        var text = ev.target.value;
+        var searchText = ev.target.value;
         clearTimeout(timer);
         timer = setTimeout(function () {
-          if (text.length > 0) {
+          if (searchText.length > 0) {
             $.getJSON(
-              'https://trial.mobiscroll.com/searchevents/?text=' + text + '&callback=?',
+              'https://trial.mobiscroll.com/searchevents/?text=' + searchText + '&callback=?',
               function (data) {
                 list.setEvents(data);
                 popup.open();
@@ -114,31 +114,26 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo-search-events" class="md-search-events"></div>
-<div id="demo-search-popup" class="md-search-popup">
-    <div>
-        <div id="demo-search-list" class="mbsc-popover-list"></div>
-    </div>
+<div id="demo-search-events"></div>
+<div id="demo-search-popup">
+  <div>
+    <div id="demo-search-results" class="mds-search-results"></div>
+  </div>
 </div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.md-seach-header-bar .mbsc-textfield-wrapper.mbsc-form-control-wrapper {
-    width: 400px;
-    margin: 12px auto;
+.mds-search-bar .mbsc-textfield-wrapper {
+  max-width: 400px;
+  margin: 8px auto;
 }
 
-.md-search-popup .mbsc-popover-list {
-    width: 400px;
+.mds-search-bar .mbsc-textfield.mbsc-ios-dark {
+  background: #313131;
 }
 
-.md-search-popup .mbsc-event-list {
-    margin-top: -1px;
-    margin-bottom: -1px;
-}
-
-.md-search-events .mbsc-ios-dark.mbsc-textfield-box {
-    background: #313131;
+.mds-search-results .mbsc-calendar-wrapper {
+  margin-top: -1px;
 }
   `,
 };

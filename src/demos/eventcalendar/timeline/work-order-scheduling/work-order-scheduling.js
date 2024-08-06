@@ -391,9 +391,7 @@ export default {
               keyCode: 'enter',
               handler: function () {
                 var date = range.getVal();
-
-                // update event with the new properties on save button click
-                calendar.updateEvent({
+                var updatedEvent = {
                   id: ev.id,
                   title: $title.val(),
                   location: $location.val(),
@@ -403,10 +401,13 @@ export default {
                   end: date[1],
                   color: ev.color,
                   resource: ev.resource,
-                });
+                };
+
+                // update event with the new properties on save button click
+                calendar.updateEvent(updatedEvent);
 
                 // navigate the calendar to the correct view
-                calendar.navigate(date[0]);
+                calendar.navigateToEvent(updatedEvent);
 
                 restoreEvent = false;
                 popup.close();
