@@ -13,9 +13,7 @@ export default {
       function openTooltip(args) {
         var formatDate = mobiscroll.formatDate;
         var event = args.event;
-        var doctor = doctors.find(function (dr) {
-          return dr.id === event.resource;
-        });
+        var doctor = args.resourceObj;
         var time = formatDate('hh:mm A', new Date(event.start)) + ' - ' + formatDate('hh:mm A', new Date(event.end));
         var buttonText;
         var buttonType;

@@ -48,12 +48,11 @@ export default {
         addEditPopup.close();
       }
 
-      function createAddPopup(event) {
+      function createAddPopup(args) {
+        var event = args.event;
         var success = false;
 
-        var slot = mySlots.find(function (s) {
-          return s.id === event.slot;
-        });
+        var slot = args.slotObj;
 
         // Hide delete button inside add popup
         $shiftDeleteButton.parent().hide();
@@ -93,19 +92,16 @@ export default {
         addEditPopup.open();
       }
 
-      function createEditPopup(event) {
+      function createEditPopup(args) {
+        var event = args.event;
         // Show delete button inside edit popup
         $shiftDeleteButton.parent().show();
 
         shift = event;
 
-        var resource = staff.find(function (r) {
-          return r.id === event.resource;
-        });
+        var resource = args.resourceObj;
 
-        var slot = mySlots.find(function (s) {
-          return s.id === event.slot;
-        });
+        var slot = args.slotObj;
 
         fillPopup(event);
 
@@ -420,10 +416,10 @@ export default {
             );
           },
           onEventClick: function (args) {
-            createEditPopup(args.event);
+            createEditPopup(args);
           },
           onEventCreated: function (args) {
-            createAddPopup(args.event);
+            createAddPopup(args);
           },
           onEventCreateFailed: function () {
             mobiscroll.toast({

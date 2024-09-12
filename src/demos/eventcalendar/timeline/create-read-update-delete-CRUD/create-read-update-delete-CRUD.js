@@ -15,6 +15,7 @@ export default {
       var range;
       var oldEvent;
       var tempEvent = {};
+      var tempResource = {};
       var deleteEvent;
       var restoreEvent;
       var colorPicker;
@@ -150,7 +151,7 @@ export default {
           controls: tempEvent.allDay ? ['date'] : ['datetime'],
           responsive: tempEvent.allDay ? datePickerResponsive : datetimePickerResponsive,
         });
-        selectColor(getResource(tempEvent.resource).color, true);
+        selectColor(tempResource.color, true);
         $travelTime.val(0);
 
         // set anchor for the popup
@@ -206,7 +207,7 @@ export default {
         $description.mobiscroll('getInst').value = ev.description || '';
         $allDay.mobiscroll('getInst').checked = ev.allDay || false;
         range.setVal([ev.start, ev.end]);
-        selectColor(ev.color || getResource(ev.resource).color, true);
+        selectColor(ev.color || args.resourceObj.color, true);
         $travelTime.val(ev.bufferBefore !== undefined ? ev.bufferBefore : 0);
 
         if (ev.free) {
@@ -243,6 +244,7 @@ export default {
           onEventClick: function (args) {
             oldEvent = $.extend({}, args.event);
             tempEvent = args.event;
+            tempResource = args.resourceObj;
 
             if (!popup.isVisible()) {
               createEditPopup(args);
@@ -253,6 +255,8 @@ export default {
 
             // store temporary event
             tempEvent = args.event;
+            // store temporary resource
+            tempResource = args.resourceObj;
             createAddPopup(args.target);
           },
           onEventDeleted: function (args) {
@@ -417,14 +421,8 @@ export default {
         colorPicker.close();
       }
 
-      function getResource(res) {
-        return myResources.find(function (r) {
-          return r.id == res;
-        });
-      }
-
       $('#event-color-picker').on('click', function () {
-        selectColor(tempEvent.color || getResource(tempEvent.resource).color);
+        selectColor(tempEvent.color || tempResource.color);
         colorPicker.open();
       });
 

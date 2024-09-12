@@ -99,9 +99,7 @@ export default {
 
       function editMealPopup(args) {
         var ev = args.event;
-        var resource = types.find(function (obj) {
-          return obj.id === ev.resource;
-        });
+        var resource = args.resourceObj;
 
         // show delete button inside edit popup
         $deleteButton.show();
