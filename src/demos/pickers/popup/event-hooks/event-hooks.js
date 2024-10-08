@@ -16,20 +16,25 @@ export default {
           display: 'anchored',
           anchor: $('#demo-popup-open-btn')[0],
           buttons: ['ok', 'cancel'],
-          onClose: function (event, inst) {
-            // Your custom event handler goes here
+          onClose: function (args) {
+            // Logic running on popup close
+            console.log('onClose', args);
           },
-          onDestroy: function (event, inst) {
-            // Your custom event handler goes here
+          onDestroy: function (args) {
+            // Logic running on component destroy
+            console.log('onDestroy', args);
           },
-          onInit: function (event, inst) {
+          onInit: function (args) {
             // Logic running on component init
+            console.log('onInit', args);
           },
-          onOpen: function (event, inst) {
-            // Your custom event handler goes here
+          onOpen: function (args) {
+            // Logic running on popup open
+            console.log('onOpen', args);
           },
-          onPosition: function (event, inst) {
+          onPosition: function (args) {
             // Logic for component positioning
+            console.log('onPosition', args);
           },
         })
         .mobiscroll('getInst');
