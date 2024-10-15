@@ -12,14 +12,12 @@ export default {
     var now = new Date();
 
     $(function () {
-      $('#demo-loading-inline-data')
+      $('#demo-inline-data')
         .mobiscroll()
         .eventcalendar({
           // context,
           view: {
-            agenda: {
-              type: 'month',
-            },
+            agenda: { type: 'month' },
           },
           data: [
             {
@@ -297,7 +295,7 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo-loading-inline-data"></div>
+<div id="demo-inline-data"></div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `

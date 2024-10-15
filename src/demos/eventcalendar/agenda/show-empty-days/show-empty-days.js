@@ -22,13 +22,9 @@ export default {
         })
         .mobiscroll('getInst');
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/events-new/?vers=5&callback=?',
-        function (events) {
-          agenda.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/events-new/?vers=5&callback=?', function (events) {
+        agenda.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals

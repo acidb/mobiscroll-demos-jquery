@@ -10,7 +10,7 @@ export default {
     });
 
     $(function () {
-      $('#demo')
+      $('#demo-recurring-events')
         .mobiscroll()
         .eventcalendar({
           // context,
@@ -66,6 +66,6 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo"></div>
+<div id="demo-recurring-events"></div>
   `,
 };

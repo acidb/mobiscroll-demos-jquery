@@ -10,61 +10,66 @@ export default {
     });
 
     $(function () {
-      var inst = $('#demo')
+      var inst = $('#demo-event-hooks')
         .mobiscroll()
         .eventcalendar({
           view: {
-            agenda: {
-              type: 'month',
-            },
+            agenda: { type: 'month' },
           },
           onDestroy: function () {
-            // Logic for destroying the event calendar
+            // Logic running on component destroy
+            console.log('onDestroy');
           },
-          onEventClick: function () {
+          onEventClick: function (args) {
             // Logic for event click
+            console.log('onEventClick', args);
           },
-          onEventDoubleClick: function () {
+          onEventDoubleClick: function (args) {
             // Logic for event double click
+            console.log('onEventDoubleClick', args);
           },
-          onEventHoverIn: function () {
+          onEventHoverIn: function (args) {
             // Logic for event hover in
+            console.log('onEventHoverIn', args);
           },
-          onEventHoverOut: function () {
+          onEventHoverOut: function (args) {
             // Logic for event hover out
+            console.log('onEventHoverOut', args);
           },
-          onEventRightClick: function () {
+          onEventRightClick: function (args) {
             // Logic for event right click
+            console.log('onEventRightClick', args);
           },
           onInit: function () {
             // Logic running on component init
+            console.log('onInit');
           },
-          onPageChange: function () {
-            // Your custom event handler goes here
+          onPageChange: function (args) {
+            // Logic running on calendar page change
+            console.log('onPageChange', args);
           },
-          onPageLoaded: function () {
+          onPageLoaded: function (args) {
             // Use it to inject custom markup & attach custom listeners
+            console.log('onPageLoaded', args);
           },
-          onPageLoading: function () {
+          onPageLoading: function (args) {
             // Use it to load data on demand
+            console.log('onPageLoading', args);
           },
-          onSelectedDateChange: function () {
+          onSelectedDateChange: function (args) {
             // Use it to keep track of the selected date externally
+            console.log('onSelectedDateChange', args);
           },
         })
         .mobiscroll('getInst');
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/events/?vers=5&callback=?',
-        function (events) {
-          inst.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/events/?vers=5&callback=?', function (events) {
+        inst.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo"></div>
+<div id="demo-event-hooks"></div>
   `,
 };

@@ -10,7 +10,7 @@ export default {
     });
 
     $(function () {
-      var inst = $('#demo')
+      var inst = $('#demo-basic-agenda')
         .mobiscroll()
         .eventcalendar({
           view: {
@@ -34,6 +34,6 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo"></div>
+<div id="demo-basic-agenda"></div>
   `,
 };

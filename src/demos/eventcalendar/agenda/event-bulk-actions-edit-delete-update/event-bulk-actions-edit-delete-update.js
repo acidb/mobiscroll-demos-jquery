@@ -11,22 +11,62 @@ export default {
 
     $(function () {
       var confirmOpen;
-      var firstDay;
-      var lastDay;
       var selectedEvent;
+      var $list = $('#demo-bulk-actions-event-list');
       var formatDate = mobiscroll.formatDate;
 
-      function getSelectedEventTitles(events) {
-        var eventTitles = [];
-        for (var i = 0; i < events.length; ++i) {
-          eventTitles.push(events[i].title);
-        }
-        return eventTitles;
+      function selectEvents(events) {
+        $list.html(
+          events
+            .map(function (e) {
+              return '<li>' + e.title + '</li>';
+            })
+            .join(''),
+        );
+        calendar.setSelectedEvents(events);
+      }
+
+      function updateSelectedEvents() {
+        var selectedEvents = calendar.getSelectedEvents();
+        var events = selectedEvents.length === 0 && selectedEvent ? [selectedEvent] : selectedEvents;
+        var newEvents = [];
+        var updatedEvents = [];
+
+        events.forEach(function (event) {
+          var newEvent;
+          var updatedEvent;
+          if (event.recurring) {
+            newEvent = Object.assign({}, event);
+            newEvent.color = 'orange';
+            newEvent.id += '_' + formatDate('YYYY-MM-DD', event.start);
+            newEvent.recurring = undefined;
+            newEvents.push(newEvent);
+            updatedEvent = event.original;
+            updatedEvent.recurringException = updatedEvent.recurringException || [];
+            updatedEvent.recurringException.push(event.start);
+            updatedEvents.push(updatedEvent);
+          } else {
+            updatedEvent = Object.assign({}, event);
+            updatedEvent.color = 'orange';
+            updatedEvents.push(updatedEvent);
+          }
+        });
+
+        calendar.updateEvent(updatedEvents);
+        calendar.addEvent(newEvents);
+        selectEvents([]);
+
+        mobiscroll.toast({
+          //<hidden>
+          // theme,//</hidden>
+          // context,
+          message: "All selected event's color changed to orange",
+        });
       }
 
       function deleteSelectedEvents() {
         var selectedEvents = calendar.getSelectedEvents();
-        var events = selectedEvents.length == 0 && selectedEvent ? [selectedEvent] : selectedEvents;
+        var events = selectedEvents.length === 0 && selectedEvent ? [selectedEvent] : selectedEvents;
 
         confirmOpen = true;
 
@@ -35,28 +75,32 @@ export default {
           // theme,//</hidden>
           // context,
           title: 'Are you sure you want to delete the following events?',
-          message: getSelectedEventTitles(events).join(', '),
+          message: events
+            .map(function (e) {
+              return e.title;
+            })
+            .join(', '),
           okText: 'Delete',
           callback: function (result) {
             if (result) {
-              var eventsToDelete = [];
-              var eventsToUpdate = [];
+              var updatedEvents = [];
+              var deletedEvents = [];
 
-              for (var i = 0; i < events.length; ++i) {
-                var event = events[i];
+              events.forEach(function (event) {
                 if (event.recurring) {
-                  var origEvent = event.original;
-                  var exc = origEvent.recurringException || [];
-                  exc.push(event.start);
-                  origEvent.recurringException = exc;
-                  eventsToUpdate.push(origEvent);
+                  var updatedEvent = event.original;
+                  updatedEvent.recurringException = updatedEvent.recurringException || [];
+                  updatedEvent.recurringException.push(event.start);
+                  updatedEvents.push(updatedEvent);
                 } else {
-                  eventsToDelete.push(event);
+                  deletedEvents.push(event);
                 }
-              }
-              calendar.updateEvent(eventsToUpdate);
-              calendar.removeEvent(eventsToDelete);
+              });
+
+              calendar.updateEvent(updatedEvents);
+              calendar.removeEvent(deletedEvents);
               selectEvents([]);
+
               mobiscroll.toast({
                 //<hidden>
                 // theme,//</hidden>
@@ -69,67 +113,12 @@ export default {
         });
       }
 
-      function updateSelectedEvents() {
-        var selectedEvents = calendar.getSelectedEvents();
-        var events = selectedEvents.length == 0 && selectedEvent ? [selectedEvent] : selectedEvents;
-        var eventsToUpdate = [];
-        var newEvents = [];
-
-        for (var i = 0; i < events.length; ++i) {
-          var event = events[i];
-          if (event.recurring) {
-            var origEvent = event.original;
-            var exc = origEvent.recurringException || [];
-            var newEvent = event;
-
-            newEvent.recurring = undefined;
-            newEvent.color = 'orange';
-            newEvent.id += '_' + formatDate('YYYY-MM-DD', event.start);
-            newEvents.push(newEvent);
-
-            exc.push(event.start);
-            origEvent.recurringException = exc;
-            eventsToUpdate.push(origEvent);
-          } else {
-            event.color = 'orange';
-            eventsToUpdate.push(event);
-          }
-        }
-        calendar.updateEvent(eventsToUpdate);
-        calendar.addEvent(newEvents);
-        selectEvents([]);
-
-        mobiscroll.toast({
-          //<hidden>
-          // theme,//</hidden>
-          // context,
-          message: "All selected event's color changed to orange",
-        });
-      }
-
-      function selectEvents(events) {
-        var titles = getSelectedEventTitles(events);
-        var list = $('<ul/>');
-        var item;
-
-        for (var i = 0; i < titles.length; ++i) {
-          item = $('<li/>').html(titles[i]);
-          list.append(item);
-        }
-
-        $('#selected-event-list').html(list);
-        calendar.setSelectedEvents(events);
-      }
-
-      var calendar = $('#demo-multiple-event-selection')
+      var calendar = $('#demo-bulk-actions')
         .mobiscroll()
         .eventcalendar({
-          clickToCreate: true,
           selectMultipleEvents: true,
           view: {
-            agenda: {
-              type: 'month',
-            },
+            agenda: { type: 'month' },
           },
           onEventUpdate: function (args) {
             if (args.isDelete) {
@@ -145,13 +134,9 @@ export default {
               return false;
             }
           },
-          onPageLoading: function (args) {
-            firstDay = args.firstDay;
-            lastDay = args.lastDay;
-          },
           onEventRightClick: function (args) {
-            selectedEvent = args.event;
             args.domEvent.preventDefault();
+            selectedEvent = args.event;
             menu.setOptions({
               anchor: args.domEvent.target,
             });
@@ -165,14 +150,17 @@ export default {
         })
         .mobiscroll('getInst');
 
-      var menu = $('#demo-context-menu')
+      var menu = $('#demo-bulk-actions-menu')
         .mobiscroll()
         .select({
           // context,
-          touchUi: false,
-          display: 'anchored',
           buttons: [],
-          inputElement: document.getElementById('context-menu-input'),
+          data: [
+            { value: 'update', text: 'Update' },
+            { value: 'delete', text: 'Delete' },
+          ],
+          display: 'anchored',
+          touchUi: false,
           onChange: function (args) {
             if (args.value === 'update') {
               updateSelectedEvents();
@@ -181,23 +169,23 @@ export default {
             }
           },
           onClose: function () {
-            // clear selection
-            menu.setVal();
+            // Clear selection
+            menu.setVal(null);
           },
         })
         .mobiscroll('getInst');
 
-      $('#select-all-events').on('click', function () {
-        selectEvents(calendar.getEvents(firstDay, lastDay));
+      $('#demo-bulk-actions-select-all').on('click', function () {
+        selectEvents(calendar.getEvents());
         mobiscroll.toast({
           //<hidden>
           // theme,//</hidden>
           // context,
-          message: 'All events selected from view',
+          message: 'All events selected this month',
         });
       });
 
-      $('#reset-selection').on('click', function () {
+      $('#demo-bulk-actions-reset').on('click', function () {
         selectEvents([]);
         mobiscroll.toast({
           //<hidden>
@@ -207,73 +195,64 @@ export default {
         });
       });
 
-      $('#update-selected').on('click', function () {
+      $('#demo-bulk-actions-update').on('click', function () {
         updateSelectedEvents();
       });
 
-      $('.md-bulk-operations').keydown(function (ev) {
-        if (!confirmOpen && (ev.keyCode === 8 || ev.keyCode === 46)) {
+      $('#demo-bulk-actions-page').on('keydown', function (ev) {
+        if (!confirmOpen && (ev.code === 'Delete' || ev.code === 'Backspace' || ev.keyCode === 8 || ev.keyCode === 46)) {
           deleteSelectedEvents();
         }
       });
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/events/?vers=5&callback=?',
-        function (events) {
-          calendar.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/events/?vers=5&callback=?', function (events) {
+        calendar.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div mbsc-page class="md-bulk-operations">
-    <div class="mbsc-grid mbsc-no-padding">
-        <div class="mbsc-row">
-            <div class="mbsc-col-sm-9 mbsc-push-sm-3">
-                <div id="demo-multiple-event-selection" class="md-bulk-operations-border"></div>
-                <input id="context-menu-input" type="hidden" />
-                <select id="demo-context-menu">
-                    <option value="update">Update</option>
-                    <option value="delete">Delete</option>
-                </select>
-            </div>
-            <div class="mbsc-col-sm-3 mbsc-pull-sm-9">
-                <div class="mbsc-form-group">
-                    <div class="mbsc-button-group-block">
-                        <button id="select-all-events" mbsc-button>Select all from view</button>
-                        <button id="reset-selection" mbsc-button>Reset selection</button>
-                        <button id="update-selected" mbsc-button>Update selected</button>
-                    </div>
-                </div>
-                <div class="mbsc-form-group-title">Currently selected</div>
-                <div id="selected-event-list" class="mbsc-padding md-selected-event-list"></div>
-            </div>
+<div id="demo-bulk-actions-page" mbsc-page class="mds-bulk-actions">
+  <div class="mbsc-grid mbsc-no-padding">
+    <div class="mbsc-row">
+      <div class="mds-bulk-actions-calendar mbsc-col-sm-9 mbsc-push-sm-3">
+        <div id="demo-bulk-actions"></div>
+        <div id="demo-bulk-actions-menu" class="mds-select"></div>
+      </div>
+      <div class="mbsc-col-sm-3 mbsc-pull-sm-9 mbsc-flex-col">
+        <div class="mbsc-button-group-block">
+          <button id="demo-bulk-actions-select-all" mbsc-button>Select all from view</button>
+          <button id="demo-bulk-actions-reset" mbsc-button>Reset selection</button>
+          <button id="demo-bulk-actions-update" mbsc-button>Update selected</button>
         </div>
+        <div class="mbsc-form-group-title">Currently selected</div>
+        <div class="mds-bulk-actions-event-list mbsc-padding mbsc-flex-1-1">
+          <ul id="demo-bulk-actions-event-list">
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.md-bulk-operations-border {
-    border-left: 1px solid #ccc;
+.mds-bulk-actions,
+.mds-bulk-actions .mbsc-grid,
+.mds-bulk-actions .mbsc-row,
+.mds-bulk-actions .mbsc-col-sm-9,
+.mds-bulk-actions .mbsc-col-sm-3 {
+  height: 100%;
 }
 
-.md-selected-event-list {
-    height: 500px;
-    overflow: auto;
-    padding-top: 0;
-    padding-bottom: 0;
+.mds-bulk-actions-calendar {
+  border-left: 1px solid #ccc;
 }
 
-.md-bulk-operations,
-.md-bulk-operations .mbsc-grid,
-.md-bulk-operations .mbsc-row,
-.md-bulk-operations .mbsc-col-sm-9,
-.md-bulk-operations .mbsc-push-sm-3,
-.md-bulk-operations .mbsc-calendar {
-    height: 100%;
+.mds-bulk-actions-event-list {
+  overflow: auto;
+  padding-top: 0;
+  padding-bottom: 0;
 }
   `,
 };

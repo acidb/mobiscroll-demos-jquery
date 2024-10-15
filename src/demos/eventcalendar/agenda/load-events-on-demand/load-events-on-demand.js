@@ -15,9 +15,7 @@ export default {
         .eventcalendar({
           // context,
           view: {
-            agenda: {
-              labels: 'month',
-            },
+            agenda: { type: 'month' },
           },
           onPageLoading: function (event, inst) {
             var year = event.firstDay.getFullYear();
@@ -25,21 +23,8 @@ export default {
 
             $.getJSON(
               'https://trial.mobiscroll.com/monthlyevents/?year=' + year + '&month=' + month + '&vers=5' + '&callback=?',
-              function (data) {
-                var events = [];
-
-                for (var i = 0; i < data.length; i++) {
-                  events.push({
-                    start: data[i].start,
-                    end: data[i].end || '',
-                    allDay: data[i].allDay,
-                    title: data[i].title,
-                    color: data[i].color,
-                  });
-                }
-
+              function (events) {
                 inst.setEvents(events);
-
                 mobiscroll.toast({
                   //<hidden>
                   // theme,//</hidden>
@@ -47,7 +32,6 @@ export default {
                   message: 'New events loaded',
                 });
               },
-              'jsonp',
             );
           },
         });

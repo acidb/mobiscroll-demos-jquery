@@ -14,45 +14,33 @@ export default {
     });
 
     $(function () {
-      var googleCalendarSync = mobiscroll.googleCalendarSync;
       var CALENDAR_ID = 'theacidmedia.net_8l6v679q5j2f7q8lpmcjr4mm3k@group.calendar.google.com';
-      var $cont = $('#demo-google-cal');
-      var view = 'agenda';
+      var googleCalendarSync = mobiscroll.googleCalendarSync;
+      var currentView = 'agenda';
       var firstDay;
       var lastDay;
+      var loader;
       var apiLoaded;
 
-      //<hidden>
-      if (window.gapi) {
-        apiLoaded = true;
-      } else {
-        //</hidden>
+      function showLoader() {
+        loader = loader || $('#demo-google-cal-loader');
+        loader.css('visibility', 'visible');
+      }
 
-        googleCalendarSync.init({
-          apiKey: '<YOUR_GOOGLE_API_KEY>',
-          onInit: loadEvents,
-        });
-        //<hidden>
-      } //</hidden>
+      function hideLoader() {
+        loader.css('visibility', 'hidden');
+      }
 
       function loadEvents() {
-        apiLoaded = true;
-        loadingEvents(true);
+        showLoader();
         googleCalendarSync
           .getEvents(CALENDAR_ID, firstDay, lastDay)
           .then(function (resp) {
-            loadingEvents(false);
-            calInst.setEvents(resp);
+            apiLoaded = true;
+            hideLoader();
+            calendar.setEvents(resp);
           })
           .catch(onError);
-      }
-
-      function loadingEvents(show) {
-        if (show) {
-          $cont.addClass('md-loading-events');
-        } else {
-          $cont.removeClass('md-loading-events');
-        }
       }
 
       function onError(resp) {
@@ -64,7 +52,7 @@ export default {
         });
       }
 
-      var calInst = $('#demo-google-cal')
+      var calendar = $('#demo-google-cal')
         .mobiscroll()
         .eventcalendar({
           view: {
@@ -78,7 +66,7 @@ export default {
 
             // Calculate dates
             // (pre-load events for previous and next pages as well)
-            if (view == 'month') {
+            if (currentView == 'month') {
               firstDay = start;
               lastDay = end;
             } else {
@@ -92,63 +80,42 @@ export default {
           },
           renderHeader: function () {
             return (
-              '<div mbsc-calendar-nav class="google-cal-header-nav"></div>' +
-              '<div class="md-spinner">' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
-              '<div class="md-spinner-blade"></div>' +
+              '<div mbsc-calendar-nav class="mds-google-cal-nav"></div>' +
+              '<div id="demo-google-cal-loader" class="mds-loader"></div>' +
+              '<div class="mds-google-cal-switch mbsc-flex-1-0">' +
+              '<label>Month<input mbsc-segmented type="radio" name="view" value="month" class="mds-google-cal-view"></label>' +
+              '<label>Week<input mbsc-segmented type="radio" name="view" value="week" class="mds-google-cal-view"></label>' +
+              '<label>Day<input mbsc-segmented type="radio" name="view" value="day" class="mds-google-cal-view"></label>' +
+              '<label>Agenda<input mbsc-segmented type="radio" name="view" value="agenda" class="mds-google-cal-view" checked></label>' +
               '</div>' +
-              '<div class="google-cal-header-picker">' +
-              '<label>Month<input mbsc-segmented type="radio" name="google-calendar-view" value="month" class="md-google-calendar-view"></label>' +
-              '<label>Week<input mbsc-segmented type="radio" name="google-calendar-view" value="week" class="md-google-calendar-view"></label>' +
-              '<label>Day<input mbsc-segmented type="radio" name="google-calendar-view" value="day" class="md-google-calendar-view"></label>' +
-              '<label>Agenda<input mbsc-segmented type="radio" name="google-calendar-view" value="agenda" class="md-google-calendar-view" checked></label>' +
-              '</div>' +
-              '<div mbsc-calendar-prev class="google-cal-header-prev"></div>' +
-              '<div mbsc-calendar-today class="google-cal-header-today"></div>' +
-              '<div mbsc-calendar-next class="google-cal-header-next"></div>'
+              '<div mbsc-calendar-prev class="mds-google-cal-prev"></div>' +
+              '<div mbsc-calendar-today class="mds-google-cal-today"></div>' +
+              '<div mbsc-calendar-next class="mds-google-cal-next"></div>'
             );
           },
         })
         .mobiscroll('getInst');
 
-      $('.md-google-calendar-view').change(function (ev) {
-        view = ev.target.value;
-        switch (view) {
+      $('.mds-google-cal-view').on('change', function (ev) {
+        currentView = ev.target.value;
+        switch (currentView) {
           case 'month':
-            calInst.setOptions({
-              view: {
-                calendar: {
-                  labels: true,
-                },
-              },
+            calendar.setOptions({
+              view: { calendar: { labels: true } },
             });
             break;
           case 'week':
-            calInst.setOptions({
-              view: {
-                schedule: { type: 'week' },
-              },
+            calendar.setOptions({
+              view: { schedule: { type: 'week' } },
             });
             break;
           case 'day':
-            calInst.setOptions({
-              view: {
-                schedule: { type: 'day' },
-              },
+            calendar.setOptions({
+              view: { schedule: { type: 'day' } },
             });
             break;
           case 'agenda':
-            calInst.setOptions({
+            calendar.setOptions({
               view: {
                 calendar: { type: 'week' },
                 agenda: { type: 'week' },
@@ -157,226 +124,98 @@ export default {
             break;
         }
       });
+
+      //<hidden>
+      if (window.gapi) {
+        apiLoaded = true;
+      } else {
+        //</hidden>
+        googleCalendarSync.init({
+          apiKey: '<YOUR_GOOGLE_API_KEY>',
+          onInit: loadEvents,
+        });
+        //<hidden>
+      } //</hidden>
     });
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<!--hidden-->
-<div class="demo-inline demo-max-width-1100">
-    <!--/hidden-->
-    <div id="demo-google-cal" class="md-google-calendar"></div>
-    <!--hidden-->
-</div>
-<!--/hidden-->
+<div id="demo-google-cal"></div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.md-google-calendar .mbsc-segmented {
-    max-width: 300px;
-    margin: 0 auto;
+.mds-google-cal-switch .mbsc-segmented {
+  max-width: 300px;
+  margin: 0 auto;
 }
 
-.google-cal-header-picker {
-    flex: 1 0 auto;
+.mds-google-cal-nav {
+  width: 200px;
 }
 
-.google-cal-header-nav {
-    width: 200px;
+.mds-loader {
+  width: 32px;
+  height: 32px;
+  border: 4px solid #8c8c8c;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: mds-loader-rotation 1s linear infinite;
+  visibility: hidden;
 }
 
-/* material header order */
-
-.mbsc-material.google-cal-header-prev {
-    order: 1;
+@keyframes mds-loader-rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-.mbsc-material.google-cal-header-next {
-    order: 2;
+/* Material header order */
+
+.mbsc-material.mds-google-cal-prev {
+  order: 1;
 }
 
-.mbsc-material.google-cal-header-nav {
-    order: 3;
+.mbsc-material.mds-google-cal-next {
+  order: 2;
 }
 
-.mbsc-material .google-cal-header-picker {
-    order: 4;
+.mbsc-material.mds-google-cal-nav {
+  order: 3;
 }
 
-.mbsc-material .google-cal-header-today {
-    order: 5;
+.mbsc-material .mds-google-cal-switch {
+  order: 4;
 }
 
-/* windows header order */
-
-.mbsc-windows.google-cal-header-nav {
-    order: 1;
+.mbsc-material .mds-google-cal-today {
+  order: 5;
 }
 
-.mbsc-windows.google-cal-header-prev {
-    order: 2;
+/* Windows header order */
+
+.mbsc-windows.mds-google-cal-nav {
+  order: 1;
 }
 
-.mbsc-windows.google-cal-header-next {
-    order: 3;
+.mbsc-windows.mds-google-cal-prev {
+  order: 2;
 }
 
-.mbsc-windows .google-cal-header-picker {
-    order: 4;
+.mbsc-windows.mds-google-cal-next {
+  order: 3;
 }
 
-.mbsc-windows .google-cal-header-today {
-    order: 5;
+.mbsc-windows .mds-google-cal-switch {
+  order: 4;
 }
 
-/* loading spinner and overlay */
-
-.md-loading-events .md-sync-events-overlay {
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-}
-
-.md-spinner {
-    visibility: hidden;
-    position: relative;
-    width: 20px;
-    height: 20px;
-}
-
-.md-loading-events .md-spinner {
-    visibility: visible;
-}
-
-.md-spinner .md-spinner-blade {
-    position: absolute;
-    left: 44.5%;
-    top: 37%;
-    width: 10%;
-    height: 25%;
-    border-radius: 50%/20%;
-    background-color: #8C8C8C;
-    -webkit-animation: md-spinner-fade 1s linear infinite;
-    animation: md-spinner-fade 1s linear infinite;
-    -webkit-animation-play-state: paused;
-    animation-play-state: paused;
-}
-
-.md-spinner .md-spinner-blade:nth-child(1) {
-    -webkit-animation-delay: -1.66667s;
-    animation-delay: -1.66667s;
-    -webkit-transform: rotate(30deg) translate(0, -150%);
-    transform: rotate(30deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(2) {
-    -webkit-animation-delay: -1.58333s;
-    animation-delay: -1.58333s;
-    -webkit-transform: rotate(60deg) translate(0, -150%);
-    transform: rotate(60deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(3) {
-    -webkit-animation-delay: -1.5s;
-    animation-delay: -1.5s;
-    -webkit-transform: rotate(90deg) translate(0, -150%);
-    transform: rotate(90deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(4) {
-    -webkit-animation-delay: -1.41667s;
-    animation-delay: -1.41667s;
-    -webkit-transform: rotate(120deg) translate(0, -150%);
-    transform: rotate(120deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(5) {
-    -webkit-animation-delay: -1.33333s;
-    animation-delay: -1.33333s;
-    -webkit-transform: rotate(150deg) translate(0, -150%);
-    transform: rotate(150deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(6) {
-    -webkit-animation-delay: -1.25s;
-    animation-delay: -1.25s;
-    -webkit-transform: rotate(180deg) translate(0, -150%);
-    transform: rotate(180deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(7) {
-    -webkit-animation-delay: -1.16667s;
-    animation-delay: -1.16667s;
-    -webkit-transform: rotate(210deg) translate(0, -150%);
-    transform: rotate(210deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(8) {
-    -webkit-animation-delay: -1.08333s;
-    animation-delay: -1.08333s;
-    -webkit-transform: rotate(240deg) translate(0, -150%);
-    transform: rotate(240deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(9) {
-    -webkit-animation-delay: -1s;
-    animation-delay: -1s;
-    -webkit-transform: rotate(270deg) translate(0, -150%);
-    transform: rotate(270deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(10) {
-    -webkit-animation-delay: -0.91667s;
-    animation-delay: -0.91667s;
-    -webkit-transform: rotate(300deg) translate(0, -150%);
-    transform: rotate(300deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(11) {
-    -webkit-animation-delay: -0.83333s;
-    animation-delay: -0.83333s;
-    -webkit-transform: rotate(330deg) translate(0, -150%);
-    transform: rotate(330deg) translate(0, -150%);
-}
-
-.md-spinner .md-spinner-blade:nth-child(12) {
-    -webkit-animation-delay: -0.75s;
-    animation-delay: -0.75s;
-    -webkit-transform: rotate(360deg) translate(0, -150%);
-    transform: rotate(360deg) translate(0, -150%);
-}
-
-.md-loading-events .md-spinner-blade {
-    -webkit-animation-play-state: running;
-    animation-play-state: running;
-}
-
-@-webkit-keyframes md-spinner-fade {
-    0% {
-        opacity: 0.85;
-    }
-    50% {
-        opacity: 0.25;
-    }
-    100% {
-        opacity: 0.25;
-    }
-}
-
-@keyframes md-spinner-fade {
-    0% {
-        opacity: 0.85;
-    }
-    50% {
-        opacity: 0.25;
-    }
-    100% {
-        opacity: 0.25;
-    }
+.mbsc-windows .mds-google-cal-today {
+  order: 5;
 }
   `,
 };

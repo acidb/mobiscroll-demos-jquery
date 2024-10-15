@@ -52,13 +52,9 @@ export default {
             var start = mobiscroll.formatDate('YYYY-MM-DD', args.viewStart);
             var end = mobiscroll.formatDate('YYYY-MM-DD', args.viewEnd);
 
-            $.getJSON(
-              'https://trial.mobiscroll.com/searchevents/?start=' + start + '&end=' + end + '&callback=?',
-              function (data) {
-                calendar.setEvents(data);
-              },
-              'jsonp',
-            );
+            $.getJSON('https://trial.mobiscroll.com/searchevents/?start=' + start + '&end=' + end + '&callback=?', function (data) {
+              calendar.setEvents(data);
+            });
           },
         })
         .mobiscroll('getInst');
@@ -87,14 +83,10 @@ export default {
         clearTimeout(timer);
         timer = setTimeout(function () {
           if (searchText.length > 0) {
-            $.getJSON(
-              'https://trial.mobiscroll.com/searchevents/?text=' + searchText + '&callback=?',
-              function (data) {
-                list.setEvents(data);
-                popup.open();
-              },
-              'jsonp',
-            );
+            $.getJSON('https://trial.mobiscroll.com/searchevents/?text=' + searchText + '&callback=?', function (data) {
+              list.setEvents(data);
+              popup.open();
+            });
           } else {
             popup.close();
           }

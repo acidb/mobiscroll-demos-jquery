@@ -20,13 +20,9 @@ export default {
         })
         .mobiscroll('getInst');
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/events/?vers=5&callback=?',
-        function (events) {
-          inst.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/events/?vers=5&callback=?', function (events) {
+        inst.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals
@@ -38,7 +34,7 @@ export default {
 /*<hidden>*/
 
 .demo-load-events-from-remote-api {
-    height: 100%;
+  height: 100%;
 }
 
 /*</hidden>*/

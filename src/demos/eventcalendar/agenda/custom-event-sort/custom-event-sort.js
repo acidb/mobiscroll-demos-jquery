@@ -19,9 +19,7 @@ export default {
         .eventcalendar({
           // context,
           view: {
-            agenda: {
-              type: 'week',
-            },
+            agenda: { type: 'week' },
           },
           data: [
             {
