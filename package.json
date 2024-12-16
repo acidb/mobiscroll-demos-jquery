@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@mobiscroll/calendar-integration": "file:src/addons/calendar-integration",
-    "@mobiscroll/jquery": "^5.32.0",
+    "@mobiscroll/jquery": "^5.33.0",
     "@mobiscroll/print": "file:src/addons/print",
     "html5-history-router": "^1.1.0",
     "jquery": "^3.7.1",
