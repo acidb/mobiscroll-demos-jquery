@@ -12,6 +12,7 @@ export default {
     $(function () {
       var $popupElm = $('#demo-filtering-popup');
       var initialSort = true;
+      var initialMetricDesc;
       var initialSortColumn;
       var initialSortDirection;
       var loadedEvents;
@@ -345,11 +346,9 @@ export default {
               resource.cssClass = '';
               calendar.setOptions({ resources: myResources.slice() });
             }, 1000);
-            calendar.navigateToEvent(event);
+
+            calendar.navigateToEvent({ start: weekStart, resource: event.resource });
           },
-        });
-        setTimeout(function () {
-          document.querySelector('.mds-popup-sort-snackbar .mbsc-toast-background').classList.add('start-progress');
         });
       }
 
@@ -362,6 +361,9 @@ export default {
               text: 'Apply',
               keyCode: 'enter',
               handler: function () {
+                selectedMetricDesc = initialMetricDesc;
+                selectedMetric = sortColumn;
+
                 if (initialSortColumn != sortColumn) {
                   refreshData();
                 }
@@ -382,6 +384,8 @@ export default {
             },
           ],
           onClose: function () {
+            sortColumn = initialSortColumn;
+            sortDirection = initialSortDirection;
             $('.mbsc-popup-sort-metric[value="' + initialSortColumn + '"]').mobiscroll('getInst').checked = true;
             $('.mbsc-popup-sort-direction[value="' + initialSortDirection + '"]').mobiscroll('getInst').checked = true;
           },
@@ -524,9 +528,8 @@ export default {
       });
 
       $('.mbsc-popup-sort-metric').on('change', function () {
-        selectedMetric = $(this).val();
-        selectedMetricDesc = $(this).attr('data-label');
-        sortColumn = selectedMetric;
+        sortColumn = $(this).val();
+        initialMetricDesc = $(this).attr('data-label');
       });
 
       $('.mbsc-popup-sort-direction').on('change', function () {
@@ -622,7 +625,7 @@ export default {
   }
 }
 
-.mds-popup-sort-snackbar .mbsc-toast-background.start-progress::before {
+.mds-popup-sort-snackbar .mbsc-toast-background::before {
   animation: countdown 3s linear forwards; 
 }
 

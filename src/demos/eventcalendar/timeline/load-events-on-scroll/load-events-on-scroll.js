@@ -50,9 +50,16 @@ export default {
             var start = mobiscroll.formatDate('YYYY-MM-DD', args.viewStart);
             var end = mobiscroll.formatDate('YYYY-MM-DD', args.viewEnd);
             $.getJSON(
-              'https://trialdev.mobiscroll.com/load-data-scroll/?start=' + start + '&end=' + end + '&callback=?',
+              'https://trial.mobiscroll.com/load-data-scroll/?start=' + start + '&end=' + end + '&callback=?',
               function (data) {
                 inst.setEvents(data.events);
+                mobiscroll.toast({
+                  //<hidden>
+                  // theme,//</hidden>
+                  // context,
+                  message: 'Loading events...',
+                  duration: 1000,
+                });
               },
               'jsonp',
             );
