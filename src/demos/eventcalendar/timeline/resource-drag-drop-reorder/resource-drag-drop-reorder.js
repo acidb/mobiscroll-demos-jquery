@@ -145,15 +145,15 @@ export default {
           },
           renderHeader: function () {
             return (
-              '<div mbsc-calendar-nav class="mds-header-filter-nav"></div>' +
-              '<div class="mds-header-filter mbsc-flex mbsc-flex-1-1">' +
+              '<div mbsc-calendar-nav></div>' +
+              '<div class="mds-reorder-header-filter mbsc-flex mbsc-flex-1-1">' +
               '<button mbsc-button data-variant="flat" class="mds-reorder-switch mds-enable">Reorder resources</button>' +
               '<button mbsc-button class="mds-reorder-save mds-update">Save</button>' +
-              '<button mbsc-button class="mds-reorder-cancel mds-update ">Cancel</button>' +
-              '<div class="mds-header-filter-separator"></div>' +
-              '<button mbsc-calendar-prev></button>' +
-              '<button mbsc-calendar-today></button>' +
-              '<button mbsc-calendar-next></button>'
+              '<button mbsc-button class="mds-reorder-cancel mds-update">Cancel</button>' +
+              '<button mbsc-button class="mds-reorder-header-filter-separator" data-variant="outline" data-color="light"></button>' +
+              '<button mbsc-calendar-prev class="mds-header-filter-prev"></button>' +
+              '<button mbsc-calendar-today class="mds-header-filter-today"></button>' +
+              '<button mbsc-calendar-next class="mds-header-filter-next"></button>'
             );
           },
         })
@@ -237,44 +237,26 @@ export default {
   width: 240px;
 }
 
-.mds-header-filter {
+.mds-reorder-header-filter {
   justify-content: end;
   align-items: center;
 }
 
-.mds-header-filter-separator {
-  display: flex;
-  align-self: center;
+.mbsc-button.mds-reorder-header-filter-separator {
   height: 25px;
-  width: 1px;
+  min-width: 0;
+  padding: 0;
   margin: 0 8px 0 12px;
-  background: #c0c0c0;
-}
-
-.mds-reorder-switch.mds-enable {
-  color: #767676;
+  border-width: 1px;
+  cursor: none;
 }
 
 .mbsc-material .mds-reorder-switch {
   margin-right: 10px;
 }
 
-.mbsc-windows-dark .mds-reorder-switch,
-.mbsc-material-dark .mds-reorder-switch {
-  color: #fff;
-}
-
-.mbsc-ios-dark .mds-header-filter-separator {
-  background: #767676;
-}
-
-.mbsc-material-dark .mds-header-filter-separator,
-.mbsc-windows-dark .mds-header-filter-separator {
-  background: #fff
-}
-
 .mds-reorder-cancel.mbsc-button {
   margin-right: 12px;
 }
-  `,
+`,
 };

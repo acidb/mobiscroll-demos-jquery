@@ -10,17 +10,14 @@ export default {
     });
 
     $(function () {
-      var $popupElm = $('#demo-filtering-popup');
-      var initialSort = true;
-      var initialMetricDesc;
-      var initialSortColumn;
-      var initialSortDirection;
-      var loadedEvents;
       var metricBarAnimation = true;
-      var selectedMetric = 'standby';
-      var selectedMetricDesc = 'Standby Time';
       var sortColumn = 'standby';
+      var sortColumnLabel = 'Standby Time';
       var sortDirection = 'asc';
+      var sortRequests = 0;
+      var tempSortColumn;
+      var tempSortColumnLabel;
+      var tempSortDirection;
       var weekStart;
       var weekEnd;
 
@@ -32,7 +29,6 @@ export default {
           resource: 1,
           color: '#FF9933',
           payload: 25,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+1)',
@@ -41,7 +37,6 @@ export default {
           resource: 2,
           color: '#33FFA6',
           payload: 18,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -50,7 +45,6 @@ export default {
           resource: 3,
           color: '#9933FF',
           payload: 20,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+1)',
@@ -59,7 +53,6 @@ export default {
           resource: 4,
           color: '#33A6FF',
           payload: 0,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+2)',
@@ -68,7 +61,6 @@ export default {
           resource: 5,
           color: '#FF5733',
           payload: 20,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+2)',
@@ -77,7 +69,6 @@ export default {
           resource: 6,
           color: '#33FF99',
           payload: 0,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-4,11)',
@@ -86,7 +77,6 @@ export default {
           resource: 6,
           color: '#33FF99',
           payload: 14,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -95,7 +85,6 @@ export default {
           resource: 7,
           color: '#FF5733',
           payload: 22,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -104,7 +93,6 @@ export default {
           resource: 7,
           color: '#FF5733',
           payload: 18,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+4)',
@@ -113,7 +101,6 @@ export default {
           resource: 7,
           color: '#FF5733',
           payload: 20,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -122,7 +109,6 @@ export default {
           resource: 7,
           color: '#FF5733',
           payload: 16,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+4)',
@@ -131,7 +117,6 @@ export default {
           resource: 8,
           color: '#FF33A6',
           payload: 10,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-2)',
@@ -140,7 +125,6 @@ export default {
           resource: 8,
           color: '#FF33A6',
           payload: 0,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+3)',
@@ -149,7 +133,6 @@ export default {
           resource: 9,
           color: '#33FF57',
           payload: 0,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -158,7 +141,6 @@ export default {
           resource: 9,
           color: '#33FF57',
           payload: 0,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-4)',
@@ -167,7 +149,6 @@ export default {
           resource: 9,
           color: '#33FF57',
           payload: 11,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-4)',
@@ -176,7 +157,6 @@ export default {
           resource: 10,
           color: '#3357FF',
           payload: 15,
-          overlap: false,
         },
 
         {
@@ -186,7 +166,6 @@ export default {
           resource: 10,
           color: '#3357FF',
           payload: 17,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-4)',
@@ -195,7 +174,6 @@ export default {
           resource: 11,
           color: '#FF9933',
           payload: 19,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d)',
@@ -204,7 +182,6 @@ export default {
           resource: 12,
           color: '#33FF57',
           payload: 28,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-3)',
@@ -213,7 +190,6 @@ export default {
           resource: 13,
           color: '#9933FF',
           payload: 26,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d+2)',
@@ -222,7 +198,6 @@ export default {
           resource: 14,
           color: '#33A6FF',
           payload: 12,
-          overlap: false,
         },
         {
           start: 'dyndatetime(y,m,d-1)',
@@ -231,7 +206,6 @@ export default {
           resource: 15,
           color: '#FF5733',
           payload: 17,
-          overlap: false,
         },
       ];
 
@@ -252,67 +226,53 @@ export default {
         { id: 15, name: 'AT-TRK-5500', capacity: 19, location: 'Atlanta', model: 'Renault Magnum' },
       ];
 
-      function refreshData(inst) {
-        if (inst) {
-          loadedEvents = inst.getEvents();
-        }
+      function calcMetrics() {
+        var loadedEvents = calendar.getEvents();
 
         myResources.forEach(function (resource) {
+          var standby = 168;
+          var deadhead = 0;
+          var payload = 0;
+          var numberOfTours = 0;
+
           var resourceEvents = loadedEvents.filter(function (event) {
             return event.resource === resource.id;
           });
 
-          if (selectedMetric === 'standby') {
-            resource.standby = 168;
+          resourceEvents.forEach(function (event) {
+            var eventStart = new Date(event.start);
+            var eventEnd = new Date(event.end);
+            var effectiveStart = eventStart < weekStart ? weekStart : eventStart;
+            var effectiveEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
 
-            resourceEvents.forEach(function (event) {
-              var eventStart = new Date(event.start);
-              var eventEnd = new Date(event.end);
-              var effectiveStart = eventStart < weekStart ? weekStart : eventStart;
-              var effectiveEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
+            if (effectiveStart < effectiveEnd) {
+              standby -= (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
+            }
 
-              if (effectiveStart < effectiveEnd) {
-                resource.standby -= (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
-              }
-            });
-          }
+            if (effectiveStart < effectiveEnd && (!event.payload || event.payload <= 0)) {
+              deadhead += (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
+            }
 
-          if (selectedMetric === 'deadhead') {
-            var totalDeadheadTime = resourceEvents.reduce(function (total, event) {
-              var eventStart = new Date(event.start);
-              var eventEnd = new Date(event.end);
-              var effectiveStart = eventStart < weekStart ? weekStart : eventStart;
-              var effectiveEnd = eventEnd > weekEnd ? weekEnd : eventEnd;
+            if (eventEnd > weekStart && eventStart < weekEnd) {
+              numberOfTours++;
+              payload += event.payload || 0;
+            }
+          });
 
-              if (effectiveStart < effectiveEnd && (!event.payload || event.payload <= 0)) {
-                return total + (effectiveEnd - effectiveStart) / (1000 * 60 * 60);
-              }
-              return total;
-            }, 0);
-
-            resource.deadhead = totalDeadheadTime;
-          }
-
-          if (selectedMetric === 'payload') {
-            var weekEvents = resourceEvents.filter(function (event) {
-              return new Date(event.end) > weekStart && new Date(event.start) < weekEnd;
-            });
-            var totalPayload = weekEvents.reduce(function (total, event) {
-              return total + (event.payload || 0);
-            }, 0);
-
-            var numberOfTours = weekEvents.length;
-            resource.payload =
-              weekEvents.length > 0 && resource.capacity ? Math.round((totalPayload / numberOfTours / resource.capacity) * 100) : 0;
-          }
+          resource.standby = standby;
+          resource.deadhead = deadhead;
+          resource.payload = numberOfTours && resource.capacity ? Math.round((payload / numberOfTours / resource.capacity) * 100) : 0;
         });
       }
 
       function sortResources() {
         metricBarAnimation = true;
-        initialSort = false;
-        myResources.sort(function (a, b) {
-          return sortDirection === 'asc' ? (a[sortColumn] > b[sortColumn] ? 1 : -1) : a[sortColumn] < b[sortColumn] ? 1 : -1;
+        myResources.sort(function (resource1, resource2) {
+          var col = sortColumn;
+          if (resource1[col] === resource2[col]) {
+            col = 'name';
+          }
+          return sortDirection === 'asc' ? (resource1[col] > resource2[col] ? 1 : -1) : resource1[col] < resource2[col] ? 1 : -1;
         });
         calendar.setOptions({ resources: myResources.slice() });
         setTimeout(function () {
@@ -320,39 +280,39 @@ export default {
         }, 100);
       }
 
-      function delayedToastSort(resourceId, event) {
-        var resource = myResources.find(function (resource) {
-          return resource.id === resourceId;
-        });
+      function delayedSort(event) {
+        sortRequests++;
 
         mobiscroll.snackbar({
           //<hidden>
           // theme,//</hidden>
           // context,
           animation: 'pop',
-          button: {
-            text: 'Sort now',
-            action: function () {
-              sortResources();
-            },
-          },
+          button: { text: 'Sort now' },
           cssClass: 'mds-popup-sort-snackbar',
           display: 'center',
           duration: 3000,
           onClose: function () {
-            resource.cssClass = 'mds-resource-highlight';
-            sortResources();
-            setTimeout(function () {
-              resource.cssClass = '';
-              calendar.setOptions({ resources: myResources.slice() });
-            }, 1000);
-
-            calendar.navigateToEvent({ start: weekStart, resource: event.resource });
+            sortRequests--;
+            if (sortRequests === 0) {
+              var eventStart = new Date(event.start);
+              var navStart = eventStart < weekStart ? weekStart : eventStart;
+              var resource = myResources.find(function (resource) {
+                return resource.id === event.resource;
+              });
+              sortResources();
+              calendar.navigateToEvent({ start: navStart, resource: event.resource });
+              resource.cssClass = 'mbsc-timeline-parent-hover';
+              setTimeout(function () {
+                resource.cssClass = '';
+                calendar.setOptions({ resources: myResources.slice() });
+              }, 1000);
+            }
           },
         });
       }
 
-      var popup = $popupElm
+      var popup = $('#demo-filtering-popup')
         .mobiscroll()
         .popup({
           buttons: [
@@ -361,15 +321,12 @@ export default {
               text: 'Apply',
               keyCode: 'enter',
               handler: function () {
-                selectedMetricDesc = initialMetricDesc;
-                selectedMetric = sortColumn;
+                sortColumn = tempSortColumn;
+                sortColumnLabel = tempSortColumnLabel;
+                sortDirection = tempSortDirection;
 
-                if (initialSortColumn != sortColumn) {
-                  refreshData();
-                }
                 sortResources();
-                initialSortColumn = sortColumn;
-                initialSortDirection = sortDirection;
+
                 popup.close();
 
                 mobiscroll.toast({
@@ -383,18 +340,16 @@ export default {
               cssClass: 'mbsc-popup-button-primary',
             },
           ],
-          onClose: function () {
-            sortColumn = initialSortColumn;
-            sortDirection = initialSortDirection;
-            $('.mbsc-popup-sort-metric[value="' + initialSortColumn + '"]').mobiscroll('getInst').checked = true;
-            $('.mbsc-popup-sort-direction[value="' + initialSortDirection + '"]').mobiscroll('getInst').checked = true;
-          },
           contentPadding: false,
           display: 'anchored',
           focusOnClose: false,
           focusOnOpen: false,
           showOverlay: false,
           width: 400,
+          onClose: function () {
+            $('.mds-popup-sort-metric[value="' + sortColumn + '"]').mobiscroll('getInst').checked = true;
+            $('.mds-popup-sort-direction[value="' + sortDirection + '"]').mobiscroll('getInst').checked = true;
+          },
         })
         .mobiscroll('getInst');
 
@@ -406,6 +361,7 @@ export default {
           dragToCreate: true,
           dragToMove: true,
           dragToResize: true,
+          eventOverlap: false,
           view: {
             timeline: {
               type: 'week',
@@ -415,321 +371,272 @@ export default {
           resources: myResources,
           renderHeader: function () {
             return (
-              '<div mbsc-calendar-prev></div>' +
-              '<div mbsc-calendar-next></div>' +
+              '<button mbsc-calendar-prev></button>' +
+              '<button mbsc-calendar-next></button>' +
               '<div mbsc-calendar-nav></div>' +
-              '<button id="demo-popup-sort-button" data-start-icon="bars" data-variant="flat" mbsc-button style="margin-left: auto;">Sort Trucks</button>'
+              '<div class="mbsc-flex mbsc-flex-1-1 mbsc-justify-content-end">' +
+              '<button id="demo-popup-sort-button" data-start-icon="bars" data-variant="flat" mbsc-button>Sort Trucks</button>' +
+              '</div>'
             );
           },
           renderResourceHeader: function () {
-            return '<div class="mds-popup-sort-resource-cell mds-popup-sort-resource-cell-name">' + 'Trucks' + '</div>';
+            return '<div class="mds-popup-sort-resource-header">' + 'Trucks' + '</div>';
           },
           renderResource: function (resource) {
-            var metricValue = resource[selectedMetric];
-
-            var barValue =
-              selectedMetric === 'payload'
-                ? metricValue
-                : selectedMetric === 'standby' || selectedMetric === 'deadhead'
-                  ? (metricValue / 168) * 100
-                  : 100;
-
-            var barColorClass =
-              barValue <= 33 ? 'mds-resource-green-bar' : barValue <= 66 ? 'mds-resource-yellow-bar' : 'mds-resource-red-bar';
-
-            var metricBarClass = metricBarAnimation ? 'mds-metric-bar-animation ' : 'mds-metric-bar-no-animation ';
+            var metricValue = resource[sortColumn];
+            var barValue = sortColumn === 'payload' ? metricValue : (metricValue / 168) * 100;
+            var barColor = barValue <= 33 ? 'green' : barValue <= 66 ? 'yellow' : 'red';
 
             return (
               '<div class="mds-popup-sort-resource-cell">' +
               '<strong>' +
               resource.name +
               '</strong>' +
-              '<div class="mds-resource-attribute">Model: ' +
-              (resource.model || 'N/A') +
+              '<div class="mds-popup-sort-resource-attr">Model: ' +
+              resource.model +
               '</div>' +
-              '<div class="mds-resource-attribute">Capacity: ' +
+              '<div class="mds-popup-sort-resource-attr">Capacity: ' +
               resource.capacity +
               'T</div>' +
-              '<div class="mds-resource-attribute">' +
-              selectedMetricDesc +
+              '<div class="mds-popup-sort-resource-attr">' +
+              sortColumnLabel +
               ': ' +
               metricValue +
-              (selectedMetric === 'payload' ? '%' : selectedMetric === 'standby' || selectedMetric === 'deadhead' ? 'h' : '') +
+              (sortColumn === 'payload' ? '%' : 'h') +
               '</div>' +
-              '<div class="mds-metric-bar-container" style="margin-top: 5px;">' +
-              '<div class=" ' +
-              metricBarClass +
-              barColorClass +
+              '<div class="mds-popup-sort-bar-track">' +
+              '<div class="mds-popup-sort-bar' +
+              ' mds-popup-sort-bar-' +
+              barColor +
+              (metricBarAnimation ? ' mds-popup-sort-bar-animation' : '') +
               '" style="width: ' +
               barValue +
               '%;"></div>' +
-              '<div class="mds-metric-bar-overlay" style="width: ' +
-              (100 - barValue) +
-              '%;"></div>' +
               '</div>' +
               '</div>'
             );
           },
-          renderScheduleEventContent: function (args) {
+          renderScheduleEventContent: function (event) {
             return (
               '<div>' +
-              args.title +
+              event.title +
               '</div>' +
-              '<div style="font-size: 11px;">' +
+              '<div class="mds-popup-sort-event-attr">' +
               'Payload: ' +
-              (args.original.payload ? args.original.payload + ' T' : 'empty') +
+              (event.original.payload ? event.original.payload + ' T' : 'empty') +
               '</div>'
             );
           },
-          onPageLoading: function (args, inst) {
+          onPageLoading: function (args) {
             weekStart = args.firstDay;
             weekEnd = args.lastDay;
-            refreshData(inst);
-          },
-          onPageLoaded: function (args, inst) {
-            refreshData(inst);
-            if (initialSort) {
+            setTimeout(function () {
+              calcMetrics();
               sortResources();
-            }
+            });
           },
-          onEventCreated: function (args, inst) {
+          onEventCreated: function (args) {
             args.event.payload = Math.floor(Math.random() * (17 - 5 + 1)) + 5;
-            args.event.overlap = false;
-            refreshData(inst);
-            delayedToastSort(args.event.resource, args.event);
+            calcMetrics();
+            delayedSort(args.event);
           },
-          onEventDelete: function (args, inst) {
-            refreshData(inst);
-            delayedToastSort(args.event.resource, args.event);
+          onEventDeleted: function (args) {
+            calcMetrics();
+            delayedSort(args.event);
           },
-          onEventUpdate: function (args, inst) {
+          onEventUpdated: function (args) {
+            var oldEventStart = new Date(args.oldEvent.start);
+            var oldEventEnd = new Date(args.oldEvent.end);
             if (
-              new Date(args.oldEvent.start).getTime() !== new Date(args.event.start).getTime() &&
-              new Date(args.oldEvent.end).getTime() !== new Date(args.event.end).getTime() &&
-              args.oldEvent.resource === args.resource &&
-              new Date(args.oldEvent.start) >= weekStart &&
-              new Date(args.oldEvent.end) <= weekEnd &&
-              new Date(args.event.start) >= weekStart &&
-              new Date(args.event.end) <= weekEnd
+              +oldEventStart !== +args.event.start &&
+              +oldEventEnd !== +args.event.end &&
+              oldEventStart >= weekStart &&
+              oldEventEnd <= weekEnd &&
+              args.event.start >= weekStart &&
+              args.event.end <= weekEnd &&
+              args.oldEvent.resource === args.event.resource
             ) {
               return;
             }
-            refreshData(inst);
-            delayedToastSort(args.event.resource, args.event);
+            calcMetrics();
+            delayedSort(args.event);
           },
         })
         .mobiscroll('getInst');
 
       $('#demo-popup-sort-button').on('click', function () {
+        tempSortColumn = sortColumn;
+        tempSortColumnLabel = sortColumnLabel;
+        tempSortDirection = sortDirection;
         popup.setOptions({ anchor: this });
-        initialSortColumn = sortColumn;
-        initialSortDirection = sortDirection;
         popup.open();
       });
 
-      $('.mbsc-popup-sort-metric').on('change', function () {
-        sortColumn = $(this).val();
-        initialMetricDesc = $(this).attr('data-label');
+      $('.mds-popup-sort-metric').on('change', function () {
+        tempSortColumn = $(this).val();
+        tempSortColumnLabel = $(this).attr('data-label');
       });
 
-      $('.mbsc-popup-sort-direction').on('change', function () {
-        sortDirection = $('.mbsc-popup-sort-direction:checked').val();
+      $('.mds-popup-sort-direction').on('change', function () {
+        tempSortDirection = $(this).val();
       });
     });
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo-timeline-popup-sort" class="mds-timeline-popup-sort"></div>
+<div id="demo-timeline-popup-sort" class="mds-popup-sort"></div>
 <div style="display:none">
   <div id="demo-filtering-popup">
     <div class="mbsc-form-group">
       <div class="mbsc-form-group-title">Metric to calculate and sort by</div>
       <div mbsc-radio-group>
         <label>
-          <input mbsc-radio data-label="Standby Time" data-description="Time the truck is driven without cargo." class="mbsc-popup-sort-metric" value="standby" name="sort-metric" type="radio" checked/>
+          <input mbsc-radio data-label="Standby Time" data-description="Time the truck is driven without cargo." class="mds-popup-sort-metric" value="standby" name="popup-sort-metric" type="radio" checked />
         </label>
         <label>
-          <input mbsc-radio data-label="Payload Efficiency" data-description="Truck capacity divided by the average cargo on tours." class="mbsc-popup-sort-metric" value="payload" name="sort-metric" type="radio"/>
+          <input mbsc-radio data-label="Payload Efficiency" data-description="Truck capacity divided by the average cargo on tours." class="mds-popup-sort-metric" value="payload" name="popup-sort-metric" type="radio" />
         </label>
         <label>
-          <input mbsc-radio data-label="Deadhead Time" data-description="Time when the truck is not on a tour." class="mbsc-popup-sort-metric" value="deadhead" name="sort-metric" type="radio"/>
+          <input mbsc-radio data-label="Deadhead Time" data-description="Time when the truck is not on a tour." class="mds-popup-sort-metric" value="deadhead" name="popup-sort-metric" type="radio" />
         </label>
       </div>
     </div>
-   <div class="mbsc-form-group">
-  <div class="mbsc-form-group-title">Sort direction</div>
-  <label>
-      Ascending
-      <input mbsc-segmented type="radio" class="mbsc-popup-sort-direction" value="asc" name="sort-direction" checked>
-  </label>
-  <label>
-      Descending
-      <input mbsc-segmented type="radio" class="mbsc-popup-sort-direction" value="desc" name="sort-direction">
-  </label>
-</div>
+    <div class="mbsc-form-group">
+      <div class="mbsc-form-group-title">Sort direction</div>
+      <div mbsc-segmented-group>
+        <label>
+          Ascending
+          <input mbsc-segmented type="radio" class="mds-popup-sort-direction" value="asc" name="popup-sort-direction" checked />
+        </label>
+        <label>
+          Descending
+          <input mbsc-segmented type="radio" class="mds-popup-sort-direction" value="desc" name="popup-sort-direction" />
+        </label>
+      </div>
+    </div>
+  </div>
 </div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-/* resource highlight */
-
-.mds-resource-highlight {
-  background-color: rgba(128, 128, 128, 0.4);
-  transition: background-color 0.5s ease;
-}
-
-/* progress bar */
-
-.mds-popup-sort-snackbar .mbsc-toast-background::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  height: 100%;
-  width: 0;  
-  border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0.5);
-  transition: width 3s linear; 
-}
-
-.mds-popup-sort-snackbar .mbsc-snackbar-message::after {
-  content: "Sorting in 1 ."; 
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: changeMessage 3s steps(3) forwards; 
-}
-
-.mds-popup-sort-snackbar .mbsc-snackbar-message {
-  position: relative;
-}
-
-@keyframes countdown {
-  0% {
-    width: 0%;  
-  }
-  100% {
-    width: 100%;
-  }
-}
-
-@keyframes changeMessage {
-  0% {
-    content: "Sorting in 3 ...";
-  }
-  43% {
-    content: "Sorting in 2 ..";
-  }
-  76% {
-    content: "Sorting in 1 .";
-  }
-}
-
-.mds-popup-sort-snackbar .mbsc-toast-background::before {
-  animation: countdown 3s linear forwards; 
-}
-
-.mds-popup-sort-snackbar .mbsc-snackbar-cont {
-  border-radius: 4px;
-}
-
-/* metric bar */
-
-.mds-metric-bar-container {
-  position: relative;
-  background-color: #f0f0f0;
-  border-radius: 5px;
-  height: 10px;
-  width: 150px; 
-  overflow: hidden;
-}
-
-.mds-metric-bar-animation {
-  height: 100%;
-  animation: fillBar 1s ease-in-out forwards;
-}
-
-.mds-metric-bar-no-animation {
-  height: 100%;
-  animation: fillBar 0s ease-in-out forwards;
-}
-
-.mds-metric-bar-overlay {
-  content: '';
-  position: absolute; 
-  top: 0;
-  right: 0;
-  height: 100%;
-  background-color: #f0f0f0; 
-}
-
-@keyframes fillBar {
-  from {
-    width: 0%;
-  }
-  to {
-    width: 100%;
-  }
-}
-
-.mds-resource-green-bar {
-  background-color: #4caf50; 
-}
-
-.mds-resource-yellow-bar {
-  background-color: #ffeb3b; 
-}
-
-.mds-resource-red-bar {
-  background-color: #f44336; 
-}
-
 /* Overrides */
 
-.mds-timeline-popup-sort .mbsc-timeline-events {
-  top: 20px;
-}
-
-.mds-timeline-popup-sort .mbsc-timeline-resource-header,
-.mds-timeline-popup-sort .mbsc-timeline-resource-title,
-.mds-timeline-popup-sort .mbsc-timeline-resource-footer,
-.mds-timeline-popup-sort .mbsc-timeline-sidebar-header,
-.mds-timeline-popup-sort .mbsc-timeline-sidebar-resource-title,
-.mds-timeline-popup-sort .mbsc-timeline-sidebar-footer {
+.mds-popup-sort .mbsc-timeline-resource-header,
+.mds-popup-sort .mbsc-timeline-resource-title {
   padding: 0;
 }
 
-.mds-timeline-popup-sort .mbsc-timeline-row {
-  min-height: 110px;
-}
-
-.mds-timeline-popup-sort .mbsc-timeline-resource-col {
+.mds-popup-sort .mbsc-timeline-resource-col {
   width: 170px;
 }
 
-.mds-timeline-popup-sort .mbsc-timeline-resource-title {
-  height: 100%;
+.mds-popup-sort .mbsc-timeline-row {
+  height: 110px;
+}
+
+.mds-popup-sort .mbsc-timeline-events {
+  top: 20px;
 }
 
 /* Resource grid */
 
+.mds-popup-sort-resource-header {
+  padding: 0 5px;
+  line-height: 25px;
+}
+
 .mds-popup-sort-resource-cell {
-  display: inline-block;
-  height: 100%;
-  padding: 5px 5px;
-  box-sizing: border-box;
-  vertical-align: top;
+  padding: 5px;
   line-height: 20px;
 }
 
-.mds-popup-sort-resource-cell-name {
-  padding: 2px 5px;
-  width: 170px;
-}
-
-.mds-resource-attribute {
+.mds-popup-sort-resource-attr {
   font-size: 12px;
   font-weight: 400;
+}
+
+/* Event template */
+
+.mds-popup-sort-event-attr {
+  font-size: 11px;
+}
+
+/* Metric bar */
+
+.mds-popup-sort-bar-track {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+  height: 10px;
+  width: 150px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.mds-popup-sort-bar {
+  height: 100%;
+}
+
+.mds-popup-sort-bar-green {
+  background-color: #4caf50;
+}
+
+.mds-popup-sort-bar-yellow {
+  background-color: #ffeb3b;
+}
+
+.mds-popup-sort-bar-red {
+  background-color: #f44336;
+}
+
+.mds-popup-sort-bar-animation {
+  animation: mds-popup-sort-fill-bar 1s ease-in-out forwards;
+}
+
+/* Snackbar countdown */
+
+.mds-popup-sort-snackbar .mbsc-snackbar-cont {
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.mds-popup-sort-snackbar .mbsc-snackbar-cont::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: mds-popup-sort-fill-bar 3s linear forwards;
+}
+
+.mds-popup-sort-snackbar .mbsc-snackbar-message::after {
+  content: 'Sorting in 1 .';
+  animation: mds-popup-sort-message 3s steps(3) forwards;
+}
+
+/* Animations */
+
+@keyframes mds-popup-sort-fill-bar {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes mds-popup-sort-message {
+  0% {
+    content: 'Sorting in 3 ...';
+  }
+  43% {
+    content: 'Sorting in 2 ..';
+  }
+  76% {
+    content: 'Sorting in 1 .';
+  }
 }
 
 /*<hidden>*/

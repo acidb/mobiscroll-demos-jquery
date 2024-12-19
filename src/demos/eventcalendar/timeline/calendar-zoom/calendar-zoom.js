@@ -107,7 +107,7 @@ export default {
       });
 
       $.getJSON(
-        'https://trial.mobiscroll.com/timeline-events/?callback=?',
+        'https://trial.mobiscroll.com/timeline-zoom-events/?callback=?',
         function (events) {
           myCalendar.setEvents(events);
         },
