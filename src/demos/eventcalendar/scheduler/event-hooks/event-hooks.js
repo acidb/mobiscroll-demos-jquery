@@ -10,6 +10,24 @@ export default {
     });
 
     $(function () {
+      var myResources = [
+        {
+          id: 1,
+          name: 'Ryan',
+          color: '#f7c4b4',
+        },
+        {
+          id: 2,
+          name: 'Kate',
+          color: '#c6f1c9',
+        },
+        {
+          id: 3,
+          name: 'John',
+          color: '#e8d0ef',
+        },
+      ];
+
       var inst = $('#demo')
         .mobiscroll()
         .eventcalendar({
@@ -17,6 +35,7 @@ export default {
           dragToMove: true,
           dragToResize: true,
           externalDrop: true,
+          resources: myResources,
           view: {
             schedule: {
               type: 'day',
@@ -108,6 +127,15 @@ export default {
           onPageLoading: function () {
             // Use it to load data on demand
           },
+          onResourceClick: function () {
+            // Logic for resource click
+          },
+          onResourceDoubleClick: function () {
+            // Logic for resource double click
+          },
+          onResourceRightClick: function () {
+            // Logic for resource right click
+          },
           onSelectedDateChange: function () {
             // Use it to keep track of the selected date externally
           },
@@ -115,7 +143,7 @@ export default {
         .mobiscroll('getInst');
 
       $.getJSON(
-        'https://trial.mobiscroll.com/events/?vers=5&callback=?',
+        'https://trial.mobiscroll.com/resource-events/?callback=?',
         function (events) {
           inst.setEvents(events);
         },

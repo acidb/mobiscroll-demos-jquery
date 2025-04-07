@@ -5,7 +5,6 @@ export default {
   // eslint-disable-next-line es5/no-shorthand-properties
   init() {
     mobiscroll.setOptions({
-      // locale,
       // theme
     });
 
@@ -13,6 +12,7 @@ export default {
       var calendar = $('#demo-localization')
         .mobiscroll()
         .eventcalendar({
+          locale: mobiscroll.localeEn,
           view: {
             calendar: { type: 'week' },
             agenda: { type: 'day' },
@@ -35,9 +35,9 @@ export default {
   markup: `
 <!--hidden-->
 <div class="demo-inline demo-max-width-600" mbsc-page>
-    <!--/hidden-->
-    <div mbsc-page class="mds-full-height">
-    <div class="mds-agenda-locale-cont mds-full-height mbsc-flex-col">
+  <!--/hidden-->
+  <div mbsc-page class="mds-full-height">
+    <div class="mds-locale-cont mds-full-height mbsc-flex-col">
       <div class="mbsc-grid">
         <div class="mbsc-row">
           <div class="mbsc-col-sm-8">
@@ -56,7 +56,7 @@ export default {
                 <option value="es">Español</option>
                 <option value="fr">Français</option>
                 <option value="el">Greek</option>
-                <option value="in">Hindi</option>
+                <option value="hi">Hindi</option>
                 <option value="it">Italiano</option>
                 <option value="ja">Japanese</option>
                 <option value="ko">Korean</option>
@@ -67,7 +67,7 @@ export default {
                 <option value="pl">Polski</option>
                 <option value="pt-PT">Português Europeu</option>
                 <option value="pt-BR">Pt. Brasileiro</option>
-                <option value="ro">Româna</option>
+                <option value="ro">Română</option>
                 <option value="sr">Serbian</option>
                 <option value="sk">Slovencina</option>
                 <option value="fi">Suomi</option>
@@ -98,7 +98,7 @@ export default {
   height: 100%;
 }
 
-.mds-agenda-locale-cont .mbsc-col-sm-8 {
+.mds-locale-cont .mbsc-col-sm-8 {
   margin: 0 auto;
 }
   `,

@@ -145,7 +145,7 @@ export default {
         {
           start: 'dyndatetime(y,m,d-4)',
           end: 'dyndatetime(y,m,d-1)',
-          title: 'Tour #028 - ? to Philadelphiax',
+          title: 'Tour #028 - Trenton to Philadelphia',
           resource: 9,
           color: '#33FF57',
           payload: 11,
@@ -333,8 +333,7 @@ export default {
                   //<hidden>
                   // theme,//</hidden>
                   // context,
-                  cssClass: 'mds-popup-sort-toast',
-                  message: 'Resouces sorted',
+                  message: 'Resources sorted',
                 });
               },
               cssClass: 'mbsc-popup-button-primary',
@@ -603,7 +602,6 @@ export default {
 .mds-popup-sort-snackbar .mbsc-snackbar-cont::before {
   content: '';
   position: absolute;
-  z-index: -1;
   left: 0;
   height: 100%;
   width: 100%;
@@ -613,6 +611,8 @@ export default {
 
 .mds-popup-sort-snackbar .mbsc-snackbar-message::after {
   content: 'Sorting in 1 .';
+  position: relative;
+  z-index: 1;
   animation: mds-popup-sort-message 3s steps(3) forwards;
 }
 
