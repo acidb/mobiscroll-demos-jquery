@@ -1993,7 +1993,7 @@ export default {
 
         for (var i = 0; i < shifts.length; ++i) {
           var shift = shifts[i];
-          // get slot id from resource id
+          // Get slot id from resource id
           var resourceNr = +shift.resource.toString().charAt(0);
           if (shift.slot == slotId && date == formatDate(shift.start)) {
             shiftNrs[resourceNr - 1] = (shiftNrs[resourceNr - 1] || 0) + 1;

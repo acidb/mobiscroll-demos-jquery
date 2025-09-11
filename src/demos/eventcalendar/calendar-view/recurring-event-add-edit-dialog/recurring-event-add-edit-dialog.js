@@ -41,7 +41,7 @@ export default {
             break;
           case 'yearly':
             text = recurrenceInterval > 1 ? 'Every ' + recurrenceInterval + ' years' : 'Annualy';
-            text += ' on ' + MONTH_NAMES[recurrenceMonth - 1] + ' ' + recurrenceDay;
+            text += ' on ' + MONTH_NAMES[recurrenceMonth - 1].text + ' ' + recurrenceDay;
             break;
         }
 
@@ -139,32 +139,31 @@ export default {
 
       function getEventRecurrence(event) {
         var recurringRule = event.recurring;
+        var recurrenceType = 'norepeat';
         if (recurringRule) {
           var repeat = recurringRule.repeat;
           if (recurringRule.interval > 1 || recurringRule.count || recurringRule.until) {
             return 'custom-value';
           }
+          recurrenceType = repeat;
           switch (repeat) {
             case 'weekly':
               var weekDays = recurringRule.weekDays || '';
               if (weekDays === 'MO,TU,WE,TH,FR') {
-                return 'weekday';
-              }
-              if (weekDays.split(',').length > 1) {
-                return 'custom-value';
+                recurrenceType = 'weekday';
+              } else if (weekDays.split(',').length > 1) {
+                recurrenceType = 'custom-value';
               }
               break;
             case 'monthly':
             case 'yearly':
               if (recurringRule.pos) {
-                return repeat + '-pos';
+                recurrenceType = repeat + '-pos';
               }
               break;
-            default:
-              return repeat;
           }
         }
-        return 'norepeat';
+        return recurrenceType;
       }
 
       function toggleDatetimePicker(allDay) {

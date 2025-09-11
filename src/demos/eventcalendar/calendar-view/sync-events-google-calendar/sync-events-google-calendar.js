@@ -291,19 +291,19 @@ export default {
         })
         .mobiscroll('getInst');
 
-      // sign in
+      // Sign in
       $loginButton.on('click', function () {
         if (!googleCalendarSync.isSignedIn()) {
           googleCalendarSync.signIn().catch(onError);
         }
       });
 
-      // switch click
+      // Switch click
       $loggedInCont.on('change', '.google-calendar-switch', function (ev) {
         loadEvents(ev.target.checked, ev.target.value);
       });
 
-      // edit click
+      // Edit click
       $editButton.on('change', function (ev) {
         var isEditable = ev.target.checked;
         inst.setOptions({
@@ -314,14 +314,14 @@ export default {
         });
       });
 
-      // sign out
+      // Sign out
       $logoutButton.on('click', function () {
         googleCalendarSync.signOut().catch(onError);
       });
 
       $('.md-sync-events-google-menu').removeClass('mbsc-hidden');
 
-      // init google client
+      // Init google client
       googleCalendarSync.init({
         apiKey: '<YOUR_GOOGLE_API_KEY>',
         clientId: '<YOUR_GOOGLE_CLIENT_ID>',

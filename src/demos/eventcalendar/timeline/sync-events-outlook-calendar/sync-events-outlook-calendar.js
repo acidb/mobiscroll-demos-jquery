@@ -361,7 +361,7 @@ export default {
         })
         .mobiscroll('getInst');
 
-      // sign in
+      // Sign in
       $calendar.on('click', '#outlook-cal-sign-in', function () {
         if (!outlookCalendarSync.isSignedIn()) {
           outlookCalendarSync.signIn().catch(onError);
@@ -376,12 +376,12 @@ export default {
         popup.open();
       });
 
-      // switch click
+      // Switch click
       $popup.on('change', '.outlook-calendar-switch', function (ev) {
         loadEvents(ev.target.checked, ev.target.value);
       });
 
-      // edit click
+      // Edit click
       $editButton.on('change', function (ev) {
         setTimeout(function () {
           var isEditable = $(ev.target).mobiscroll('getInst').checked;
@@ -398,7 +398,7 @@ export default {
         outlookCalendarSync.signOut().catch(onError);
       });
 
-      // init outlook client
+      // Init outlook client
       outlookCalendarSync.init({
         clientId: '<YOUR_OUTLOOK_CLIENT_ID>',
         redirectUri: '<YOUR_OUTLOOK_REDIRECT_URI>',

@@ -14,7 +14,7 @@ export default {
         .datepicker({
           controls: ['calendar'],
           display: 'inline',
-          locale: mobiscroll.localeEs, // sets the language of the component
+          locale: mobiscroll.localeEs, // Sets the language of the component
         });
     });
   },

@@ -455,10 +455,6 @@ export default {
               $firstCalCont.on('scroll', handleFirstScroll);
             }
           },
-          // onEventDelete: function (args, inst) {
-          //     reservations = reservations.filter(function (f) { return f.id !== args.event.resource; });
-          //     inst.setOptions({ resources: reservations });
-          // },
           onDestroy: function () {
             if ($firstCalCont) {
               $firstCalCont.off('scroll', handleFirstScroll);

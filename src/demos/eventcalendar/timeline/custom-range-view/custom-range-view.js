@@ -73,9 +73,9 @@ export default {
             var end = args.lastDay;
             startDate = args.firstDay;
             endDate = new Date(end.getFullYear(), end.getMonth(), end.getDate() - 1, 0);
-            // set button text
+            // Set button text
             $rangeButton.text(getFormattedRange(startDate, endDate));
-            // set range value
+            // Set range value
             myRange.setVal([startDate, endDate]);
           },
         })
@@ -93,12 +93,12 @@ export default {
             var date = inst.getVal();
             if (date[0] && date[1]) {
               if (date[0].getTime() !== startDate.getTime()) {
-                // navigate the calendar
+                // Navigate the calendar
                 myCalendar.navigate(date[0]);
               }
               startDate = date[0];
               endDate = date[1];
-              // set calendar view
+              // Set calendar view
               myCalendar.setOptions({
                 refDate: startDate,
                 view: {
@@ -118,7 +118,7 @@ export default {
 
       var $rangeButton = $('#custom-date-range-text');
 
-      // returns the formatted date
+      // Returns the formatted date
       function getFormattedRange(start, end) {
         return (
           formatDate('MMM D, YYYY', new Date(start)) +
@@ -126,7 +126,7 @@ export default {
         );
       }
 
-      // returns the number of days between two dates
+      // Returns the number of days between two dates
       function getNrDays(start, end) {
         return Math.round(Math.abs((end.setHours(0) - start.setHours(0)) / (24 * 60 * 60 * 1000))) + 1;
       }

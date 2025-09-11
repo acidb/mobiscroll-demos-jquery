@@ -286,7 +286,7 @@ export default {
           onEventCreated: function (args) {
             popup.close();
 
-            // store temporary event
+            // Store temporary event
             tempEvent = args.event;
             createAddPopup(args.target);
           },
@@ -331,13 +331,13 @@ export default {
         .mobiscroll('getInst');
 
       function createAddPopup(elm) {
-        // hide delete button inside add popup
+        // Hide delete button inside add popup
         $deleteButton.hide();
 
         deleteEvent = true;
         restoreEvent = false;
 
-        // set popup header text and buttons for adding
+        // Set popup header text and buttons for adding
         popup.setOptions({
           headerText: 'New work order',
           buttons: [
@@ -348,7 +348,7 @@ export default {
               handler: function () {
                 calendar.updateEvent(tempEvent);
 
-                // navigate the calendar to the correct view
+                // Navigate the calendar to the correct view
                 calendar.navigateToEvent(tempEvent);
 
                 deleteEvent = false;
@@ -359,7 +359,7 @@ export default {
           ],
         });
 
-        // fill popup with a new event data
+        // Fill popup with a new event data
         $title.mobiscroll('getInst').value = tempEvent.title;
         $location.mobiscroll('getInst').value = tempEvent.location;
         $bill.mobiscroll('getInst').value = tempEvent.cost;
@@ -367,7 +367,7 @@ export default {
         range.setVal([tempEvent.start, tempEvent.end]);
         setCheckboxes(tempEvent.resource);
 
-        // set anchor for the popup
+        // Set anchor for the popup
         popup.setOptions({ anchor: elm });
 
         popup.open();
@@ -375,13 +375,13 @@ export default {
 
       function createEditPopup(args) {
         var ev = args.event;
-        // show delete button inside edit popup
+        // Show delete button inside edit popup
         $deleteButton.show();
 
         deleteEvent = false;
         restoreEvent = true;
 
-        // set popup header text and buttons for editing
+        // Set popup header text and buttons for editing
         popup.setOptions({
           headerText: 'Edit work order',
           buttons: [
@@ -403,10 +403,10 @@ export default {
                   resource: ev.resource,
                 };
 
-                // update event with the new properties on save button click
+                // Update event with the new properties on save button click
                 calendar.updateEvent(updatedEvent);
 
-                // navigate the calendar to the correct view
+                // Navigate the calendar to the correct view
                 calendar.navigateToEvent(updatedEvent);
 
                 restoreEvent = false;
@@ -417,7 +417,7 @@ export default {
           ],
         });
 
-        // fill popup with the selected event data
+        // Fill popup with the selected event data
         $title.mobiscroll('getInst').value = ev.title || '';
         $location.mobiscroll('getInst').value = ev.location || '';
         $bill.mobiscroll('getInst').value = ev.cost || 0;
@@ -425,7 +425,7 @@ export default {
         range.setVal([ev.start, ev.end]);
         setCheckboxes(ev.resource);
 
-        // set anchor for the popup
+        // Set anchor for the popup
         popup.setOptions({ anchor: args.domEvent.currentTarget });
         popup.open();
       }
@@ -489,22 +489,22 @@ export default {
         .mobiscroll('getInst');
 
       $title.on('input', function (ev) {
-        // update current event's title
+        // Update current event's title
         tempEvent.title = ev.target.value;
       });
 
       $location.on('input', function (ev) {
-        // update current event's location
+        // Update current event's location
         tempEvent.location = ev.target.value;
       });
 
       $bill.on('input', function (ev) {
-        // update current event's cost
+        // Update current event's cost
         tempEvent.cost = +ev.target.value || 0;
       });
 
       $notes.on('change', function (ev) {
-        // update current event's description
+        // Update current event's description
         tempEvent.description = ev.target.value;
       });
 
@@ -539,7 +539,7 @@ export default {
           onChange: function (args) {
             var date = args.value;
 
-            // update event's start date
+            // Update event's start date
             tempEvent.start = date[0];
             tempEvent.end = date[1];
           },
@@ -547,10 +547,10 @@ export default {
         .mobiscroll('getInst');
 
       $deleteButton.on('click', function () {
-        // delete current event on button click
+        // Delete current event on button click
         calendar.removeEvent(tempEvent);
 
-        // save a local reference to the deleted event
+        // Save a local reference to the deleted event
         var deletedEvent = tempEvent;
 
         popup.close();

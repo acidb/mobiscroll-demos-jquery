@@ -92,10 +92,10 @@ export default {
 
       for (var i = 0; i < myData.length; ++i) {
         var event = myData[i];
-        // convert dates to date objects
+        // Convert dates to date objects
         event.start = event.start ? new Date(event.start) : event.start;
         event.end = event.end ? new Date(event.end) : event.end;
-        // mark past events as fixed by setting the event.editable property to false
+        // Mark past events as fixed by setting the event.editable property to false
         event.editable = event.start && today < event.start;
       }
 

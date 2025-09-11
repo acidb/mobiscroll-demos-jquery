@@ -49,6 +49,12 @@ export default {
               });
             }
           },
+          //<hidden>
+          onPageLoaded: function () {
+            if (window.URLSearchParams && new URLSearchParams(window.location.search).get('screenshot')) {
+              $('#demo-custom-event-popover .mbsc-calendar-slide-active .mbsc-calendar-marks').first().trigger('click');
+            }
+          }, //</hidden>
         })
         .mobiscroll('getInst');
 

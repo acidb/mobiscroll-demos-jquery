@@ -126,7 +126,7 @@ export default {
       });
 
       $('#addMoment').click(function () {
-        // make sure that moment js is loaded
+        // Make sure that moment js is loaded
         momentJs.addEvent({
           start: moment([2020, 4, 21, 12]),
           end: moment([2020, 4, 21, 15]),

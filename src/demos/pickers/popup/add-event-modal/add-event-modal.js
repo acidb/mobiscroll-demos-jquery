@@ -136,7 +136,7 @@ export default {
 
       $eventAllDay.on('change', function () {
         var checked = this.checked;
-        // change range settings based on the allDay
+        // Change range settings based on the allDay
         range.setOptions({
           controls: checked ? ['calendar'] : ['calendar', 'time'],
         });

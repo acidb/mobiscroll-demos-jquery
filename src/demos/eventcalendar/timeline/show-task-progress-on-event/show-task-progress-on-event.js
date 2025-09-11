@@ -416,7 +416,7 @@ export default {
       <div class="mbsc-form-group">
         <div class="mbsc-flex mbsc-align-items-center mbsc-padding">
           <label for="progress-slider">Progress</label>
-          <input id="progress-slider "class="mds-popup-progress-slider mbsc-flex-1-0" type="range" min="0" max="100" />
+          <input id="progress-slider" class="mds-popup-progress-slider mbsc-flex-1-0" type="range" min="0" max="100" />
           <span class="mds-popup-progress-label">0%</span> 
         </div>
         <div id="popup-event-dates"></div>

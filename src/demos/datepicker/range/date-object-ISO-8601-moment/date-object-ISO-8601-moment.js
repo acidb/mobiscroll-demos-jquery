@@ -55,7 +55,7 @@ export default {
       });
 
       $('#setMoment').click(function () {
-        // make sure that moment js is loaded
+        // Make sure that moment js is loaded
         $('#demo-moment').mobiscroll('setVal', [moment([2020, 2, 6]), moment([2020, 2, 12])], true);
         updateValue('returnMoment', momentInstance);
       });

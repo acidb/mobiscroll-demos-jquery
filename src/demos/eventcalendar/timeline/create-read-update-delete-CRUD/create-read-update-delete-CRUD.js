@@ -114,13 +114,13 @@ export default {
       ];
 
       function createAddPopup(elm) {
-        // hide delete button inside add popup
+        // Hide delete button inside add popup
         $deleteButton.hide();
 
         deleteEvent = true;
         restoreEvent = false;
 
-        // set popup header text and buttons for adding
+        // Set popup header text and buttons for adding
         popup.setOptions({
           headerText: 'New event',
           buttons: [
@@ -131,7 +131,7 @@ export default {
               handler: function () {
                 tempEvent.bufferBefore = $travelTime.val();
                 calendar.updateEvent(tempEvent);
-                // navigate the calendar to the correct view
+                // Navigate the calendar to the correct view
                 calendar.navigateToEvent(tempEvent);
                 deleteEvent = false;
                 popup.close();
@@ -141,7 +141,7 @@ export default {
           ],
         });
 
-        // fill popup with a new event data
+        // Fill popup with a new event data
         $title.mobiscroll('getInst').value = tempEvent.title;
         $description.mobiscroll('getInst').value = '';
         $allDay.mobiscroll('getInst').checked = false;
@@ -154,7 +154,7 @@ export default {
         selectColor(tempResource.color, true);
         $travelTime.val(0);
 
-        // set anchor for the popup
+        // Set anchor for the popup
         popup.setOptions({ anchor: elm });
 
         popup.open();
@@ -162,13 +162,13 @@ export default {
 
       function createEditPopup(args) {
         var ev = args.event;
-        // show delete button inside edit popup
+        // Show delete button inside edit popup
         $deleteButton.show();
 
         deleteEvent = false;
         restoreEvent = true;
 
-        // set popup header text and buttons for editing
+        // Set popup header text and buttons for editing
         popup.setOptions({
           headerText: 'Edit event',
           buttons: [
@@ -190,9 +190,9 @@ export default {
                   color: ev.color,
                   resource: ev.resource,
                 };
-                // update event with the new properties on save button click
+                // Update event with the new properties on save button click
                 calendar.updateEvent(eventToSave);
-                // navigate the calendar to the correct view
+                // Navigate the calendar to the correct view
                 calendar.navigateToEvent(eventToSave);
                 restoreEvent = false;
                 popup.close();
@@ -202,7 +202,7 @@ export default {
           ],
         });
 
-        // fill popup with the selected event data
+        // Fill popup with the selected event data
         $title.mobiscroll('getInst').value = ev.title || '';
         $description.mobiscroll('getInst').value = ev.description || '';
         $allDay.mobiscroll('getInst').checked = ev.allDay || false;
@@ -216,13 +216,13 @@ export default {
           $statusBusy.mobiscroll('getInst').checked = true;
         }
 
-        // change range settings based on the allDay
+        // Change range settings based on the allDay
         range.setOptions({
           controls: ev.allDay ? ['date'] : ['datetime'],
           responsive: ev.allDay ? datePickerResponsive : datetimePickerResponsive,
         });
 
-        // set anchor for the popup
+        // Set anchor for the popup
         popup.setOptions({ anchor: args.domEvent.currentTarget });
         popup.open();
       }
@@ -253,9 +253,9 @@ export default {
           onEventCreated: function (args) {
             popup.close();
 
-            // store temporary event
+            // Store temporary event
             tempEvent = args.event;
-            // store temporary resource
+            // Store temporary resource
             tempResource = args.resourceObj;
             createAddPopup(args.target);
           },
@@ -301,12 +301,12 @@ export default {
         .mobiscroll('getInst');
 
       $title.on('input', function (ev) {
-        // update current event's title
+        // Update current event's title
         tempEvent.title = ev.target.value;
       });
 
       $description.on('change', function (ev) {
-        // update current event's title
+        // Update current event's title
         tempEvent.description = ev.target.value;
       });
 
@@ -320,13 +320,13 @@ export default {
           $('#travel-time-group').show();
         }
 
-        // change range settings based on the allDay
+        // Change range settings based on the allDay
         range.setOptions({
           controls: checked ? ['date'] : ['datetime'],
           responsive: checked ? datePickerResponsive : datetimePickerResponsive,
         });
 
-        // update current event's allDay property
+        // Update current event's allDay property
         tempEvent.allDay = checked;
       });
 
@@ -343,7 +343,7 @@ export default {
           onChange: function (args) {
             var date = args.value;
 
-            // update event's start date
+            // Update event's start date
             tempEvent.start = date[0];
             tempEvent.end = date[1];
           },
@@ -351,15 +351,15 @@ export default {
         .mobiscroll('getInst');
 
       $('input[name=event-status]').on('change', function () {
-        // update current event's free property
+        // Update current event's free property
         tempEvent.free = $statusFree.mobiscroll('getInst').checked;
       });
 
       $deleteButton.on('click', function () {
-        // delete current event on button click
+        // Delete current event on button click
         calendar.removeEvent(tempEvent);
 
-        // save a local reference to the deleted event
+        // Save a local reference to the deleted event
         var deletedEvent = tempEvent;
 
         popup.close();

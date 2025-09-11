@@ -12,6 +12,7 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
+    'capitalized-comments': ['warn', 'always', { ignorePattern: 'context,?$|drag,?$|theme,?$|theme,//</hidden>|locale,?$|localeImport' }],
     'es5/no-es6-methods': 'off',
     'es5/no-es6-static-methods': ['error', { exceptMethods: ['Object.assign'] }],
     'es5/no-modules': 'off',

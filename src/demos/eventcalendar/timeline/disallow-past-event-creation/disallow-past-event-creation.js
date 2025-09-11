@@ -56,7 +56,7 @@ export default {
             var oldEvent = args.originEvent;
             var start = oldEvent && oldEvent.start ? oldEvent.start : null;
 
-            // handle recurring events
+            // Handle recurring events
             if (start && start < today) {
               inst.updateEvent(oldEvent);
               mobiscroll.toast({
@@ -74,7 +74,7 @@ export default {
             var oldEventOccurrence = args.oldEventOccurrence;
             var occurrenceStart = oldEventOccurrence && oldEventOccurrence.start ? oldEventOccurrence.start : null;
 
-            // handle recurring events
+            // Handle recurring events
             if ((start && start < today) || (occurrenceStart && occurrenceStart < today)) {
               inst.updateEvent(oldEvent);
               return false;
@@ -88,10 +88,10 @@ export default {
         function (events) {
           for (var i = 0; i < events.length; ++i) {
             var event = events[i];
-            // convert dates to date objects
+            // Convert dates to date objects
             event.start = event.start ? new Date(event.start) : event.start;
             event.end = event.end ? new Date(event.end) : event.end;
-            // mark past events as fixed by setting the event.editable property to false
+            // Mark past events as fixed by setting the event.editable property to false
             event.editable = event.start && today < event.start;
           }
           inst.setEvents(events);
