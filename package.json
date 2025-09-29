@@ -23,8 +23,10 @@
     "@mobiscroll/jquery": "^5.35.0",
     "@mobiscroll/print": "file:src/addons/print",
     "dayjs": "^1.11.18",
+    "dragula": "^3.7.3",
     "html5-history-router": "^1.1.0",
     "jquery": "^3.7.1",
-    "moment-timezone": "^0.5.43"
+    "moment-timezone": "^0.5.43",
+    "sortablejs": "^1.15.6"
   }
 }
