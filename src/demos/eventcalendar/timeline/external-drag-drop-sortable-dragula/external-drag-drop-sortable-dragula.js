@@ -15,13 +15,37 @@ export default {
 
     var draggedTask;
     var draggedResource;
+    var $externalCont = $('#external-drop-cont');
+
+    function addToExternalList(args) {
+      var afterElement = args.afterElement;
+      var dragData = args.dragData;
+      var eventLength = Math.abs(Math.abs(new Date(dragData.end).getTime() - new Date(dragData.start).getTime()) / (60 * 60 * 1000));
+      var newItem = document.createElement('div');
+      newItem.className = 'mds-drag-drop-sort-task';
+      newItem.style.background = dragData.color || '';
+      newItem.setAttribute('data-drag-data', JSON.stringify(dragData));
+      newItem.innerHTML =
+        '<div>' +
+        dragData.title +
+        '</div><div class="mds-drag-drop-sort-duration">' +
+        eventLength +
+        ' hour' +
+        (eventLength > 1 ? 's' : '') +
+        '</div>';
+      args.container.insertBefore(newItem, afterElement || null);
+    }
 
     $(function () {
       $('#demo-drag-drop-sortable-dragula')
         .mobiscroll()
         .eventcalendar({
+          dragToMove: true,
+          dragToCreate: true,
           externalDrop: true,
+          externalDrag: true,
           externalResourceDrop: true,
+
           onEventCreated: function (args) {
             if (draggedTask && args.action === 'externalDrop') {
               draggedTask.remove();
@@ -31,6 +55,12 @@ export default {
               message: args.event.title + ' added',
             });
             $('#mds-event-' + args.event.id).remove();
+          },
+          onEventDeleted: function (args) {
+            mobiscroll.toast({
+              // context,
+              message: args.event.title + ' unscheduled',
+            });
           },
           onResourceCreated: function (args) {
             if (draggedResource && args.type === 'onResourceCreated') {
@@ -56,6 +86,37 @@ export default {
           },
         });
 
+      $externalCont.mobiscroll().dropcontainer({
+        onItemDrop: function (args) {
+          if (args.data) {
+            var event = args.data;
+            var eventLength = Math.round(Math.abs(new Date(event.end) - new Date(event.start)) / (60 * 60 * 1000));
+            var elm =
+              '<div id="mds-event-' +
+              event.id +
+              '" class="mds-drag-drop-sort-task" style="background: ' +
+              event.color +
+              ';">' +
+              '<div>' +
+              event.title +
+              '</div>' +
+              '<div class="mds-drag-drop-sort-duration">' +
+              eventLength +
+              ' hour' +
+              (eventLength > 1 ? 's' : '') +
+              '</div>' +
+              '</div>';
+
+            $('#mds-event').append(elm);
+            $('#mds-event-' + event.id)
+              .mobiscroll()
+              .draggable({
+                dragData: event,
+              });
+          }
+        },
+      });
+
       var sortableTaskInstance = new Sortable($('#demo-sortable-task-list')[0], {
         animation: 150,
         forceFallback: true,
@@ -71,6 +132,10 @@ export default {
 
       mobiscroll.sortableJsDraggable.init(sortableTaskInstance, {
         cloneSelector: '.sortable-drag',
+        externalDrop: true,
+        onExternalDrop: function (args) {
+          addToExternalList(args);
+        },
       });
 
       var sortableResourceInstance = new Sortable($('#demo-sortable-resource-list')[0], {
@@ -107,7 +172,12 @@ export default {
         });
       });
 
-      mobiscroll.dragulaDraggable.init(drake1);
+      mobiscroll.dragulaDraggable.init(drake1, {
+        externalDrop: true,
+        onExternalDrop: function (args) {
+          addToExternalList(args);
+        },
+      });
 
       var drake2 = dragula([$('#demo-dragula-resource-list')[0]]);
 
@@ -140,21 +210,25 @@ export default {
         <div class="mbsc-col-sm-6 mbsc-flex-col" >
           <div class="mds-drag-drop-sort-container mbsc-flex-col mbsc-flex-1-0">
             <div class="mbsc-txt-muted mds-third-party-list-title">Event list</div>
-            <div id="mds-event-1" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "1", "title": "Task 1", "start": "08:00", "end": "09:30", "color": "#cf4343"}' style="background: #cf4343;">
-              <div>Task 1</div>
-              <div class="mds-drag-drop-sort-duration">1.5 hours</div>
-            </div>
-            <div id="mds-event-2" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "2", "title": "Task 2", "start": "08:00", "end": "10:00", "color": "#cf4343"}' style="background: #cf4343;">
-              <div>Task 2</div>
-              <div class="mds-drag-drop-sort-duration">2 hours</div>
-            </div>
-            <div id="mds-event-3" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "3", "title": "Task 3", "start": "10:00", "end": "14:00", "color": "#cf4343"}' style="background: #cf4343;">
-              <div>Task 3</div>
-              <div class="mds-drag-drop-sort-duration">4 hours</div>
-            </div>
-            <div id="mds-event-4" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "4", "title": "Task 4", "start": "12:00", "end": "18:00", "color": "#cf4343"}' style="background: #cf4343;">
-              <div>Task 4</div>
-              <div class="mds-drag-drop-sort-duration">6 hours</div>
+            <div id="external-drop-cont">
+              <div id="mds-event">
+                <div id="mds-event-1" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "1", "title": "Task 1", "start": "08:00", "end": "09:30", "color": "#cf4343"}' style="background: #cf4343;">
+                  <div>Task 1</div>
+                  <div class="mds-drag-drop-sort-duration">1.5 hours</div>
+                </div>
+                <div id="mds-event-2" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "2", "title": "Task 2", "start": "08:00", "end": "10:00", "color": "#cf4343"}' style="background: #cf4343;">
+                  <div>Task 2</div>
+                  <div class="mds-drag-drop-sort-duration">2 hours</div>
+                </div>
+                <div id="mds-event-3" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "3", "title": "Task 3", "start": "10:00", "end": "14:00", "color": "#cf4343"}' style="background: #cf4343;">
+                  <div>Task 3</div>
+                  <div class="mds-drag-drop-sort-duration">4 hours</div>
+                </div>
+                <div id="mds-event-4" class="mds-drag-drop-sort-task" mbsc-draggable data-drag-data='{"id": "4", "title": "Task 4", "start": "12:00", "end": "18:00", "color": "#cf4343"}' style="background: #cf4343;">
+                  <div>Task 4</div>
+                  <div class="mds-drag-drop-sort-duration">6 hours</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

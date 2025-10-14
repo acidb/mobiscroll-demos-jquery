@@ -24,7 +24,6 @@ export default {
               hideInvalidColumns: true,
             },
           },
-          dragToCreate: true,
           groupBy: 'date',
           data: [
             // Dr. Alice Johnson – Neurology

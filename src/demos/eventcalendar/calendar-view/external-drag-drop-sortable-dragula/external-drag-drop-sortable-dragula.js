@@ -16,6 +16,18 @@ export default {
     var draggedTask;
     var $externalCont = $('#external-drop-cont');
 
+    function addToExternalList(args) {
+      var afterElement = args.afterElement;
+      var dragData = args.dragData;
+      var eventLength = Math.abs(Math.abs(new Date(dragData.end).getTime() - new Date(dragData.start).getTime()) / (60 * 60 * 1000));
+      var newItem = document.createElement('div');
+      newItem.className = 'mds-drag-drop-sort-task';
+      newItem.style.background = dragData.color || '';
+      newItem.setAttribute('data-drag-data', JSON.stringify(dragData));
+      newItem.innerHTML = '<div>' + dragData.title + '</div><div>' + eventLength + ' hour' + (eventLength > 1 ? 's' : '') + '</div>';
+      args.container.insertBefore(newItem, afterElement || null);
+    }
+
     $(function () {
       var myCalendar = $('#demo-drag-drop-sortable-dragula')
         .mobiscroll()
@@ -93,6 +105,10 @@ export default {
 
       mobiscroll.sortableJsDraggable.init(sortableInstance, {
         cloneSelector: '.sortable-drag',
+        externalDrop: true,
+        onExternalDrop: function (args) {
+          addToExternalList(args);
+        },
       });
 
       var drake = dragula([$('#demo-dragula-list')[0]]);
@@ -111,7 +127,12 @@ export default {
         });
       });
 
-      mobiscroll.dragulaDraggable.init(drake);
+      mobiscroll.dragulaDraggable.init(drake, {
+        externalDrop: true,
+        onExternalDrop: function (args) {
+          addToExternalList(args);
+        },
+      });
 
       $.getJSON('https://trial.mobiscroll.com/drag-drop-events/?callback=?', function (events) {
         myCalendar.setEvents(events);

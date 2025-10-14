@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@mobiscroll/calendar-integration": "file:src/addons/calendar-integration",
-    "@mobiscroll/jquery": "^5.35.0",
+    "@mobiscroll/jquery": "^5.35.1",
     "@mobiscroll/print": "file:src/addons/print",
     "dayjs": "^1.11.18",
     "dragula": "^3.7.3",
