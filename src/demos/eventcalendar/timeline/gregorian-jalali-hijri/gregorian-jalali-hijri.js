@@ -9,9 +9,6 @@ export default {
     });
 
     $(function () {
-      var gregorian;
-      var jalali;
-      var hijri;
       var myResources = [
         {
           id: 1,
@@ -44,66 +41,76 @@ export default {
           color: '#01adff',
         },
       ];
-
-      gregorian = $('#demo-gregorian')
+      var gregorian = $('#demo-gregorian')
         .mobiscroll()
         .eventcalendar({
-          // locale,
+          // drag,
+          locale: mobiscroll.localeEn,
+          resources: myResources,
           view: {
             timeline: { type: 'day' },
           },
-          resources: myResources,
         })
         .mobiscroll('getInst');
 
-      jalali = $('#demo-jalali')
+      var jalali = $('#demo-jalali')
         .mobiscroll()
         .eventcalendar({
+          // drag,
           calendarSystem: mobiscroll.jalaliCalendar,
           locale: mobiscroll.locale.fa,
+          resources: myResources,
           view: {
             timeline: { type: 'day' },
           },
-          resources: myResources,
         })
         .mobiscroll('getInst');
 
-      hijri = $('#demo-hijri')
+      var hijri = $('#demo-hijri')
         .mobiscroll()
         .eventcalendar({
+          // drag,
           calendarSystem: mobiscroll.hijriCalendar,
           locale: mobiscroll.locale.ar,
+          resources: myResources,
           view: {
             timeline: { type: 'day' },
           },
-          resources: myResources,
         })
         .mobiscroll('getInst');
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/timeline-events/?callback=?',
-        function (events) {
-          gregorian.setEvents(events);
-          jalali.setEvents(events);
-          hijri.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/timeline-events/', function (events) {
+        gregorian.setEvents(events);
+        jalali.setEvents(events);
+        hijri.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div class="mbsc-form-group">
-    <div class="mbsc-form-group-title">Gregorian calendar</div>
-    <div id="demo-gregorian"></div>
-</div>
-<div class="mbsc-form-group">
-    <div class="mbsc-form-group-title">Jalali calendar</div>
-    <div id="demo-jalali"></div>
-</div>
-<div class="mbsc-form-group">
-    <div class="mbsc-form-group-title">Hijri calendar</div>
-    <div id="demo-hijri"></div>
+<div mbsc-page>
+  <div class="mbsc-grid">
+    <div class="mbsc-row">
+      <div class="mbsc-col-sm-12 mbsc-col-md-4">
+        <div class="mbsc-form-group">
+          <div class="mbsc-form-group-title">Gregorian calendar</div>
+          <div id="demo-gregorian"></div>
+        </div>
+      </div>
+      <div class="mbsc-col-sm-12 mbsc-col-md-4">
+        <div class="mbsc-form-group">
+          <div class="mbsc-form-group-title">Jalali calendar</div>
+          <div id="demo-jalali"></div>
+        </div>
+      </div>
+      <div class="mbsc-col-sm-12 mbsc-col-md-4">
+        <div class="mbsc-form-group">
+          <div class="mbsc-form-group-title">Hijri calendar</div>
+          <div id="demo-hijri"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
   `,
 };

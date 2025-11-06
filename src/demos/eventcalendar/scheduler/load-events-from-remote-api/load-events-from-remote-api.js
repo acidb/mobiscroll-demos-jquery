@@ -14,7 +14,6 @@ export default {
         .mobiscroll()
         .eventcalendar({
           // context,
-          // drag,
           view: {
             calendar: { type: 'week' },
             schedule: { type: 'day' },
@@ -22,13 +21,9 @@ export default {
         })
         .mobiscroll('getInst');
 
-      $.getJSON(
-        'https://trial.mobiscroll.com/events/?vers=5&callback=?',
-        function (events) {
-          inst.setEvents(events);
-        },
-        'jsonp',
-      );
+      $.getJSON('https://trial.mobiscroll.com/events/?vers=5&callback=?', function (events) {
+        inst.setEvents(events);
+      });
     });
   },
   // eslint-disable-next-line es5/no-template-literals

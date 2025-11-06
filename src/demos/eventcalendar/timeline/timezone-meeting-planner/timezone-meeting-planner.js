@@ -171,7 +171,6 @@ export default {
             );
           },
           renderCell: function (args) {
-            console.log(args.date.getHours(), args.resource.timezone);
             var hProps = getHourProps(args.date.getHours(), args.resource.timezone);
             return (
               '<div class="mds-meeting-planner-time-slot mbsc-flex mbsc-justify-content-center" style="background:' +
