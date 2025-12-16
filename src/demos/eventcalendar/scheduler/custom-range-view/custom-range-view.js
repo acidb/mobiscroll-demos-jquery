@@ -113,17 +113,10 @@ export default {
   // eslint-disable-next-line es5/no-template-literals
   css: `
 .md-custom-range-view-controls {
-    display: flex;
-    flex: 1 0 auto;
-    justify-content: end;
-    align-items: center;
-}
-
-.mbsc-material .mbsc-calendar-title {
-    font-size: 1.428572em;
-    font-weight: 400;
-    text-transform: none;
-    line-height: 1.4em;
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: end;
+  align-items: center;
 }
   `,
 };

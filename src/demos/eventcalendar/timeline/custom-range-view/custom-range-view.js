@@ -19,36 +19,12 @@ export default {
         .eventcalendar({
           // drag,
           resources: [
-            {
-              id: 1,
-              name: 'Resource A',
-              color: '#e20000',
-            },
-            {
-              id: 2,
-              name: 'Resource B',
-              color: '#76e083',
-            },
-            {
-              id: 3,
-              name: 'Resource C',
-              color: '#4981d6',
-            },
-            {
-              id: 4,
-              name: 'Resource D',
-              color: '#e25dd2',
-            },
-            {
-              id: 5,
-              name: 'Resource E',
-              color: '#1dab2f',
-            },
-            {
-              id: 6,
-              name: 'Resource F',
-              color: '#d6d145',
-            },
+            { id: 1, name: 'Resource A', color: '#e20000' },
+            { id: 2, name: 'Resource B', color: '#76e083' },
+            { id: 3, name: 'Resource C', color: '#4981d6' },
+            { id: 4, name: 'Resource D', color: '#e25dd2' },
+            { id: 5, name: 'Resource E', color: '#1dab2f' },
+            { id: 6, name: 'Resource F', color: '#d6d145' },
           ],
           view: {
             timeline: {
@@ -94,7 +70,9 @@ export default {
             if (date[0] && date[1]) {
               if (date[0].getTime() !== startDate.getTime()) {
                 // Navigate the calendar
-                myCalendar.navigate(date[0]);
+                setTimeout(function () {
+                  myCalendar.navigate(date[0]);
+                }, 100);
               }
               startDate = date[0];
               endDate = date[1];
@@ -147,17 +125,10 @@ export default {
   // eslint-disable-next-line es5/no-template-literals
   css: `
 .md-custom-range-view-controls {
-    display: flex;
-    flex: 1 0 auto;
-    justify-content: end;
-    align-items: center;
-}
-
-.mbsc-material .mbsc-calendar-title {
-    font-size: 1.428572em;
-    font-weight: 400;
-    text-transform: none;
-    line-height: 1.4em;
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: end;
+  align-items: center;
 }
   `,
 };
