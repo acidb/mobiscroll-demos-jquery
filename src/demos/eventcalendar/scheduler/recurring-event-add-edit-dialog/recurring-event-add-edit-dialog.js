@@ -519,7 +519,7 @@ export default {
           dragToCreate: true,
           dragToMove: true,
           dragToResize: true,
-          view: { schedule: { type: 'week' } },
+          view: { scheduler: { type: 'week' } },
           data: myEvents,
           onEventClick: function (args) {
             createEditPopup(args.event, args.domEvent.currentTarget);

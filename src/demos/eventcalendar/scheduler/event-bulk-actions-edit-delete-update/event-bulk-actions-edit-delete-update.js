@@ -127,7 +127,7 @@ export default {
           // drag,
           selectMultipleEvents: true,
           view: {
-            schedule: {
+            scheduler: {
               type: 'week',
             },
           },

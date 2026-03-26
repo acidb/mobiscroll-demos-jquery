@@ -16,7 +16,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           data: [
             {
@@ -36,7 +36,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           data: [
             {
@@ -56,7 +56,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           data: [
             {

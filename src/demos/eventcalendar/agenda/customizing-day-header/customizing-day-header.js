@@ -20,7 +20,7 @@ export default {
               showEmptyDays: true,
             },
           },
-          renderDay: function (day) {
+          renderAgendaDay: function (day) {
             return (
               '<div class="mbsc-flex mbsc-flex-1-1 mbsc-align-items-center">' +
               '<div class="mbsc-flex-1-1">' +
@@ -70,9 +70,19 @@ export default {
 .mds-custom-day-header-btn.mbsc-button {
   height: 24px;
   line-height: 24px;
-  font-size: 12px;
-  border-radius: 12px;
   margin: 0;
+  padding: 0 10px;
+}
+
+.mds-custom-day-header-btn .mbsc-button-txt {
+  font-size: 12px;
+}
+
+.mds-custom-day-header-btn .mbsc-button-icon {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  font-size: 14px;
 }
   `,
 };

@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -177,8 +178,8 @@ export default {
           dragTimeStep: 30,
           data: [
             {
-              start: 'dyndatetime(y,m,d-4,6)',
-              end: 'dyndatetime(y,m,d-4,14)',
+              start: dyndatetime('y,m,d-4,6'),
+              end: dyndatetime('y,m,d-4,14'),
               title: 'Farmhouse TPH',
               location: '3339 Spruce Drive',
               resource: ['d2', 'cm2', 'd4', 'cp1', 'cm2', 'ce2', 'b1'],
@@ -186,8 +187,8 @@ export default {
               cost: 48000,
             },
             {
-              start: 'dyndatetime(y,m,d-3,8)',
-              end: 'dyndatetime(y,m,d-3,18)',
+              start: dyndatetime('y,m,d-3,8'),
+              end: dyndatetime('y,m,d-3,18'),
               title: 'Block of flats KXT',
               location: '4698 Mercer Street',
               resource: ['d1', 'cm1', 'd3', 'cp1', 'cm3', 'ce2', 'b2'],
@@ -195,8 +196,8 @@ export default {
               cost: 36000,
             },
             {
-              start: 'dyndatetime(y,m,d-2,12)',
-              end: 'dyndatetime(y,m,d-2,20)',
+              start: dyndatetime('y,m,d-2,12'),
+              end: dyndatetime('y,m,d-2,20'),
               title: 'Apartment house UGL',
               location: '3647 Tavern Place',
               resource: ['d3', 'cm2', 'd4', 'cp2', 'cm3', 'ce1', 'b2'],
@@ -204,8 +205,8 @@ export default {
               cost: 50000,
             },
             {
-              start: 'dyndatetime(y,m,d-1,11)',
-              end: 'dyndatetime(y,m,d-1,19)',
+              start: dyndatetime('y,m,d-1,11'),
+              end: dyndatetime('y,m,d-1,19'),
               title: 'Detached house WKB',
               location: '956 Dovetail Estates',
               resource: ['d1', 'cm3', 'd4', 'cp3', 'cm4', 'c2', 'b1', 'ce2'],
@@ -213,8 +214,8 @@ export default {
               cost: 55000,
             },
             {
-              start: 'dyndatetime(y,m,d,10)',
-              end: 'dyndatetime(y,m,d,18)',
+              start: dyndatetime('y,m,d,10'),
+              end: dyndatetime('y,m,d,18'),
               title: 'Apartment house XAZ',
               location: '4919 Jett Lane, Inglewood',
               resource: ['d1', 'cm4', 'd4', 'cp1', 'cm2', 'c2', 'b2'],
@@ -222,8 +223,8 @@ export default {
               cost: 62000,
             },
             {
-              start: 'dyndatetime(y,m,d,8)',
-              end: 'dyndatetime(y,m,d,16)',
+              start: dyndatetime('y,m,d,8'),
+              end: dyndatetime('y,m,d,16'),
               title: 'Block of flats DRG',
               location: '486 Sycamore Fork Road',
               resource: ['d2', 'cm1', 'd3', 'cp2', 'ce2', 'c1', 'b1'],
@@ -231,8 +232,8 @@ export default {
               cost: 39000,
             },
             {
-              start: 'dyndatetime(y,m,d+1,9)',
-              end: 'dyndatetime(y,m,d+1,17)',
+              start: dyndatetime('y,m,d+1,9'),
+              end: dyndatetime('y,m,d+1,17'),
               title: 'Farmhouse YQK',
               location: '1563 Retreat Avenue',
               resource: ['d2', 'cm4', 'd4', 'cm2', 'cp1', 'c2', 'b2'],
@@ -240,8 +241,8 @@ export default {
               cost: 45000,
             },
             {
-              start: 'dyndatetime(y,m,d+2,7)',
-              end: 'dyndatetime(y,m,d+2,15)',
+              start: dyndatetime('y,m,d+2,7'),
+              end: dyndatetime('y,m,d+2,15'),
               title: 'Apartment house SWP',
               location: '628 Daylene Drive',
               resource: ['d2', 'cm3', 'd3', 'cm1', 'cp2', 'c1', 'b1'],
@@ -249,8 +250,8 @@ export default {
               cost: 53000,
             },
             {
-              start: 'dyndatetime(y,m,d+3,10)',
-              end: 'dyndatetime(y,m,d+3,18)',
+              start: dyndatetime('y,m,d+3,10'),
+              end: dyndatetime('y,m,d+3,18'),
               title: 'Detached house OZL',
               location: '1830 Rinehart Road',
               resource: ['d3', 'cm2', 'd4', 'cp2', 'cm3', 'ce1', 'b2'],
@@ -258,8 +259,8 @@ export default {
               cost: 47000,
             },
             {
-              start: 'dyndatetime(y,m,d+4,11)',
-              end: 'dyndatetime(y,m,d+4,19)',
+              start: dyndatetime('y,m,d+4,11'),
+              end: dyndatetime('y,m,d+4,19'),
               title: 'Farmhouse PSZ',
               location: '2410 Union Street',
               resource: ['d1', 'cm3', 'd4', 'cp3', 'cm4', 'c2', 'b1', 'ce2'],
@@ -304,7 +305,7 @@ export default {
               message: 'Event deleted',
             });
           },
-          renderDay: function (args) {
+          renderTimelineDay: function (args) {
             var formatDate = mobiscroll.formatDate;
             var events = args.events;
             var costs = 0;
@@ -324,7 +325,7 @@ export default {
               '</div>'
             );
           },
-          renderScheduleEventContent: function (event) {
+          renderTimelineEventContent: function (event) {
             return '<div>' + event.title + '<span class="md-work-order-price-tag">$' + getCostString(event.original.cost) + '</span></div>';
           },
         })
@@ -633,9 +634,9 @@ export default {
 
 .md-work-order-date-title {
     font-size: 13px;
-    color: #959595;
     padding: 5px 10px;
     line-height: 18px;
+    opacity: 0.6;
 }
 
 .md-work-order-price-tag {
@@ -643,11 +644,11 @@ export default {
     font-size: 11px;
     line-height: 16px;
     vertical-align: middle;
-    border: 1px solid #959595;
-    color: #959595;
+    border: 1px solid currentColor;
     border-radius: 5px;
     margin: 0 10px;
     padding: 0px 5px;
+    opacity: 0.6;
 }
 
 .md-work-order-scheduling .mbsc-timeline-parent {

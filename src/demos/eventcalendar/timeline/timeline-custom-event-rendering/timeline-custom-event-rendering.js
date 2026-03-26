@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -19,7 +20,7 @@ export default {
               type: 'day',
             },
           },
-          renderScheduleEvent: function (data) {
+          renderTimelineEvent: function (data) {
             var ev = data.original;
             var color = data.color;
 
@@ -89,8 +90,8 @@ export default {
             {
               bufferBefore: 30,
               bufferAfter: 35,
-              start: 'dyndatetime(y,m,d,10,30)',
-              end: 'dyndatetime(y,m,d,13)',
+              start: dyndatetime('y,m,d,10,30'),
+              end: dyndatetime('y,m,d,13'),
               title: 'Tire change',
               color: '#7a5886',
               taskType: 'material-repeat',
@@ -99,8 +100,8 @@ export default {
             {
               bufferAfter: 40,
               bufferBefore: 30,
-              start: 'dyndatetime(y,m,d,7)',
-              end: 'dyndatetime(y,m,d,10)',
+              start: dyndatetime('y,m,d,7'),
+              end: dyndatetime('y,m,d,10'),
               title: 'Brake maintenance',
               color: '#9da721',
               taskType: 'cogs',
@@ -109,8 +110,8 @@ export default {
             {
               bufferAfter: 45,
               bufferBefore: 30,
-              start: 'dyndatetime(y,m,d,13,30)',
-              end: 'dyndatetime(y,m,d,16,30)',
+              start: dyndatetime('y,m,d,13,30'),
+              end: dyndatetime('y,m,d,16,30'),
               title: 'Fluid maintenance',
               color: '#cd6957',
               taskType: 'cogs',
@@ -119,8 +120,8 @@ export default {
             {
               bufferAfter: 35,
               bufferBefore: 30,
-              start: 'dyndatetime(y,m,d,11)',
-              end: 'dyndatetime(y,m,d,14)',
+              start: dyndatetime('y,m,d,11'),
+              end: dyndatetime('y,m,d,14'),
               title: 'Oil change',
               color: '#637e57',
               taskType: 'material-repeat',
@@ -129,8 +130,8 @@ export default {
             {
               bufferAfter: 60,
               bufferBefore: 30,
-              start: 'dyndatetime(y,m,d,8)',
-              end: 'dyndatetime(y,m,d,12)',
+              start: dyndatetime('y,m,d,8'),
+              end: dyndatetime('y,m,d,12'),
               title: 'Engine repair',
               color: '#6c5d45',
               taskType: 'material-search',
@@ -139,8 +140,8 @@ export default {
             {
               bufferAfter: 45,
               bufferBefore: 30,
-              start: 'dyndatetime(y,m,d,14)',
-              end: 'dyndatetime(y,m,d,19)',
+              start: dyndatetime('y,m,d,14'),
+              end: dyndatetime('y,m,d,19'),
               title: 'Car painting',
               color: '#50789d',
               taskType: 'material-format-paint',

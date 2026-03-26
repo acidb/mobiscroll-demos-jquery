@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -18,8 +19,8 @@ export default {
           },
           data: [
             {
-              start: 'dyndatetime(y,m,d,11)',
-              end: 'dyndatetime(y,m,d,13)',
+              start: dyndatetime('y,m,d,11'),
+              end: dyndatetime('y,m,d,13'),
               title: 'General orientation',
               resource: 2,
               bufferBefore: 20,
@@ -40,8 +41,8 @@ export default {
         var newEvent = {
           // Base properties
           title: 'Product planning',
-          start: 'dyndatetime(y,m,d,15)',
-          end: 'dyndatetime(y,m,d,17)',
+          start: dyndatetime('y,m,d,15'),
+          end: dyndatetime('y,m,d,17'),
           resource: 4,
           bufferBefore: 20,
           bufferAfter: 30,

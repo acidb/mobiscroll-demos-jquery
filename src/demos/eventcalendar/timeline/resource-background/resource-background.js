@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -65,38 +66,38 @@ export default {
           ],
           data: [
             {
-              start: 'dyndatetime(y,m,2)',
-              end: 'dyndatetime(y,m,5)',
+              start: dyndatetime('y,m,2'),
+              end: dyndatetime('y,m,5'),
               title: 'Event 1',
               resource: 1,
             },
             {
-              start: 'dyndatetime(y,m,10,9)',
-              end: 'dyndatetime(y,m,15,15)',
+              start: dyndatetime('y,m,10,9'),
+              end: dyndatetime('y,m,15,15'),
               title: 'Event 2',
               resource: 3,
             },
             {
-              start: 'dyndatetime(y,m,12)',
-              end: 'dyndatetime(y,m,14)',
+              start: dyndatetime('y,m,12'),
+              end: dyndatetime('y,m,14'),
               title: 'Event 3',
               resource: 4,
             },
             {
-              start: 'dyndatetime(y,m,15,7)',
-              end: 'dyndatetime(y,m,20,12)',
+              start: dyndatetime('y,m,15,7'),
+              end: dyndatetime('y,m,20,12'),
               title: 'Event 4',
               resource: 5,
             },
             {
-              start: 'dyndatetime(y,m,3)',
-              end: 'dyndatetime(y,m,10)',
+              start: dyndatetime('y,m,3'),
+              end: dyndatetime('y,m,10'),
               title: 'Event 5',
               resource: 6,
             },
             {
-              start: 'dyndatetime(y,m,10,8)',
-              end: 'dyndatetime(y,m,11,20)',
+              start: dyndatetime('y,m,10,8'),
+              end: dyndatetime('y,m,11,20'),
               title: 'Event 6',
               resource: 7,
             },

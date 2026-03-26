@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -10,8 +11,8 @@ export default {
     });
 
     $(function () {
-      var currentWeek = ['dyndatetime(y,m,d)', 'dyndatetime(y,m,d+6)'];
-      var currentHour = ['dyndatetime(y,m,d,h)', 'dyndatetime(y,m,d,h+2)'];
+      var currentWeek = [dyndatetime('y,m,d'), dyndatetime('y,m,d+6')];
+      var currentHour = [dyndatetime('y,m,d,h'), dyndatetime('y,m,d,h+2')];
 
       $('#demo-date-def')
         .mobiscroll()

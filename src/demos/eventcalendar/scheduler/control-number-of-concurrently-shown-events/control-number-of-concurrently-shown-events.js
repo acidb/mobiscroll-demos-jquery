@@ -20,7 +20,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: {
+            scheduler: {
               allDay: false,
               maxEventStack: 2,
               type: 'week',

@@ -67,8 +67,7 @@ export default {
 
         // Set popup header text and buttons for adding
         popup.setOptions({
-          headerText:
-            '<div>New meal</div><div class="md-meal-type">' + formatDate('DDDD, DD MMMM YYYY', new Date(tempMeal.start)) + '</div>',
+          headerText: 'New meal - ' + formatDate('DDDD, DD MMMM YYYY', new Date(tempMeal.start)),
           buttons: [
             'cancel',
             {
@@ -109,8 +108,7 @@ export default {
 
         // // set popup header text and buttons for editing
         popup.setOptions({
-          headerText:
-            '<div>' + resource.name + '</div><div class="md-meal-type">' + formatDate('DDDD, DD MMMM YYYY', new Date(ev.start)) + '</div>',
+          headerText: resource.name + ' - ' + formatDate('DDDD, DD MMMM YYYY', new Date(ev.start)),
           buttons: [
             'cancel',
             {
@@ -155,7 +153,7 @@ export default {
           view: {
             timeline: {
               type: 'week',
-              eventList: true,
+              eventDisplay: 'fill',
             },
           },
           resources: types,
@@ -201,7 +199,7 @@ export default {
               '</div>'
             );
           },
-          renderScheduleEventContent: function (args) {
+          renderTimelineEventContent: function (args) {
             var event = args.original;
             return (
               '<div class="md-meal-planner-event">' +
@@ -338,15 +336,10 @@ export default {
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.md-meal-type {
-    font-size: 14px;
-    font-weight: 600;
-    opacity: .6;
-}
-
 .md-meal-planner-popup .mbsc-popup .mbsc-popup-header {
     padding-top: 8px;
     padding-bottom: 8px;
+    font-size: 18px;
 }
 
 .md-meal-planner-cont {
@@ -375,38 +368,40 @@ export default {
 }
 
 .md-meal-planner-calendar .md-meal-planner-event-title {
-    font-size: 12px;
+  font-size: 12px;
+  line-height: 18px;
 }
 
 .md-meal-planner-calendar .md-meal-planner-event-desc {
-    opacity: .6;
+  opacity: 0.6;
+  line-height: 18px;
 }
 
-.md-meal-planner-popup .mbsc-segmented-item:first-child .mbsc-selected.mbsc-material,
+.md-meal-planner-popup .mbsc-segmented-item:first-child .mbsc-selected .mbsc-button-bg.mbsc-material,
 .md-meal-planner-popup .mbsc-segmented-item:first-child .mbsc-selected.mbsc-windows,
 .md-meal-planner-popup .mbsc-segmented-item:first-child .mbsc-segmented-selectbox-inner {
     background: #f08786;
 }
 
-.md-meal-planner-popup .mbsc-segmented-item:nth-child(2) .mbsc-selected.mbsc-material,
+.md-meal-planner-popup .mbsc-segmented-item:nth-child(2) .mbsc-selected .mbsc-button-bg.mbsc-material,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(2) .mbsc-selected.mbsc-windows,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(2) .mbsc-segmented-selectbox-inner {
     background: #8abe89;
 }
 
-.md-meal-planner-popup .mbsc-segmented-item:nth-child(3) .mbsc-selected.mbsc-material,
+.md-meal-planner-popup .mbsc-segmented-item:nth-child(3) .mbsc-selected .mbsc-button-bg.mbsc-material,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(3) .mbsc-selected.mbsc-windows,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(3) .mbsc-segmented-selectbox-inner {
     background: #99d3ef;
 }
 
-.md-meal-planner-popup .mbsc-segmented-item:nth-child(4) .mbsc-selected.mbsc-material,
+.md-meal-planner-popup .mbsc-segmented-item:nth-child(4) .mbsc-selected .mbsc-button-bg.mbsc-material,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(4) .mbsc-selected.mbsc-windows,
 .md-meal-planner-popup .mbsc-segmented-item:nth-child(4) .mbsc-segmented-selectbox-inner {
     background: #f0ce8e;
 }
 
-.md-meal-planner-popup .mbsc-segmented-item:last-child .mbsc-selected.mbsc-material,
+.md-meal-planner-popup .mbsc-segmented-item:last-child .mbsc-selected .mbsc-button-bg.mbsc-material,
 .md-meal-planner-popup .mbsc-segmented-item:last-child .mbsc-selected.mbsc-windows,
 .md-meal-planner-popup .mbsc-segmented-item:last-child .mbsc-segmented-selectbox-inner {
     background: #b48bce;

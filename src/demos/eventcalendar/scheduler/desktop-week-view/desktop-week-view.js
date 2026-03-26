@@ -16,7 +16,7 @@ export default {
           // context,
           // drag,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           onEventClick: function (args) {
             mobiscroll.toast({

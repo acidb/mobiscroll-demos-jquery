@@ -120,32 +120,36 @@ export default {
   // eslint-disable-next-line es5/no-template-literals
   css: `
 .md-item-template {
-    padding: 10px 10px 10px 55px;
-    position: relative;
-    text-align: left;
-    line-height: normal;
+  padding: 10px 10px 10px 54px;
+  position: relative;
+  text-align: left;
+  line-height: normal;
 }
 
 .md-item-template-img {
-    position: absolute;
-    left: 0;
-    width: 45px;
-    height: 45px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 44px;
+  height: 44px;
+  margin-top: -22px;
+  border-radius: 4px;
 }
 
 .md-item-template-title {
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 25px;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 24px;
 }
 
 .md-item-template-artist {
-    font-size: 14px;
-    opacity: .8;
+  font-size: 14px;
+  opacity: 0.8;
+  line-height: 20px;
 }
 
 .mbsc-scroller-wheel-item-2d .md-item-template {
-    transform: scale(1.1);
+  transform: scale(1.05);
 }
   `,
 };

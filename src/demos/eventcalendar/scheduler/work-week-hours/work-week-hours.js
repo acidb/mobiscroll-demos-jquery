@@ -29,7 +29,7 @@ export default {
             },
           ],
           view: {
-            schedule: {
+            scheduler: {
               type: 'week',
               startDay: 1,
               endDay: 5,

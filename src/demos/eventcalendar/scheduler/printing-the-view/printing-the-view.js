@@ -21,7 +21,7 @@ export default {
           // drag,
           modules: [mobiscroll.print],
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
         })
         .mobiscroll('getInst');

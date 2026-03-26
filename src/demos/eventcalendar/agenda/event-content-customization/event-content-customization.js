@@ -24,7 +24,7 @@ export default {
             calendar: { type: 'week' },
             agenda: { type: 'day' },
           },
-          renderEventContent: function (data) {
+          renderAgendaEventContent: function (data) {
             var participant = participants[data.original.participant];
             return (
               '<div>' +
@@ -36,7 +36,7 @@ export default {
               '" src="' +
               participant.img +
               '"/>' +
-              '<div class="mbsc-custom-event-name">' +
+              '<div class="mbsc-flex-1-1">' +
               participant.name +
               '</div>' +
               '<button mbsc-button class="mds-agenda-event-btn" data-color="secondary">Add participant</button>' +
@@ -67,25 +67,27 @@ export default {
     `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-  .mds-agenda-event-content {
-    padding: 8px 0;
-    font-size: 13px;
-  }
-  
-  .mds-agenda-event-avatar {
-    width: 30px;
-    height: 30px;
-    margin-right: 10px;
-  }
-  
-  .mds-agenda-event-btn.mbsc-button {
-    line-height: 20px;
-  }
-  
-  .mds-agenda-event-btn.mbsc-ios {
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-  }
+.mds-agenda-event-content {
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.mds-agenda-event-avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.mds-agenda-event-btn.mbsc-button {
+  line-height: 20px;
+}
+
+.mds-agenda-event-btn.mbsc-ios,
+.mds-agenda-event-btn.mbsc-material {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  margin: 0;
+}
     `,
 };

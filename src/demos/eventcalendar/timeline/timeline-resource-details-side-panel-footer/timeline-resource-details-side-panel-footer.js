@@ -169,7 +169,7 @@ export default {
           renderResourceFooter: function () {
             return '<div class="mds-resource-details-footer mds-resource-details-occuppancy">Occuppancy</div>';
           },
-          renderDay: function (data) {
+          renderTimelineDay: function (data) {
             var day = data.date;
             var timestamp = +day;
             return (

@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -23,50 +24,50 @@ export default {
 
       var myEvents = [
         {
-          start: 'dyndatetime(y,m,d-3)',
-          end: 'dyndatetime(y,m,d)',
+          start: dyndatetime('y,m,d-3'),
+          end: dyndatetime('y,m,d'),
           title: 'Design Homepage',
           resource: 'alice',
           progress: 100,
         },
         {
-          start: 'dyndatetime(y,m,d-3)',
-          end: 'dyndatetime(y,m,d+1)',
+          start: dyndatetime('y,m,d-3'),
+          end: dyndatetime('y,m,d+1'),
           title: 'Create Wireframes',
           resource: 'bob',
           progress: 100,
         },
         {
-          start: 'dyndatetime(y,m,d-1)',
-          end: 'dyndatetime(y,m,d+4)',
+          start: dyndatetime('y,m,d-1'),
+          end: dyndatetime('y,m,d+4'),
           title: 'Develop Frontend',
           resource: 'charlie',
           progress: 45,
         },
         {
-          start: 'dyndatetime(y,m,d-1)',
-          end: 'dyndatetime(y,m,d+4)',
+          start: dyndatetime('y,m,d-1'),
+          end: dyndatetime('y,m,d+4'),
           title: 'Develop Backend',
           resource: 'dave',
           progress: 35,
         },
         {
-          start: 'dyndatetime(y,m,d+4)',
-          end: 'dyndatetime(y,m,d+8)',
+          start: dyndatetime('y,m,d+4'),
+          end: dyndatetime('y,m,d+8'),
           title: 'Test Website',
           resource: 'erin',
           progress: 0,
         },
         {
-          start: 'dyndatetime(y,m,d+1)',
-          end: 'dyndatetime(y,m,d+8)',
+          start: dyndatetime('y,m,d+1'),
+          end: dyndatetime('y,m,d+8'),
           title: 'Fix Bugs',
           resource: 'frank',
           progress: 0,
         },
         {
-          start: 'dyndatetime(y,m,d+8)',
-          end: 'dyndatetime(y,m,d+11)',
+          start: dyndatetime('y,m,d+8'),
+          end: dyndatetime('y,m,d+11'),
           title: 'Deploy Website',
           resource: 'george',
           progress: 0,
@@ -266,7 +267,7 @@ export default {
           dragToResize: true,
           dragToCreate: true,
           clickToCreate: true,
-          view: { timeline: { type: 'month', eventList: true } },
+          view: { timeline: { type: 'month', eventDisplay: 'fill' } },
           data: myEvents,
           resources: myResources,
           onEventClick: function (args) {
@@ -287,7 +288,7 @@ export default {
             eventToUpdate.end = args.event.end;
             eventToUpdate.resource = args.event.resource;
           },
-          renderScheduleEvent: renderEvent,
+          renderTimelineEvent: renderEvent,
           renderResource: renderCustomResource,
         })
         .mobiscroll('getInst');

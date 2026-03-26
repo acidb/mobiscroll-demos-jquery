@@ -17,7 +17,7 @@ export default {
           view: {
             calendar: { labels: true },
           },
-          renderLabel: function (data) {
+          renderCalendarEvent: function (data) {
             if (data.isMultiDay) {
               return (
                 '<div style="background:' + data.original.color + ';color:#000" class="multi-day-event">' + data.original.title + '</div>'
@@ -27,7 +27,7 @@ export default {
                 '<div class="single-day-event-dot" style="background:' +
                 data.original.color +
                 '"></div>' +
-                '<div class="single-day-event" style="color:#000">' +
+                '<div class="single-day-event">' +
                 data.original.title +
                 '</div>'
               );

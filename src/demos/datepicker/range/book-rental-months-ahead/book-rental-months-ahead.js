@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -15,8 +16,8 @@ export default {
       var monthColors = [
         {
           background: '#b2f1c080',
-          start: 'dyndatetime(y,1,1)',
-          end: 'dyndatetime(y,1,31)',
+          start: dyndatetime('y,1,1'),
+          end: dyndatetime('y,1,31'),
           cellCssClass: 'md-book-rental-bg-off',
           recurring: {
             repeat: 'yearly',
@@ -26,8 +27,8 @@ export default {
         },
         {
           background: '#b2f1c080',
-          start: 'dyndatetime(y,2,1)',
-          end: 'dyndatetime(y,2,28)',
+          start: dyndatetime('y,2,1'),
+          end: dyndatetime('y,2,28'),
           cellCssClass: 'md-book-rental-bg-off',
           recurring: {
             repeat: 'yearly',
@@ -46,8 +47,8 @@ export default {
         },
         {
           background: '#a3cdff80',
-          start: 'dyndatetime(y,3,1)',
-          end: 'dyndatetime(y,3,31,23,59)',
+          start: dyndatetime('y,3,1'),
+          end: dyndatetime('y,3,31,23,59'),
           cellCssClass: 'md-book-rental-bg-pre',
           recurring: {
             repeat: 'yearly',
@@ -57,8 +58,8 @@ export default {
         },
         {
           background: '#a3cdff80',
-          start: 'dyndatetime(y,4,1)',
-          end: 'dyndatetime(y,4,30)',
+          start: dyndatetime('y,4,1'),
+          end: dyndatetime('y,4,30'),
           cellCssClass: 'md-book-rental-bg-pre',
           recurring: {
             repeat: 'yearly',
@@ -68,8 +69,8 @@ export default {
         },
         {
           background: '#a3cdff80',
-          start: 'dyndatetime(y,5,1)',
-          end: 'dyndatetime(y,5,31)',
+          start: dyndatetime('y,5,1'),
+          end: dyndatetime('y,5,31'),
           cellCssClass: 'md-book-rental-bg-pre',
           recurring: {
             repeat: 'yearly',
@@ -79,8 +80,8 @@ export default {
         },
         {
           background: '#f7f7bb80',
-          start: 'dyndatetime(y,6,1)',
-          end: 'dyndatetime(y,6,30)',
+          start: dyndatetime('y,6,1'),
+          end: dyndatetime('y,6,30'),
           cellCssClass: 'md-book-rental-bg-in',
           recurring: {
             repeat: 'yearly',
@@ -90,8 +91,8 @@ export default {
         },
         {
           background: '#f7f7bb80',
-          start: 'dyndatetime(y,7,1)',
-          end: 'dyndatetime(y,7,31)',
+          start: dyndatetime('y,7,1'),
+          end: dyndatetime('y,7,31'),
           cellCssClass: 'md-book-rental-bg-in',
           recurring: {
             repeat: 'yearly',
@@ -101,8 +102,8 @@ export default {
         },
         {
           background: '#f7f7bb80',
-          start: 'dyndatetime(y,8,1)',
-          end: 'dyndatetime(y,8,31)',
+          start: dyndatetime('y,8,1'),
+          end: dyndatetime('y,8,31'),
           cellCssClass: 'md-book-rental-bg-in',
           recurring: {
             repeat: 'yearly',
@@ -112,8 +113,8 @@ export default {
         },
         {
           background: '#f7f7bb80',
-          start: 'dyndatetime(y,9,1)',
-          end: 'dyndatetime(y,9,30)',
+          start: dyndatetime('y,9,1'),
+          end: dyndatetime('y,9,30'),
           cellCssClass: 'md-book-rental-bg-in',
           recurring: {
             repeat: 'yearly',
@@ -123,8 +124,8 @@ export default {
         },
         {
           background: '#f7f7bb80',
-          start: 'dyndatetime(y,10,1)',
-          end: 'dyndatetime(y,10,31,23,59)',
+          start: dyndatetime('y,10,1'),
+          end: dyndatetime('y,10,31,23,59'),
           cellCssClass: 'md-book-rental-bg-in',
           recurring: {
             repeat: 'yearly',
@@ -134,8 +135,8 @@ export default {
         },
         {
           background: '#b2f1c080',
-          start: 'dyndatetime(y,11,1)',
-          end: 'dyndatetime(y,11,30)',
+          start: dyndatetime('y,11,1'),
+          end: dyndatetime('y,11,30'),
           cellCssClass: 'md-book-rental-bg-off',
           recurring: {
             repeat: 'yearly',
@@ -145,8 +146,8 @@ export default {
         },
         {
           background: '#b2f1c080',
-          start: 'dyndatetime(y,12,1)',
-          end: 'dyndatetime(y,12,31)',
+          start: dyndatetime('y,12,1'),
+          end: dyndatetime('y,12,31'),
           cellCssClass: 'md-book-rental-bg-off',
           recurring: {
             repeat: 'yearly',
@@ -163,7 +164,7 @@ export default {
           display: 'inline',
           calendarType: 'month',
           calendarSize: 6,
-          min: 'dyndatetime(y,m,d)',
+          min: dyndatetime('y,m,d'),
           showRangeLabels: false,
           inRangeInvalid: false,
           rangeEndInvalid: true,

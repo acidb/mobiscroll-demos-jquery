@@ -18,6 +18,7 @@ export default {
           display: 'inline',
           calendarType: 'month',
           calendarSize: 3,
+          refDate: '1970-01-01',
           showWeekNumbers: true,
           renderCalendarHeader: function () {
             return (

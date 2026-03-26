@@ -16,7 +16,7 @@ export default {
           // context,
           // drag,
           view: {
-            schedule: {
+            scheduler: {
               allDay: false,
               type: 'week',
               startDay: 1,

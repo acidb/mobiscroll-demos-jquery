@@ -16,7 +16,7 @@ export default {
           // context,
           // drag,
           view: {
-            schedule: {
+            scheduler: {
               type: 'week',
               size: 2,
             },

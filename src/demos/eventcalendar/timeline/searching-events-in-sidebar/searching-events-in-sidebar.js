@@ -48,7 +48,7 @@ export default {
           resources: myResources,
           selectMultipleEvents: true,
           view: {
-            timeline: { type: 'month', eventList: true },
+            timeline: { type: 'month', eventDisplay: 'fill' },
           },
           onPageLoading: function (args) {
             var start = mobiscroll.formatDate('YYYY-MM-DD', args.viewStart);

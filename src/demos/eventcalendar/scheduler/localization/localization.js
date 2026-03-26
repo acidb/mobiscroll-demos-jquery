@@ -15,7 +15,7 @@ export default {
         .eventcalendar({
           locale: mobiscroll.localeEn,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
         })
         .mobiscroll('getInst');

@@ -3,6 +3,7 @@ import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 window.dayjs_plugin_utc = utc;
 window.dayjs_plugin_timezone = timezone;
@@ -87,8 +88,8 @@ export default {
           },
           data: [
             {
-              start: 'dyndatetime(y,m,d,13)',
-              end: 'dyndatetime(y,m,d,15)',
+              start: dyndatetime('y,m,d,13'),
+              end: dyndatetime('y,m,d,15'),
               title: 'General orientation',
               color: '#1ad404',
               resource: [1, 2, 3, 4, 5, 6],
@@ -117,7 +118,7 @@ export default {
           onEventUpdateFailed: function (args) {
             createUpdateEvent(args.event);
           },
-          renderScheduleEvent: function (data) {
+          renderTimelineEvent: function (data) {
             var start = data.startDate.clone();
             var end = data.endDate.clone();
 

@@ -19,7 +19,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: {
+            scheduler: {
               type: 'day',
               size: 14,
             },
@@ -69,7 +69,7 @@ export default {
               myCalendar.setOptions({
                 refDate: startDate,
                 view: {
-                  schedule: {
+                  scheduler: {
                     type: 'day',
                     size: getNrDays(startDate, endDate),
                   },

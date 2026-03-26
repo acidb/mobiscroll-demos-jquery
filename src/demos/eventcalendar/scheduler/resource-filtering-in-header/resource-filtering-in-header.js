@@ -44,7 +44,7 @@ export default {
           dragToMove: true,
           dragToResize: true,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           renderHeader: function () {
             var header = '<div mbsc-calendar-nav class="mds-header-filter-nav"></div>' + '<div class="mds-header-filter mbsc-flex-1-0">';

@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -10,8 +11,8 @@ export default {
     });
 
     $(function () {
-      var min = 'dyndatetime(y,m,d)';
-      var max = 'dyndatetime(y,m+6,d)';
+      var min = dyndatetime('y,m,d');
+      var max = dyndatetime('y,m+6,d');
 
       $('#demo-booking-single')
         .mobiscroll()
@@ -62,7 +63,7 @@ export default {
           pages: 'auto',
           selectMultiple: true,
           onInit: function (event, inst) {
-            inst.setVal(['dyndatetime(y,m,11)', 'dyndatetime(y,m,16)', 'dyndatetime(y,m,17)'], true);
+            inst.setVal([dyndatetime('y,m,11'), dyndatetime('y,m,16'), dyndatetime('y,m,17')], true);
           },
           onPageLoading: function (event, inst) {
             getBookings(event.firstDay, function callback(bookings) {

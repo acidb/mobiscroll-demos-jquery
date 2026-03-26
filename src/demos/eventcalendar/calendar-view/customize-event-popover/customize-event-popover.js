@@ -22,7 +22,7 @@ export default {
               popoverClass: 'custom-event-popover',
             },
           },
-          renderEventContent: function (data) {
+          renderPopoverEventContent: function (data) {
             return (
               '<div">' +
               data.title +

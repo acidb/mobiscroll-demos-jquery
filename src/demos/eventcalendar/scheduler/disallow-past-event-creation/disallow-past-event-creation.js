@@ -19,7 +19,7 @@ export default {
         .eventcalendar({
           // context,
           view: {
-            schedule: {
+            scheduler: {
               type: 'week',
             },
           },

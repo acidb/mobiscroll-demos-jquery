@@ -37,7 +37,7 @@ export default {
           dragToResize: false,
           selectMultipleEvents: true,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           onPageLoading: function (args) {
             var start = mobiscroll.formatDate('YYYY-MM-DD', args.viewStart);

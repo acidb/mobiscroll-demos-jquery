@@ -13,7 +13,7 @@ export default {
         .mobiscroll()
         .eventcalendar({
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
         })
         .mobiscroll('getInst');

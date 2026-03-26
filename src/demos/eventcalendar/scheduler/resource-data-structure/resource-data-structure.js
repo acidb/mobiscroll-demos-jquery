@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -14,7 +15,7 @@ export default {
         .mobiscroll()
         .eventcalendar({
           view: {
-            schedule: { type: 'day' },
+            scheduler: { type: 'day' },
           },
           resources: [
             {
@@ -50,20 +51,20 @@ export default {
           ],
           data: [
             {
-              start: 'dyndatetime(y,m,d,15)',
-              end: 'dyndatetime(y,m,d,18)',
+              start: dyndatetime('y,m,d,15'),
+              end: dyndatetime('y,m,d,18'),
               title: 'General orientation',
               resource: 1,
             },
             {
-              start: 'dyndatetime(y,m,d,9)',
-              end: 'dyndatetime(y,m,d,11)',
+              start: dyndatetime('y,m,d,9'),
+              end: dyndatetime('y,m,d,11'),
               text: 'Stakeholder mtg.',
               resource: 2,
             },
             {
-              start: 'dyndatetime(y,m,d,13,30)',
-              end: 'dyndatetime(y,m,d,15)',
+              start: dyndatetime('y,m,d,13,30'),
+              end: dyndatetime('y,m,d,15'),
               text: "Lunch @ Butcher's",
               resource: 3,
             },

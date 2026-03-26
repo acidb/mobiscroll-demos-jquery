@@ -144,7 +144,7 @@ export default {
         .eventcalendar({
           // context,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           extendDefaultEvent: function () {
             if (primaryCalendarId) {

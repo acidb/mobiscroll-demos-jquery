@@ -68,7 +68,7 @@ export default {
         .mobiscroll()
         .eventcalendar({
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           exclusiveEndDates: true,
           onPageLoading: function (args) {
@@ -135,14 +135,14 @@ export default {
           case 'week':
             calInst.setOptions({
               view: {
-                schedule: { type: 'week' },
+                scheduler: { type: 'week' },
               },
             });
             break;
           case 'day':
             calInst.setOptions({
               view: {
-                schedule: { type: 'day' },
+                scheduler: { type: 'day' },
               },
             });
             break;

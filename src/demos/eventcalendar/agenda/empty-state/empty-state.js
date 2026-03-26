@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -21,23 +22,23 @@ export default {
           data: [
             {
               title: 'Zumba Class',
-              start: 'dyndatetime(y,m,d-7,17)',
-              end: 'dyndatetime(y,m,d-7,19)',
+              start: dyndatetime('y,m,d-7,17'),
+              end: dyndatetime('y,m,d-7,19'),
             },
             {
               title: 'Silent Party',
-              start: 'dyndatetime(y,m,d-7,21)',
-              end: 'dyndatetime(y,m,d-7,23)',
+              start: dyndatetime('y,m,d-7,21'),
+              end: dyndatetime('y,m,d-7,23'),
             },
             {
               title: 'Garbage Collection',
-              start: 'dyndatetime(y,m,d+7,15)',
-              end: 'dyndatetime(y,m,d+7,17)',
+              start: dyndatetime('y,m,d+7,15'),
+              end: dyndatetime('y,m,d+7,17'),
             },
             {
               title: 'Karaoke Night',
-              start: 'dyndatetime(y,m,d+7,20)',
-              end: 'dyndatetime(y,m,d+7,22)',
+              start: dyndatetime('y,m,d+7,20'),
+              end: dyndatetime('y,m,d+7,22'),
             },
           ],
           renderAgendaEmpty: function () {

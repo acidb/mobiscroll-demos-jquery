@@ -17,7 +17,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           onSelectedDateChange: function (event) {
             currentDate = event.date;
@@ -78,7 +78,7 @@ export default {
           case 'schedule':
             calendar.setOptions({
               view: {
-                schedule: { type: 'week' },
+                scheduler: { type: 'week' },
               },
             });
             view = 'schedule';

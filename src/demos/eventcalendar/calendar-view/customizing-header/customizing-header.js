@@ -80,7 +80,7 @@ export default {
           case 'schedule':
             calendar.setOptions({
               view: {
-                schedule: { type: 'week' },
+                scheduler: { type: 'week' },
               },
             });
             view = 'schedule';

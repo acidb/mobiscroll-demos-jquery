@@ -37,7 +37,7 @@ export default {
           externalDrop: true,
           resources: myResources,
           view: {
-            schedule: {
+            scheduler: {
               type: 'day',
             },
           },

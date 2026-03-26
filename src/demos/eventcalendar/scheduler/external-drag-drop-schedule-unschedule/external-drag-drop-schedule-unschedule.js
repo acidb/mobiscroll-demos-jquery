@@ -17,7 +17,7 @@ export default {
         .eventcalendar({
           // context,
           view: {
-            schedule: { type: 'week' },
+            scheduler: { type: 'week' },
           },
           dragToMove: true,
           dragToCreate: true,

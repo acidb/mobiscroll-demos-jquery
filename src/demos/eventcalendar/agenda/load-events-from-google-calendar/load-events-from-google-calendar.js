@@ -106,12 +106,12 @@ export default {
             break;
           case 'week':
             calendar.setOptions({
-              view: { schedule: { type: 'week' } },
+              view: { scheduler: { type: 'week' } },
             });
             break;
           case 'day':
             calendar.setOptions({
-              view: { schedule: { type: 'day' } },
+              view: { scheduler: { type: 'day' } },
             });
             break;
           case 'agenda':

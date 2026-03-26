@@ -17,7 +17,7 @@ export default {
           view: {
             agenda: { type: 'month' },
           },
-          renderEvent: function (data) {
+          renderAgendaEvent: function (data) {
             return (
               '<div class="mbsc-flex mbsc-flex-1-1">' +
               '<img class="mds-agenda-event-img" src="https://img.mobiscroll.com/demos/' +

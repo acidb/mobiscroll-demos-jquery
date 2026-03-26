@@ -137,14 +137,14 @@ export default {
           case 'week':
             calInst.setOptions({
               view: {
-                schedule: { type: 'week' },
+                scheduler: { type: 'week' },
               },
             });
             break;
           case 'day':
             calInst.setOptions({
               view: {
-                schedule: { type: 'day' },
+                scheduler: { type: 'day' },
               },
             });
             break;

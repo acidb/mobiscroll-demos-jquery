@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -147,8 +148,8 @@ export default {
         {
           id: 1,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7, 6)',
-          end: 'dyndatetime(y,m,d-7, 19)',
+          start: dyndatetime('y,m,d-7, 6'),
+          end: dyndatetime('y,m,d-7, 19'),
           resource: 'orlando_1',
           title: 'Sales meeting with JLL',
           name: 'John C. Johnson',
@@ -158,8 +159,8 @@ export default {
         {
           id: 2,
           allDay: true,
-          start: 'dyndatetime(y,m,d-6, 3)',
-          end: 'dyndatetime(y,m,d-6, 20)',
+          start: dyndatetime('y,m,d-6, 3'),
+          end: dyndatetime('y,m,d-6, 20'),
           resource: 'orlando_1',
           title: 'Client consultation',
           name: 'Mary K. Adams',
@@ -169,8 +170,8 @@ export default {
         {
           id: 3,
           allDay: true,
-          start: 'dyndatetime(y,m,d-4, 10)',
-          end: 'dyndatetime(y,m,d-4,17)',
+          start: dyndatetime('y,m,d-4, 10'),
+          end: dyndatetime('y,m,d-4,17'),
           resource: 'orlando_1',
           title: 'Project review at XYZ',
           name: 'Robert B. Brown',
@@ -180,8 +181,8 @@ export default {
         {
           id: 4,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,9)',
-          end: 'dyndatetime(y,m,d-2,16)',
+          start: dyndatetime('y,m,d-2,9'),
+          end: dyndatetime('y,m,d-2,16'),
           resource: 'orlando_1',
           title: 'Team building workshop',
           name: 'Susan E. Smith',
@@ -192,8 +193,8 @@ export default {
         {
           id: 5,
           allDay: true,
-          start: 'dyndatetime(y,m,d-1,8)',
-          end: 'dyndatetime(y,m,d-1,18)',
+          start: dyndatetime('y,m,d-1,8'),
+          end: dyndatetime('y,m,d-1,18'),
           resource: 'orlando_1',
           title: 'Conference Downtown',
           name: 'William T. Harris',
@@ -203,8 +204,8 @@ export default {
         {
           id: 6,
           allDay: true,
-          start: 'dyndatetime(y,m,d,9)',
-          end: 'dyndatetime(y,m,d,17)',
+          start: dyndatetime('y,m,d,9'),
+          end: dyndatetime('y,m,d,17'),
           resource: 'orlando_1',
           title: 'Product demo at Expo',
           name: 'James P. Clark',
@@ -214,8 +215,8 @@ export default {
         {
           id: 7,
           allDay: true,
-          start: 'dyndatetime(y,m,d+2,6)',
-          end: 'dyndatetime(y,m,d+2,16)',
+          start: dyndatetime('y,m,d+2,6'),
+          end: dyndatetime('y,m,d+2,16'),
           resource: 'orlando_1',
           title: 'Visit to site',
           name: 'Patricia L. Green',
@@ -225,8 +226,8 @@ export default {
         {
           id: 8,
           allDay: true,
-          start: 'dyndatetime(y,m,d+3,9)',
-          end: 'dyndatetime(y,m,d+3,18)',
+          start: dyndatetime('y,m,d+3,9'),
+          end: dyndatetime('y,m,d+3,18'),
           resource: 'orlando_1',
           title: 'Investor meeting',
           name: 'Michael R. White',
@@ -236,8 +237,8 @@ export default {
         {
           id: 9,
           allDay: true,
-          start: 'dyndatetime(y,m,d+4,10)',
-          end: 'dyndatetime(y,m,d+4,17)',
+          start: dyndatetime('y,m,d+4,10'),
+          end: dyndatetime('y,m,d+4,17'),
           resource: 'orlando_1',
           title: 'Supplier negotiation',
           name: 'Barbara D. Wright',
@@ -247,8 +248,8 @@ export default {
         {
           id: 10,
           allDay: true,
-          start: 'dyndatetime(y,m,d+1,8)',
-          end: 'dyndatetime(y,m,d+1,17)',
+          start: dyndatetime('y,m,d+1,8'),
+          end: dyndatetime('y,m,d+1,17'),
           resource: 'orlando_1',
           title: 'Training session',
           name: 'David F. Martin',
@@ -258,8 +259,8 @@ export default {
         {
           id: 11,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,10)',
-          end: 'dyndatetime(y,m,d+6,20)',
+          start: dyndatetime('y,m,d+6,10'),
+          end: dyndatetime('y,m,d+6,20'),
           resource: 'orlando_1',
           title: 'Strategy session',
           name: 'Jennifer S. Lee',
@@ -269,8 +270,8 @@ export default {
         {
           id: 12,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,7,30)',
-          end: 'dyndatetime(y,m,d-7,19)',
+          start: dyndatetime('y,m,d-7,7,30'),
+          end: dyndatetime('y,m,d-7,19'),
           resource: 'orlando_2',
           title: 'Board meeting',
           name: 'Charles H. King',
@@ -280,8 +281,8 @@ export default {
         {
           id: 13,
           allDay: true,
-          start: 'dyndatetime(y,m,d-3,7)',
-          end: 'dyndatetime(y,m,d-3,21)',
+          start: dyndatetime('y,m,d-3,7'),
+          end: dyndatetime('y,m,d-3,21'),
           resource: 'orlando_2',
           title: 'Networking event',
           name: 'Elizabeth J. Scott',
@@ -291,8 +292,8 @@ export default {
         {
           id: 14,
           allDay: true,
-          start: 'dyndatetime(y,m,d,9,30)',
-          end: 'dyndatetime(y,m,d,17)',
+          start: dyndatetime('y,m,d,9,30'),
+          end: dyndatetime('y,m,d,17'),
           resource: 'orlando_2',
           title: 'Client appreciation lunch',
           name: 'Thomas A. Taylor',
@@ -302,8 +303,8 @@ export default {
         {
           id: 15,
           allDay: true,
-          start: 'dyndatetime(y,m,d+2,8)',
-          end: 'dyndatetime(y,m,d+2,16,30)',
+          start: dyndatetime('y,m,d+2,8'),
+          end: dyndatetime('y,m,d+2,16,30'),
           resource: 'orlando_2',
           title: 'Legal consultation',
           name: 'Jessica M. Lewis',
@@ -313,8 +314,8 @@ export default {
         {
           id: 16,
           allDay: true,
-          start: 'dyndatetime(y,m,d+3,9,30)',
-          end: 'dyndatetime(y,m,d+3,19)',
+          start: dyndatetime('y,m,d+3,9,30'),
+          end: dyndatetime('y,m,d+3,19'),
           resource: 'orlando_2',
           title: 'Branch visit',
           name: 'Christopher N. Hill',
@@ -324,8 +325,8 @@ export default {
         {
           id: 17,
           allDay: true,
-          start: 'dyndatetime(y,m,d+4,11)',
-          end: 'dyndatetime(y,m,d+4,22)',
+          start: dyndatetime('y,m,d+4,11'),
+          end: dyndatetime('y,m,d+4,22'),
           resource: 'orlando_2',
           title: 'Product launch',
           name: 'Margaret O. Allen',
@@ -335,8 +336,8 @@ export default {
         {
           id: 18,
           allDay: true,
-          start: 'dyndatetime(y,m,d+5,10)',
-          end: 'dyndatetime(y,m,d+5,20,30)',
+          start: dyndatetime('y,m,d+5,10'),
+          end: dyndatetime('y,m,d+5,20,30'),
           resource: 'orlando_2',
           title: 'Sales pitch to New Clients',
           name: 'Daniel P. Nelson',
@@ -346,8 +347,8 @@ export default {
         {
           id: 19,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,5,40)',
-          end: 'dyndatetime(y,m,d+6,15,30)',
+          start: dyndatetime('y,m,d+6,5,40'),
+          end: dyndatetime('y,m,d+6,15,30'),
           resource: 'orlando_2',
           title: 'Financial review',
           name: 'Ashley Q. Young',
@@ -357,8 +358,8 @@ export default {
         {
           id: 20,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,9)',
-          end: 'dyndatetime(y,m,d-7,21)',
+          start: dyndatetime('y,m,d-7,9'),
+          end: dyndatetime('y,m,d-7,21'),
           resource: 'orlando_3',
           title: 'Team luncheon at Restaurant',
           name: 'Joseph R. Walker',
@@ -368,8 +369,8 @@ export default {
         {
           id: 21,
           allDay: true,
-          start: 'dyndatetime(y,m,d-5,9,30)',
-          end: 'dyndatetime(y,m,d-5,17)',
+          start: dyndatetime('y,m,d-5,9,30'),
+          end: dyndatetime('y,m,d-5,17'),
           resource: 'orlando_3',
           title: 'Technical support visit',
           name: 'Nancy S. Hall',
@@ -379,8 +380,8 @@ export default {
         {
           id: 22,
           allDay: true,
-          start: 'dyndatetime(y,m,d-4,12)',
-          end: 'dyndatetime(y,m,d-4,23)',
+          start: dyndatetime('y,m,d-4,12'),
+          end: dyndatetime('y,m,d-4,23'),
           resource: 'orlando_3',
           title: 'Industry seminar',
           name: 'Steven T. Allen',
@@ -390,8 +391,8 @@ export default {
         {
           id: 23,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,11)',
-          end: 'dyndatetime(y,m,d-2,20,30)',
+          start: dyndatetime('y,m,d-2,11'),
+          end: dyndatetime('y,m,d-2,20,30'),
           resource: 'orlando_3',
           title: 'Partnership discussion',
           name: 'Linda U. Young',
@@ -401,8 +402,8 @@ export default {
         {
           id: 24,
           allDay: true,
-          start: 'dyndatetime(y,m,d+1,9)',
-          end: 'dyndatetime(y,m,d+1,18)',
+          start: dyndatetime('y,m,d+1,9'),
+          end: dyndatetime('y,m,d+1,18'),
           resource: 'orlando_3',
           title: 'Marketing campaign launch',
           name: 'Paul V. Wright',
@@ -412,8 +413,8 @@ export default {
         {
           id: 25,
           allDay: true,
-          start: 'dyndatetime(y,m,d+4,7)',
-          end: 'dyndatetime(y,m,d+4,20)',
+          start: dyndatetime('y,m,d+4,7'),
+          end: dyndatetime('y,m,d+4,20'),
           resource: 'orlando_3',
           title: 'Research presentation',
           name: 'Karen W. Martinez',
@@ -423,8 +424,8 @@ export default {
         {
           id: 26,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,10,30)',
-          end: 'dyndatetime(y,m,d+6,22)',
+          start: dyndatetime('y,m,d+6,10,30'),
+          end: dyndatetime('y,m,d+6,22'),
           resource: 'orlando_3',
           title: 'Executive retreat',
           name: 'Kevin X. Gonzalez',
@@ -434,8 +435,8 @@ export default {
         {
           id: 27,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,8,30)',
-          end: 'dyndatetime(y,m,d-7,16)',
+          start: dyndatetime('y,m,d-7,8,30'),
+          end: dyndatetime('y,m,d-7,16'),
           resource: 'las-vegas_1',
           title: 'Quarterly review',
           name: 'Sandra Y. Adams',
@@ -445,8 +446,8 @@ export default {
         {
           id: 28,
           allDay: true,
-          start: 'dyndatetime(y,m,d-5,8)',
-          end: 'dyndatetime(y,m,d-5,15)',
+          start: dyndatetime('y,m,d-5,8'),
+          end: dyndatetime('y,m,d-5,15'),
           resource: 'las-vegas_1',
           title: 'Sales training',
           name: 'Mark Z. Robinson',
@@ -456,8 +457,8 @@ export default {
         {
           id: 29,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,6,30)',
-          end: 'dyndatetime(y,m,d-2,17)',
+          start: dyndatetime('y,m,d-2,6,30'),
+          end: dyndatetime('y,m,d-2,17'),
           resource: 'las-vegas_1',
           title: 'Client onboarding session',
           name: 'Lisa A. Harris',
@@ -467,8 +468,8 @@ export default {
         {
           id: 30,
           allDay: true,
-          start: 'dyndatetime(y,m,d,9)',
-          end: 'dyndatetime(y,m,d,16)',
+          start: dyndatetime('y,m,d,9'),
+          end: dyndatetime('y,m,d,16'),
           resource: 'las-vegas_1',
           title: 'Product testing',
           name: 'Brian B. Lewis',
@@ -478,8 +479,8 @@ export default {
         {
           id: 31,
           allDay: true,
-          start: 'dyndatetime(y,m,d+1,8,30)',
-          end: 'dyndatetime(y,m,d+1,16,30)',
+          start: dyndatetime('y,m,d+1,8,30'),
+          end: dyndatetime('y,m,d+1,16,30'),
           resource: 'las-vegas_1',
           title: 'Customer feedback meeting',
           name: 'Rebecca C. Wilson',
@@ -489,8 +490,8 @@ export default {
         {
           id: 32,
           allDay: true,
-          start: 'dyndatetime(y,m,d+2,4)',
-          end: 'dyndatetime(y,m,d+2,14)',
+          start: dyndatetime('y,m,d+2,4'),
+          end: dyndatetime('y,m,d+2,14'),
           resource: 'las-vegas_1',
           title: 'Market research trip',
           name: 'Edward D. Evans',
@@ -500,8 +501,8 @@ export default {
         {
           id: 33,
           allDay: true,
-          start: 'dyndatetime(y,m,d+4,12)',
-          end: 'dyndatetime(y,m,d+4,23)',
+          start: dyndatetime('y,m,d+4,12'),
+          end: dyndatetime('y,m,d+4,23'),
           resource: 'las-vegas_1',
           title: 'Financial planning',
           name: 'Deborah E. Garcia',
@@ -511,8 +512,8 @@ export default {
         {
           id: 34,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,9)',
-          end: 'dyndatetime(y,m,d+6,17,30)',
+          start: dyndatetime('y,m,d+6,9'),
+          end: dyndatetime('y,m,d+6,17,30'),
           resource: 'las-vegas_1',
           title: 'Safety inspection',
           name: 'George F. Clark',
@@ -522,8 +523,8 @@ export default {
         {
           id: 35,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,7,30)',
-          end: 'dyndatetime(y,m,d-7,17)',
+          start: dyndatetime('y,m,d-7,7,30'),
+          end: dyndatetime('y,m,d-7,17'),
           resource: 'las-vegas_2',
           title: 'IT upgrade assessment',
           name: 'Amanda G. Walker',
@@ -533,8 +534,8 @@ export default {
         {
           id: 36,
           allDay: true,
-          start: 'dyndatetime(y,m,d-3,10)',
-          end: 'dyndatetime(y,m,d-3,21)',
+          start: dyndatetime('y,m,d-3,10'),
+          end: dyndatetime('y,m,d-3,21'),
           resource: 'las-vegas_2',
           title: 'Employee training',
           name: 'Patrick H. Hall',
@@ -544,8 +545,8 @@ export default {
         {
           id: 37,
           allDay: true,
-          start: 'dyndatetime(y,m,d-1,8,30)',
-          end: 'dyndatetime(y,m,d-1,17)',
+          start: dyndatetime('y,m,d-1,8,30'),
+          end: dyndatetime('y,m,d-1,17'),
           resource: 'las-vegas_2',
           title: 'Strategic partnership meeting',
           name: 'Cynthia I. Nelson',
@@ -555,8 +556,8 @@ export default {
         {
           id: 38,
           allDay: true,
-          start: 'dyndatetime(y,m,d+3,7,30)',
-          end: 'dyndatetime(y,m,d+3,16,30)',
+          start: dyndatetime('y,m,d+3,7,30'),
+          end: dyndatetime('y,m,d+3,16,30'),
           resource: 'las-vegas_2',
           title: 'Annual general meeting',
           name: 'Matthew J. Baker',
@@ -566,8 +567,8 @@ export default {
         {
           id: 39,
           allDay: true,
-          start: 'dyndatetime(y,m,d+5,9)',
-          end: 'dyndatetime(y,m,d+5,18)',
+          start: dyndatetime('y,m,d+5,9'),
+          end: dyndatetime('y,m,d+5,18'),
           resource: 'las-vegas_2',
           title: 'Legal deposition at Court',
           name: 'Michelle K. Wright',
@@ -577,8 +578,8 @@ export default {
         {
           id: 40,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,8)',
-          end: 'dyndatetime(y,m,d+6,18)',
+          start: dyndatetime('y,m,d+6,8'),
+          end: dyndatetime('y,m,d+6,18'),
           resource: 'las-vegas_2',
           title: 'Technology expo',
           name: 'Benjamin L. Scott',
@@ -588,8 +589,8 @@ export default {
         {
           id: 41,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,9)',
-          end: 'dyndatetime(y,m,d-7,19)',
+          start: dyndatetime('y,m,d-7,9'),
+          end: dyndatetime('y,m,d-7,19'),
           resource: 'las-vegas_3',
           title: 'Client negotiation',
           name: 'Stephanie M. Turner',
@@ -599,8 +600,8 @@ export default {
         {
           id: 42,
           allDay: true,
-          start: 'dyndatetime(y,m,d-4,6,30)',
-          end: 'dyndatetime(y,m,d-4,17,30)',
+          start: dyndatetime('y,m,d-4,6,30'),
+          end: dyndatetime('y,m,d-4,17,30'),
           resource: 'las-vegas_3',
           title: 'Executive meeting',
           name: 'Jason N. Harris',
@@ -610,8 +611,8 @@ export default {
         {
           id: 43,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,8)',
-          end: 'dyndatetime(y,m,d-2,16)',
+          start: dyndatetime('y,m,d-2,8'),
+          end: dyndatetime('y,m,d-2,16'),
           resource: 'las-vegas_3',
           title: 'Investor briefing',
           name: 'Sharon O. Lewis',
@@ -621,8 +622,8 @@ export default {
         {
           id: 44,
           allDay: true,
-          start: 'dyndatetime(y,m,d,7)',
-          end: 'dyndatetime(y,m,d,17)',
+          start: dyndatetime('y,m,d,7'),
+          end: dyndatetime('y,m,d,17'),
           resource: 'las-vegas_3',
           title: 'Project handover',
           name: 'Timothy P. Adams',
@@ -632,8 +633,8 @@ export default {
         {
           id: 45,
           allDay: true,
-          start: 'dyndatetime(y,m,d+3,8,30)',
-          end: 'dyndatetime(y,m,d+3,18)',
+          start: dyndatetime('y,m,d+3,8,30'),
+          end: dyndatetime('y,m,d+3,18'),
           resource: 'las-vegas_3',
           title: 'Customer satisfaction survey',
           name: 'Melissa Q. White',
@@ -643,8 +644,8 @@ export default {
         {
           id: 46,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,8)',
-          end: 'dyndatetime(y,m,d+6,20)',
+          start: dyndatetime('y,m,d+6,8'),
+          end: dyndatetime('y,m,d+6,20'),
           resource: 'las-vegas_3',
           title: 'Industry trade show',
           name: 'Aaron R. Martin',
@@ -654,8 +655,8 @@ export default {
         {
           id: 47,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,9,30)',
-          end: 'dyndatetime(y,m,d-7,17)',
+          start: dyndatetime('y,m,d-7,9,30'),
+          end: dyndatetime('y,m,d-7,17'),
           resource: 'miami_1',
           title: 'Supplier assessment',
           name: 'Laura S. Young',
@@ -665,8 +666,8 @@ export default {
         {
           id: 48,
           allDay: true,
-          start: 'dyndatetime(y,m,d-5,10)',
-          end: 'dyndatetime(y,m,d-5,21)',
+          start: dyndatetime('y,m,d-5,10'),
+          end: dyndatetime('y,m,d-5,21'),
           resource: 'miami_1',
           title: 'Product innovation summit',
           name: 'Jeffrey T. Allen',
@@ -676,8 +677,8 @@ export default {
         {
           id: 49,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,9,30)',
-          end: 'dyndatetime(y,m,d-2,17)',
+          start: dyndatetime('y,m,d-2,9,30'),
+          end: dyndatetime('y,m,d-2,17'),
           resource: 'miami_1',
           title: 'Operational audit',
           name: 'Diane U. Hill',
@@ -687,8 +688,8 @@ export default {
         {
           id: 50,
           allDay: true,
-          start: 'dyndatetime(y,m,d,11,30)',
-          end: 'dyndatetime(y,m,d,22)',
+          start: dyndatetime('y,m,d,11,30'),
+          end: dyndatetime('y,m,d,22'),
           resource: 'miami_1',
           title: 'CEO roundtable',
           name: 'Gregory V. Wright',
@@ -698,8 +699,8 @@ export default {
         {
           id: 51,
           allDay: true,
-          start: 'dyndatetime(y,m,d+1,9)',
-          end: 'dyndatetime(y,m,d+1,18)',
+          start: dyndatetime('y,m,d+1,9'),
+          end: dyndatetime('y,m,d+1,18'),
           resource: 'miami_1',
           title: 'Field research',
           name: 'Angela W. Martinez',
@@ -709,8 +710,8 @@ export default {
         {
           id: 52,
           allDay: true,
-          start: 'dyndatetime(y,m,d+2,8)',
-          end: 'dyndatetime(y,m,d+2,15)',
+          start: dyndatetime('y,m,d+2,8'),
+          end: dyndatetime('y,m,d+2,15'),
           resource: 'miami_1',
           title: 'Corporate retreat',
           name: 'Ryan X. Gonzalez',
@@ -720,8 +721,8 @@ export default {
         {
           id: 53,
           allDay: true,
-          start: 'dyndatetime(y,m,d+5,7)',
-          end: 'dyndatetime(y,m,d+5,15,30)',
+          start: dyndatetime('y,m,d+5,7'),
+          end: dyndatetime('y,m,d+5,15,30'),
           resource: 'miami_1',
           title: 'Executive workshop',
           name: 'Ruth Y. Adams',
@@ -731,8 +732,8 @@ export default {
         {
           id: 54,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,7,30)',
-          end: 'dyndatetime(y,m,d+6,18)',
+          start: dyndatetime('y,m,d+6,7,30'),
+          end: dyndatetime('y,m,d+6,18'),
           resource: 'miami_1',
           title: 'Regional meeting',
           name: 'Gary Z. Robinson',
@@ -742,8 +743,8 @@ export default {
         {
           id: 55,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,11)',
-          end: 'dyndatetime(y,m,d-7,22)',
+          start: dyndatetime('y,m,d-7,11'),
+          end: dyndatetime('y,m,d-7,22'),
           resource: 'miami_2',
           title: 'Employee orientation',
           name: 'Donna A. Harris',
@@ -753,8 +754,8 @@ export default {
         {
           id: 56,
           allDay: true,
-          start: 'dyndatetime(y,m,d-3,6)',
-          end: 'dyndatetime(y,m,d-3,16)',
+          start: dyndatetime('y,m,d-3,6'),
+          end: dyndatetime('y,m,d-3,16'),
           resource: 'miami_2',
           title: 'Contract negotiation',
           name: 'Keith B. Lewis',
@@ -764,8 +765,8 @@ export default {
         {
           id: 57,
           allDay: true,
-          start: 'dyndatetime(y,m,d-1,8)',
-          end: 'dyndatetime(y,m,d-1,19)',
+          start: dyndatetime('y,m,d-1,8'),
+          end: dyndatetime('y,m,d-1,19'),
           resource: 'miami_2',
           title: 'Team brainstorming',
           name: 'Rachel C. Wilson',
@@ -775,8 +776,8 @@ export default {
         {
           id: 58,
           allDay: true,
-          start: 'dyndatetime(y,m,d+1,9)',
-          end: 'dyndatetime(y,m,d+1,18)',
+          start: dyndatetime('y,m,d+1,9'),
+          end: dyndatetime('y,m,d+1,18'),
           resource: 'miami_2',
           title: 'Leadership training',
           name: 'Henry D. Evans',
@@ -786,8 +787,8 @@ export default {
         {
           id: 59,
           allDay: true,
-          start: 'dyndatetime(y,m,d+5,7,30)',
-          end: 'dyndatetime(y,m,d+5,18)',
+          start: dyndatetime('y,m,d+5,7,30'),
+          end: dyndatetime('y,m,d+5,18'),
           resource: 'miami_2',
           title: 'Business development meeting',
           name: 'Carol E. Garcia',
@@ -797,8 +798,8 @@ export default {
         {
           id: 60,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,6)',
-          end: 'dyndatetime(y,m,d+6,15)',
+          start: dyndatetime('y,m,d+6,6'),
+          end: dyndatetime('y,m,d+6,15'),
           resource: 'miami_2',
           title: 'Annual performance review',
           name: 'Scott F. Clark',
@@ -808,8 +809,8 @@ export default {
         {
           id: 61,
           allDay: true,
-          start: 'dyndatetime(y,m,d-7,11)',
-          end: 'dyndatetime(y,m,d-7,19)',
+          start: dyndatetime('y,m,d-7,11'),
+          end: dyndatetime('y,m,d-7,19'),
           resource: 'miami_3',
           title: 'Corporate luncheon',
           name: 'Judith G. Walker',
@@ -819,8 +820,8 @@ export default {
         {
           id: 62,
           allDay: true,
-          start: 'dyndatetime(y,m,d-4,8)',
-          end: 'dyndatetime(y,m,d-4,18)',
+          start: dyndatetime('y,m,d-4,8'),
+          end: dyndatetime('y,m,d-4,18'),
           resource: 'miami_3',
           title: 'Client follow-up',
           name: 'Douglas H. Hall',
@@ -830,8 +831,8 @@ export default {
         {
           id: 63,
           allDay: true,
-          start: 'dyndatetime(y,m,d-2,6,30)',
-          end: 'dyndatetime(y,m,d-2,17)',
+          start: dyndatetime('y,m,d-2,6,30'),
+          end: dyndatetime('y,m,d-2,17'),
           resource: 'miami_3',
           title: 'Service inspection',
           name: 'Janet I. Nelson',
@@ -841,8 +842,8 @@ export default {
         {
           id: 64,
           allDay: true,
-          start: 'dyndatetime(y,m,d,10)',
-          end: 'dyndatetime(y,m,d,18,30)',
+          start: dyndatetime('y,m,d,10'),
+          end: dyndatetime('y,m,d,18,30'),
           resource: 'miami_3',
           title: 'System upgrade',
           name: 'Walter J. Baker',
@@ -852,8 +853,8 @@ export default {
         {
           id: 65,
           allDay: true,
-          start: 'dyndatetime(y,m,d+2,8)',
-          end: 'dyndatetime(y,m,d+2,17)',
+          start: dyndatetime('y,m,d+2,8'),
+          end: dyndatetime('y,m,d+2,17'),
           resource: 'miami_3',
           title: 'Management meeting',
           name: 'Katherine K. Wright',
@@ -863,8 +864,8 @@ export default {
         {
           id: 66,
           allDay: true,
-          start: 'dyndatetime(y,m,d+6,9,30)',
-          end: 'dyndatetime(y,m,d+6,17)',
+          start: dyndatetime('y,m,d+6,9,30'),
+          end: dyndatetime('y,m,d+6,17'),
           resource: 'miami_3',
           title: 'Performance appraisal',
           name: 'Adam L. Scott',
@@ -883,7 +884,7 @@ export default {
           view: {
             timeline: {
               type: 'week',
-              eventList: true,
+              eventDisplay: 'fill',
               eventHeight: 'variable',
             },
           },
@@ -925,8 +926,8 @@ export default {
             myEvents.splice(index, 1);
             updateCalendarEvents(inst);
           },
-          min: 'dyndatetime(y,m,d-7)',
-          max: 'dyndatetime(y,m,d+6)',
+          min: dyndatetime('y,m,d-7'),
+          max: dyndatetime('y,m,d+6'),
           renderResource: function (res) {
             if (res.isParent) {
               return '<div>' + res.name + '</div><div class="mds-aggregates-address">' + res.address + '</div>';
@@ -941,7 +942,7 @@ export default {
               '</div>'
             );
           },
-          renderScheduleEventContent: function (event) {
+          renderTimelineEventContent: function (event) {
             if (event.currentResource.isParent) {
               return (
                 '<div class="mds-aggregates-summary-event mbsc-flex">' +

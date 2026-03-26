@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -33,13 +34,13 @@ export default {
             },
             {
               allDay: true,
-              start: 'dyndatetime(y,m,19)',
-              end: 'dyndatetime(y,m,20)',
+              start: dyndatetime('y,m,19'),
+              end: dyndatetime('y,m,20'),
             },
             {
               allDay: true,
-              start: 'dyndatetime(y,m,26)',
-              end: 'dyndatetime(y,m,27)',
+              start: dyndatetime('y,m,26'),
+              end: dyndatetime('y,m,27'),
             },
           ],
           onEventCreateFailed: function () {

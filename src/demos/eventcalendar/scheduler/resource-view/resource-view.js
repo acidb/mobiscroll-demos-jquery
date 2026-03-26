@@ -19,7 +19,7 @@ export default {
         .eventcalendar({
           // drag,
           view: {
-            schedule: {
+            scheduler: {
               type: 'week',
               allDay: false,
               startDay: 1,

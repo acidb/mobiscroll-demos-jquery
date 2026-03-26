@@ -1,5 +1,6 @@
 import * as mobiscroll from '@mobiscroll/jquery';
 import $ from 'jquery';
+import { dyndatetime } from '../../../../dyndatetime';
 
 export default {
   // eslint-disable-next-line es5/no-shorthand-properties
@@ -11,8 +12,8 @@ export default {
 
     $(function () {
       var formatDate = mobiscroll.formatDate;
-      var startDate = 'dyndatetime(y,m,d)';
-      var endDate = 'dyndatetime(y,m,d + 6)';
+      var startDate = dyndatetime('y,m,d');
+      var endDate = dyndatetime('y,m,d + 6');
       var $dateInput = $('#date-filtering');
       var $startInput = $('#date-filtering-start');
       var $endInput = $('#date-filtering-end');
@@ -43,10 +44,10 @@ export default {
 
               switch (selected) {
                 case 'today':
-                  calendar.setVal(['dyndatetime(y,m,d)', 'dyndatetime(y,m,d)']);
+                  calendar.setVal([dyndatetime('y,m,d'), dyndatetime('y,m,d')]);
                   break;
                 case 'yesterday':
-                  calendar.setVal(['dyndatetime(y,m,d-1)', 'dyndatetime(y,m,d-1)']);
+                  calendar.setVal([dyndatetime('y,m,d-1'), dyndatetime('y,m,d-1')]);
                   break;
                 case 'last-week':
                   calendar.setVal([
@@ -55,13 +56,13 @@ export default {
                   ]);
                   break;
                 case 'last-month':
-                  calendar.setVal(['dyndatetime(y,m-1,1)', 'dyndatetime(y,m,0)']);
+                  calendar.setVal([dyndatetime('y,m-1,1'), dyndatetime('y,m,0')]);
                   break;
                 case 'last-7-days':
-                  calendar.setVal(['dyndatetime(y,m,d-6)', 'dyndatetime(y,m,d)']);
+                  calendar.setVal([dyndatetime('y,m,d-6'), dyndatetime('y,m,d')]);
                   break;
                 case 'last-30-days':
-                  calendar.setVal(['dyndatetime(y,m,d-29)', 'dyndatetime(y,m,d)']);
+                  calendar.setVal([dyndatetime('y,m,d-29'), dyndatetime('y,m,d')]);
                   break;
               }
             }
