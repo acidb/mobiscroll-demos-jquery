@@ -10,7 +10,7 @@ export default {
     });
 
     $(function () {
-      $('#demo-image-text')
+      var instance = $('#demo-image-text')
         .mobiscroll()
         .select({
           display: 'anchored',
@@ -69,7 +69,9 @@ export default {
               '</div>'
             );
           },
-        });
+        })
+        .mobiscroll('getInst');
+      instance.setVal(['42976', '45290'], true);
     });
   },
   // eslint-disable-next-line es5/no-template-literals
@@ -79,7 +81,7 @@ export default {
     <!--/hidden-->
     <label>
         Users
-        <input mbsc-input id="demo-image-text" value="Barry Lyon, Hortense Tinker" data-dropdown="true" data-tags="true" data-input-style="box" data-label-style="stacked" placeholder="Please select..." />
+        <input mbsc-input id="demo-image-text" data-dropdown="true" data-tags="true" data-input-style="box" data-label-style="stacked" placeholder="Please select..." />
     </label>
     <!--hidden-->
 </div>

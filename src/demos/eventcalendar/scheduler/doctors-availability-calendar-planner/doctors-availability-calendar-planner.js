@@ -857,8 +857,12 @@ export default {
   width: 14px;
 }
 
-.mds-healthcare-res-col-bar .mbsc-schedule-event {
+.mds-healthcare-res-col-bar .mbsc-schedule-event.mbsc-ltr {
   margin-left: 5px;
+}
+
+.mds-healthcare-res-col-bar .mbsc-schedule-event.mbsc-rtl {
+  margin-right: 5px;
 }
 
 .mds-healthcare-res-col-bar .mbsc-schedule-event-range {
@@ -868,6 +872,22 @@ export default {
 .mds-healthcare-res-col-bar .mbsc-schedule-event-bar {
   width: 4px;
   border-radius: 3px;
+}
+
+.mds-healthcare .mbsc-schedule-event-bar.mbsc-ltr {
+  left: 0;
+}
+
+.mds-healthcare .mbsc-schedule-event-bar.mbsc-rtl {
+  right: 0;
+}
+
+.mds-healthcare .mbsc-schedule-event-end .mbsc-schedule-event-bar {
+  bottom: 0;
+}
+
+.mds-healthcare .mbsc-schedule-event-start .mbsc-schedule-event-bar {
+  top: 0;
 }
 
 /* Resource header */

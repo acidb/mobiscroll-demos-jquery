@@ -7,7 +7,7 @@ export default {
   init() {
     mobiscroll.setOptions({
       // locale,
-      // theme,
+      // theme
     });
 
     $(function () {
@@ -2341,18 +2341,21 @@ export default {
 
       var groupedEvents = [];
       var groupBy = 'assignee'; // 'assignee' or 'type'
-      var groupByClientQuarter = false;
+      var groupByClient = false;
+      var zoomLevel = 'month'; // 'quarter', 'month', 'week'
       var rawEvents = defaultEvents.slice();
+      // Edit popup state
+      var editingEventId = null;
 
       function groupEventsByClientQuarter(events) {
         var groups = {};
         var result = [];
 
-        // Save old collapsed states including year and period
+        // Save old collapsed states including year and quarter
         var oldCollapsedStates = {};
         groupedEvents.forEach(function (ge) {
-          // Extract year and period from the group
-          var stateKey = ge.resource + '-' + ge.clientGroup + '-' + ge.year + '-' + ge.period;
+          // Extract year and quarter from the group
+          var stateKey = ge.resource + '-' + ge.clientGroup + '-' + ge.year + '-' + ge.quarter;
           oldCollapsedStates[stateKey] = ge.collapsed;
         });
 
@@ -2362,16 +2365,15 @@ export default {
           var eventStart = new Date(event.start);
           var month = eventStart.getMonth();
           var year = eventStart.getFullYear();
-          var period = Math.floor(month / 3);
-
-          var groupKey = resourceId + '-' + event.clientGroup + '-' + year + '-' + period;
+          var quarter = Math.floor(month / 3);
+          var groupKey = resourceId + '-' + event.clientGroup + '-' + year + '-' + quarter;
 
           if (!groups[groupKey]) {
             groups[groupKey] = {
               resource: resourceId,
               clientGroup: event.clientGroup,
               year: year,
-              period: period,
+              quarter: quarter,
               events: [],
             };
           }
@@ -2382,8 +2384,8 @@ export default {
         // Create grouped events
         Object.keys(groups).forEach(function (groupKey) {
           var groupData = groups[groupKey];
-          var periodEvents = groupData.events.sort(function (a, b) {
-            return a.start < b.start ? -1 : a.start > b.start ? 1 : 0;
+          var quarterEvents = groupData.events.sort(function (a, b) {
+            return new Date(a.start).getTime() - new Date(b.start).getTime();
           });
 
           // Get color based on groupBy mode
@@ -2400,21 +2402,21 @@ export default {
             color = typeObj.color;
           }
 
-          var eventIds = periodEvents
+          var eventIds = quarterEvents
             .map(function (e) {
               return e.id;
             })
             .join('-');
 
-          var earliestStart = periodEvents[0].start;
-          var latestEnd = periodEvents.reduce(function (latest, event) {
-            return event.end > latest ? event.end : latest;
-          }, periodEvents[0].end);
+          var earliestStart = quarterEvents[0].start;
+          var latestEnd = quarterEvents.reduce(function (latest, event) {
+            return new Date(event.end).getTime() > new Date(latest).getTime() ? event.end : latest;
+          }, quarterEvents[0].end);
 
           var newId = 'group-' + groupKey + '-' + eventIds;
 
-          // Use full key including year and period
-          var stateKey = groupData.resource + '-' + groupData.clientGroup + '-' + groupData.year + '-' + groupData.period;
+          // Use full key including year and quarter
+          var stateKey = groupData.resource + '-' + groupData.clientGroup + '-' + groupData.year + '-' + groupData.quarter;
           var collapsedState = stateKey in oldCollapsedStates ? oldCollapsedStates[stateKey] : true;
 
           result.push({
@@ -2423,12 +2425,12 @@ export default {
             resource: groupData.resource,
             clientGroup: groupData.clientGroup,
             year: groupData.year,
-            period: groupData.period,
+            quarter: groupData.quarter,
             start: earliestStart,
             end: latestEnd,
             color: color,
-            count: periodEvents.length,
-            originalEvents: periodEvents,
+            count: quarterEvents.length,
+            originalEvents: quarterEvents,
             collapsed: collapsedState,
           });
         });
@@ -2456,7 +2458,7 @@ export default {
         var currentResources = groupBy === 'assignee' ? assigneeResources : typeResources;
         var currentEvents;
 
-        if (groupByClientQuarter) {
+        if (groupByClient) {
           groupedEvents = groupEventsByClientQuarter(rawEvents);
           currentEvents = groupedEvents;
         } else {
@@ -2464,10 +2466,26 @@ export default {
           currentEvents = prepareEventsForDisplay(rawEvents, groupBy === 'assignee');
         }
 
+        var timelineConfig;
+
+        switch (zoomLevel) {
+          case 'quarter':
+            timelineConfig = { type: 'year', resolutionHorizontal: 'quarter', eventHeight: 'variable' };
+            break;
+          case 'month':
+            timelineConfig = { type: 'year', resolutionHorizontal: 'month', eventHeight: 'variable' };
+            break;
+          case 'week':
+            timelineConfig = { type: 'year', resolutionHorizontal: 'week', eventHeight: 'variable' };
+            break;
+        }
+
         calendar.setOptions({
           data: currentEvents,
           resources: currentResources,
-          renderScheduleEvent: groupByClientQuarter ? renderGroupedEvent : renderSimpleEvent,
+          renderScheduleEvent: groupByClient ? renderGroupedEvent : renderSimpleEvent,
+          view: { timeline: timelineConfig },
+          dragBetweenResources: !groupByClient,
         });
       }
 
@@ -2501,8 +2519,17 @@ export default {
         // Generate expanded content HTML if expanded
         var expandedHTML = '';
         if (isExpanded) {
+          var groupStart = new Date(origEvent.start).getTime();
+          var groupEnd = new Date(origEvent.end).getTime();
+          var groupDuration = groupEnd - groupStart;
+
           expandedHTML = origEvent.originalEvents
             .map(function (ev) {
+              var evStart = new Date(ev.start).getTime();
+              var evEnd = new Date(ev.end).getTime();
+              var leftPercent = groupDuration > 0 ? ((evStart - groupStart) / groupDuration) * 100 : 0;
+              var widthPercent = groupDuration > 0 ? ((evEnd - evStart) / groupDuration) * 100 : 100;
+
               var detailText = '';
               var typeDotColor = '';
               var avatarUrl = '';
@@ -2526,25 +2553,38 @@ export default {
               }
 
               return (
-                '<div class="mds-event-grouping-original-event">' +
-                '<div class="mbsc-flex mds-event-grouping-event-content">' +
-                '<div class="mds-event-grouping-event-title">' +
+                '<div class="mds-event-group-original-event" title="' +
+                ev.title +
+                ', ' +
+                mobiscroll.formatDate('MM/DD/YYYY', new Date(ev.start)) +
+                ' - ' +
+                mobiscroll.formatDate('MM/DD/YYYY', new Date(ev.end)) +
+                '" style="margin-left:' +
+                leftPercent +
+                '%; width:' +
+                widthPercent +
+                '%;">' +
+                '<div class="mbsc-flex mds-event-group-event-content">' +
+                '<div class="mds-event-group-event-title mds-event-group-text-truncate">' +
                 ev.title +
                 '</div>' +
-                '<div class="mbsc-flex mds-event-grouping-event-right">' +
-                '<div class="mds-event-grouping-event-date">' +
+                '<div class="mbsc-flex mds-event-group-event-right">' +
+                '<div class="mds-event-group-event-date mds-event-group-text-truncate">' +
                 mobiscroll.formatDate('DD MMM', new Date(ev.start)) +
                 ' - ' +
                 mobiscroll.formatDate('DD MMM', new Date(ev.end)) +
                 '</div>' +
-                '<div class="mbsc-flex mds-event-grouping-event-detail">' +
-                (avatarUrl ? '<img src="' + avatarUrl + '" alt="' + detailText + '" class="mds-event-grouping-event-avatar" />' : '') +
-                (typeDotColor ? '<span class="mds-event-grouping-type-dot" style="background-color: ' + typeDotColor + '"></span>' : '') +
-                '<div class="mds-event-grouping-event-info">' +
+                '<div class="mbsc-flex mds-event-group-event-detail">' +
+                (avatarUrl ? '<img src="' + avatarUrl + '" alt="' + detailText + '" class="mds-event-group-event-avatar" />' : '') +
+                (typeDotColor ? '<span class="mds-event-group-type-dot" style="background-color: ' + typeDotColor + '"></span>' : '') +
+                '<div class="mds-event-group-event-info mds-event-group-text-truncate">' +
                 detailText +
                 '</div>' +
                 '</div>' +
                 '</div>' +
+                '<div class="mds-event-group-edit-btn mbsc-flex mbsc-icon mbsc-font-icon mbsc-icon-pencil" data-event-id="' +
+                ev.id +
+                '"></div>' +
                 '</div>' +
                 '</div>'
               );
@@ -2553,23 +2593,23 @@ export default {
         }
 
         return (
-          '<div class="mbsc-flex mds-event-grouping-task mds-event-grouping-task-client' +
+          '<div class="mbsc-flex mds-event-group-task mds-event-group-task-client' +
           (isExpanded ? ' expanded' : '') +
           '" style="border-left-color: ' +
           origEvent.color +
           '">' +
-          '<div class="mbsc-flex mds-event-grouping-content">' +
-          '<div class="mds-event-grouping-title-text">' +
+          '<div class="mbsc-flex mds-event-group-content">' +
+          '<div class="mds-event-group-title-text mds-event-group-text-truncate">' +
           origEvent.clientGroup +
           '</div>' +
-          '<div class="mbsc-flex mds-event-grouping-right">' +
-          '<div class="mbsc-flex mds-event-grouping-meta">' +
-          '<div class="mds-event-grouping-date-range">' +
+          '<div class="mbsc-flex mds-event-group-right">' +
+          '<div class="mbsc-flex mds-event-group-meta">' +
+          '<div class="mds-event-group-date-range">' +
           mobiscroll.formatDate('DD MMM', new Date(origEvent.start)) +
           ' - ' +
           mobiscroll.formatDate('DD MMM', new Date(origEvent.end)) +
           '</div>' +
-          '<div class="mds-event-grouping-count">' +
+          '<div class="mds-event-group-count">' +
           origEvent.count +
           ' task' +
           (origEvent.count > 1 ? 's' : '') +
@@ -2580,10 +2620,10 @@ export default {
           (itemCount > 1 ? 's' : '') +
           '</div>' +
           '</div>' +
-          '<div class="mbsc-flex mds-event-grouping-icon mbsc-icon mbsc-font-icon mbsc-icon-material-keyboard-arrow-down"></div>' +
+          '<div class="mbsc-flex mds-event-group-icon mbsc-icon mbsc-font-icon mbsc-icon-material-keyboard-arrow-down"></div>' +
           '</div>' +
           '</div>' +
-          '<div class="mds-event-grouping-events"><div class="mds-event-grouping-events-inner">' +
+          '<div class="mds-event-group-events"><div class="mds-event-group-events-inner">' +
           expandedHTML +
           '</div></div>' +
           '</div>'
@@ -2617,11 +2657,11 @@ export default {
         }
 
         return (
-          '<div class="mbsc-flex mds-event-simple" style="background-color: ' +
-          origEvent.color +
-          '">' +
+          '<div class="mbsc-flex mds-event-simple">' +
           '<div class="mds-event-simple-title">' +
+          '<div class="mds-event-simple-title-inner mds-event-group-text-truncate">' +
           origEvent.title +
+          '</div>' +
           '</div>' +
           '<div class="mbsc-flex mds-event-simple-right">' +
           '<div class="mds-event-simple-date">' +
@@ -2649,10 +2689,10 @@ export default {
         .mobiscroll()
         .eventcalendar({
           dragToMove: true,
-          dragToResize: false,
+          dragToResize: true,
           dragToCreate: false,
           clickToCreate: false,
-          dragBetweenResources: false,
+          dragBetweenResources: true,
           view: {
             timeline: {
               type: 'year',
@@ -2670,14 +2710,14 @@ export default {
                 '<div class="mbsc-flex">' +
                 '<img alt="' +
                 resource.name +
-                '" class="mds-event-grouping-avatar" src="' +
+                '" class="mds-event-group-avatar" src="' +
                 resource.img +
                 '"/>' +
-                '<div class="mds-event-grouping-cont">' +
-                '<div class="mds-event-grouping-name">' +
+                '<div class="mds-event-group-cont">' +
+                '<div class="mds-event-group-name">' +
                 resource.name +
                 '</div>' +
-                '<div class="mds-event-grouping-title">' +
+                '<div class="mds-event-group-title">' +
                 resource.title +
                 '</div>' +
                 '</div>' +
@@ -2686,11 +2726,11 @@ export default {
             } else {
               // Type resource
               return (
-                '<div class="mbsc-flex mds-event-grouping-type-resource">' +
-                '<div class="mds-event-grouping-type-badge" style="background-color: ' +
+                '<div class="mbsc-flex mds-event-group-type-resource">' +
+                '<div class="mds-event-group-type-badge" style="background-color: ' +
                 resource.color +
                 '"></div>' +
-                '<div class="mds-event-grouping-type-name">' +
+                '<div class="mds-event-group-type-name">' +
                 resource.name +
                 '</div>' +
                 '</div>'
@@ -2700,18 +2740,21 @@ export default {
           renderHeader: function () {
             return (
               '<div mbsc-calendar-nav></div>' +
-              '<div class="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-end mds-event-grouping-header-controls">' +
+              '<div class="mbsc-flex mbsc-flex-1-0 mbsc-justify-content-end mds-event-group-header-controls">' +
               '<label>' +
-              '<input mbsc-checkbox type="checkbox" id="group-by-client-quarter" data-theme="material" data-input-style="box" data-label="Group by Client/Quarter" />' +
+              '<input mbsc-checkbox type="checkbox" id="group-by-client-quarter" data-theme="material" data-label="Group by Client/Quarter" />' +
               '</label>' +
               '<label>' +
-              '<input mbsc-input id="event-grouping-input" class="mds-event-grouping-select" data-dropdown="true" data-input-style="box" />' +
+              '<input mbsc-input id="event-grouping-input" class="mds-event-group-select" data-dropdown="true" data-input-style="box" />' +
               '</label>' +
               '<select id="group-by-select">' +
               '<option value="assignee" selected>View by Assignee</option>' +
               '<option value="type">View by Type</option>' +
               '</select>' +
               '</div>' +
+              '<label>Quarterly<input mbsc-segmented type="radio" name="zoom-level" value="quarter"/></label>' +
+              '<label>Monthly<input mbsc-segmented type="radio" name="zoom-level" value="month" checked/></label>' +
+              '<label>Weekly<input mbsc-segmented type="radio" name="zoom-level" value="week"/></label>' +
               '<div mbsc-calendar-prev></div>' +
               '<div mbsc-calendar-today></div>' +
               '<div mbsc-calendar-next></div>'
@@ -2720,11 +2763,17 @@ export default {
           onEventUpdate: function (args) {
             var updatedEvent = args.event;
             var oldEvent = args.oldEvent;
+            var newStart = new Date(updatedEvent.start).getTime();
+            var newEnd = new Date(updatedEvent.end).getTime();
 
-            if (groupByClientQuarter) {
-              // Grouped view: shift all original events by the same delta
-              var startDelta = new Date(updatedEvent.start).getTime() - new Date(oldEvent.start).getTime();
-              if (startDelta === 0) return;
+            if (groupByClient) {
+              var oldStart = new Date(oldEvent.start).getTime();
+              var oldEnd = new Date(oldEvent.end).getTime();
+              var startDelta = newStart - oldStart;
+              var endDelta = newEnd - oldEnd;
+
+              // Nothing changed
+              if (startDelta === 0 && endDelta === 0) return;
 
               var movedGroupedEvent = groupedEvents.find(function (ge) {
                 return ge.id === oldEvent.id;
@@ -2735,17 +2784,61 @@ export default {
                 var resourceId = movedGroupedEvent.resource;
                 var wasCollapsed = movedGroupedEvent.collapsed;
 
-                var eventsToUpdate = movedGroupedEvent.originalEvents.map(function (originalEvent) {
-                  return {
-                    id: originalEvent.id,
-                    title: originalEvent.title,
-                    resource: originalEvent.resource,
-                    type: originalEvent.type,
-                    clientGroup: originalEvent.clientGroup,
-                    start: new Date(new Date(originalEvent.start).getTime() + startDelta),
-                    end: new Date(new Date(originalEvent.end).getTime() + startDelta),
-                  };
-                });
+                var isMove = startDelta === endDelta;
+
+                var eventsToUpdate;
+
+                if (isMove) {
+                  // MOVE: shift all original events by the same delta
+                  eventsToUpdate = movedGroupedEvent.originalEvents.map(function (originalEvent) {
+                    return {
+                      id: originalEvent.id,
+                      title: originalEvent.title,
+                      resource: originalEvent.resource,
+                      type: originalEvent.type,
+                      clientGroup: originalEvent.clientGroup,
+                      start: new Date(new Date(originalEvent.start).getTime() + startDelta),
+                      end: new Date(new Date(originalEvent.end).getTime() + startDelta),
+                    };
+                  });
+                } else {
+                  // RESIZE: proportionally remap all child events within the new group span
+                  var oldGroupStart = oldStart;
+                  var oldGroupEnd = oldEnd;
+                  var oldGroupDuration = oldGroupEnd - oldGroupStart;
+                  var newGroupStart = newStart;
+                  var newGroupEnd = newEnd;
+                  var newGroupDuration = newGroupEnd - newGroupStart;
+
+                  eventsToUpdate = movedGroupedEvent.originalEvents.map(function (originalEvent) {
+                    var evStart = new Date(originalEvent.start).getTime();
+                    var evEnd = new Date(originalEvent.end).getTime();
+
+                    // Calculate relative positions (0 to 1) within the old group span
+                    var relativeStart = oldGroupDuration > 0 ? (evStart - oldGroupStart) / oldGroupDuration : 0;
+                    var relativeEnd = oldGroupDuration > 0 ? (evEnd - oldGroupStart) / oldGroupDuration : 1;
+
+                    // Map to the new group span
+                    var mappedStart = newGroupStart + relativeStart * newGroupDuration;
+                    var mappedEnd = newGroupStart + relativeEnd * newGroupDuration;
+
+                    // Ensure minimum duration for each child event
+                    var childDurationDays = (mappedEnd - mappedStart) / (1000 * 60 * 60 * 24);
+                    if (childDurationDays < 1) {
+                      mappedEnd = mappedStart + 1000 * 60 * 60 * 24; // At least 1 day
+                    }
+
+                    return {
+                      id: originalEvent.id,
+                      title: originalEvent.title,
+                      resource: originalEvent.resource,
+                      type: originalEvent.type,
+                      clientGroup: originalEvent.clientGroup,
+                      start: new Date(mappedStart),
+                      end: new Date(mappedEnd),
+                    };
+                  });
+                }
 
                 // Sync into rawEvents
                 var updatedIds = {};
@@ -2761,10 +2854,12 @@ export default {
 
                 // Restore collapsed state
                 var newYear = new Date(eventsToUpdate[0].start).getFullYear();
-                var newPeriod = Math.floor(new Date(eventsToUpdate[0].start).getMonth() / 3);
+                var newQuarter = Math.floor(new Date(eventsToUpdate[0].start).getMonth() / 3) + 1;
 
                 var newGroupedEvent = groupedEvents.find(function (ge) {
-                  return ge.resource === resourceId && ge.clientGroup === clientGroupName && ge.year === newYear && ge.period === newPeriod;
+                  return (
+                    ge.resource === resourceId && ge.clientGroup === clientGroupName && ge.year === newYear && ge.quarter === newQuarter
+                  );
                 });
 
                 if (newGroupedEvent) {
@@ -2772,22 +2867,147 @@ export default {
                   calendar.setEvents(groupedEvents);
                 }
 
+                var actionLabel = isMove ? 'moved' : 'resized';
                 mobiscroll.toast({
                   //<hidden>
                   // theme,//</hidden>
                   // context,
-                  message: eventsToUpdate.length + ' event(s) for ' + clientGroupName + ' have been moved.',
+                  message: eventsToUpdate.length + ' event(s) for ' + clientGroupName + ' have been ' + actionLabel + '.',
                 });
               }
             } else {
-              // Sync into rawEvents
+              var oldResource = args.oldEvent.resource;
+              var newResource = updatedEvent.resource;
+              var resourceChanged = oldResource !== newResource;
+
+              // Sync into rawEvents (dates + resource if changed)
               rawEvents = rawEvents.map(function (e) {
-                return e.id === updatedEvent.id ? Object.assign({}, e, { start: updatedEvent.start, end: updatedEvent.end }) : e;
+                if (e.id === updatedEvent.id) {
+                  var update = { start: updatedEvent.start, end: updatedEvent.end };
+                  if (resourceChanged) {
+                    if (groupBy === 'assignee') {
+                      update.resource = newResource;
+                    } else {
+                      update.type = newResource;
+                    }
+                  }
+                  return Object.assign({}, e, update);
+                }
+                return e;
               });
+
+              if (resourceChanged) {
+                var fromName;
+                var toName;
+                if (groupBy === 'assignee') {
+                  var fromRes = assigneeResources.find(function (r) {
+                    return r.id === oldResource;
+                  });
+                  var toRes = assigneeResources.find(function (r) {
+                    return r.id === newResource;
+                  });
+                  fromName = fromRes ? fromRes.name : oldResource;
+                  toName = toRes ? toRes.name : newResource;
+                } else {
+                  fromName = oldResource;
+                  toName = newResource;
+                }
+                mobiscroll.toast({
+                  message: '"' + updatedEvent.title + '" moved from ' + fromName + ' to ' + toName + '.',
+                });
+              }
             }
           },
         })
         .mobiscroll('getInst');
+
+      var editDatePicker = $('#event-grouping-dates')
+        .mobiscroll()
+        .datepicker({
+          // context,
+          controls: ['calendar'],
+          select: 'range',
+          display: 'center',
+          touchUi: false,
+          showRangeLabels: false,
+          onChange: function (args) {
+            var dates = args.value;
+            var startVal = dates[0];
+            var endVal = dates[1];
+
+            if (editingEventId !== null && startVal && endVal) {
+              var oldEvent = rawEvents.find(function (e) {
+                return e.id === editingEventId;
+              });
+
+              if (!oldEvent) {
+                return;
+              }
+
+              var eventTitle = oldEvent.title;
+              var oldQuarter = Math.floor(new Date(oldEvent.start).getMonth() / 3);
+              var newQuarter = Math.floor(new Date(startVal).getMonth() / 3);
+              var oldYear = new Date(oldEvent.start).getFullYear();
+              var newYear = new Date(startVal).getFullYear();
+              var quarterChanged = groupByClient && (oldQuarter !== newQuarter || oldYear !== newYear);
+
+              var applyUpdate = function () {
+                rawEvents = rawEvents.map(function (e) {
+                  if (e.id === editingEventId) {
+                    return Object.assign({}, e, { start: startVal, end: endVal });
+                  }
+                  return e;
+                });
+                updateView();
+                return true;
+              };
+
+              if (quarterChanged) {
+                var quarterNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+                var fromLabel = quarterNames[oldQuarter] + ' ' + oldYear;
+                var toLabel = quarterNames[newQuarter] + ' ' + newYear;
+
+                mobiscroll.confirm({
+                  title: 'Move to different group',
+                  message: '"' + eventTitle + '" will move from ' + fromLabel + ' to ' + toLabel + '. Do you want to continue?',
+                  okText: 'Move',
+                  cancelText: 'Cancel',
+                  callback: function (result) {
+                    if (result) {
+                      applyUpdate();
+                      mobiscroll.toast({
+                        message: '"' + eventTitle + '" moved to ' + toLabel + '.',
+                      });
+                    }
+                  },
+                });
+              } else {
+                if (applyUpdate()) {
+                  mobiscroll.toast({
+                    message: '"' + eventTitle + '" dates updated.',
+                  });
+                }
+              }
+            }
+          },
+        })
+        .mobiscroll('getInst');
+
+      // Edit button click handler (on expanded subtasks)
+      $(document).on('click', '.mds-event-group-edit-btn', function (event) {
+        event.stopPropagation();
+
+        var eventId = Number($(this).attr('data-event-id'));
+        var rawEvent = rawEvents.find(function (e) {
+          return e.id === eventId;
+        });
+        if (rawEvent) {
+          editingEventId = eventId;
+          editDatePicker.setOptions({ headerText: rawEvent.title });
+          editDatePicker.setVal([new Date(rawEvent.start), new Date(rawEvent.end)]);
+          editDatePicker.open();
+        }
+      });
 
       $('#group-by-select')
         .mobiscroll()
@@ -2803,15 +3023,21 @@ export default {
 
       // Checkbox for client/quarter grouping
       $('#group-by-client-quarter').on('change', function () {
-        groupByClientQuarter = this.checked;
+        groupByClient = this.checked;
+        updateView();
+      });
+
+      // Zoom level handler
+      $(document).on('change', 'input[name="zoom-level"]', function () {
+        zoomLevel = $(this).val();
         updateView();
       });
 
       // Expand/collapse icon click handler
-      $(document).on('click', '.mds-event-grouping-icon', function (event) {
+      $(document).on('click', '.mds-event-group-icon', function (event) {
         event.stopPropagation();
 
-        var $task = $(this).closest('.mds-event-grouping-task');
+        var $task = $(this).closest('.mds-event-group-task');
         var eventId = $(this).closest('.mbsc-schedule-event').attr('data-id');
         var groupedEvent = groupedEvents.find(function (e) {
           return e.id === eventId;
@@ -2836,116 +3062,127 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div id="demo-event-grouping" class="mds-event-grouping-calendar"></div>
+<div class="mds-event-group-calendar">
+  <div id="demo-event-grouping"></div>
+  <div id="event-grouping-dates"></div>
+</div>
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
 /* Calendar base styles */
-.mds-event-grouping-calendar .mbsc-timeline-row {
+.mds-event-group-calendar {
+  height: 100%;
+}
+.mds-event-group-calendar .mbsc-timeline-row {
   height: 140px;
 }
-.mds-event-grouping-calendar .mbsc-timeline-resource-col {
+.mds-event-group-calendar .mbsc-timeline-resource-col {
   width: 240px;
 }
-.mds-event-grouping-calendar .mbsc-ios.mbsc-textfield-wrapper-box {
+.mds-event-group-calendar .mbsc-ios.mbsc-textfield-wrapper-box {
   margin: 10px 20px;
 }
-.mds-event-grouping-calendar .mbsc-timeline-resource-title {
+.mds-event-group-calendar .mbsc-timeline-resource-title {
   text-transform: capitalize;
 }
 /* Resource rendering - Employees */
-.mds-event-grouping-avatar {
+.mds-event-group-avatar {
   width: 40px;
   height: 40px;
 }
-.mds-event-grouping-cont {
+.mds-event-group-cont {
   padding: 0 7px;
 }
-.mds-event-grouping-name {
+.mds-event-group-name {
   font-size: 14px;
   line-height: 24px;
 }
-.mds-event-grouping-title {
+.mds-event-group-title {
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
 }
 /* Resource rendering - Types */
-.mds-event-grouping-type-resource {
+.mds-event-group-type-resource {
   align-items: center;
   padding: 8px 0;
 }
-.mds-event-grouping-type-badge {
+.mds-event-group-type-badge {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   margin: 0 10px;
 }
-.mds-event-grouping-type-name {
+.mds-event-group-type-name {
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
 }
+/* Enforce minimum event width so text is always visible */
+.mds-event-group-calendar .mbsc-schedule-event {
+  min-width: 72px;
+}
+.mds-event-group-calendar .mbsc-schedule-event:has(.mds-event-group-task-client) {
+  min-width: 120px;
+}
 /* Grouped event - collapsed state */
-.mds-event-grouping-task-client {
-  background-color: #f8f9fa;
+.mds-event-group-task-client {
+  background-color: #dddddd;
   border-left: 4px solid;
   border-radius: 0 8px 8px 0;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.12),
     0 1px 2px rgba(0, 0, 0, 0.08);
   flex-direction: column;
-  overflow: hidden;
+  container-type: inline-size;
+  min-width: 120px;
 }
 /* Grouped event header content */
-.mds-event-grouping-content {
+.mds-event-group-content {
   justify-content: space-between;
   align-items: center;
   padding: 10px 14px;
+  height: 42px;
+  box-sizing: border-box;
+  gap: 8px;
 }
 /* Client group title */
-.mds-event-grouping-title-text {
+.mds-event-group-title-text {
   font-size: 14px;
   font-weight: 600;
   color: #1e293b;
   line-height: 20px;
-  flex: 1;
   min-width: 0;
-  margin-right: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  position: sticky;
+  left: 250px;
 }
 /* Right side container (meta + icon) */
-.mds-event-grouping-right {
+.mds-event-group-right {
   align-items: center;
-  width: 130px;
+  z-index: 1;
+  background-color: #dddddd;
 }
 /* Meta information (dates + counts) */
-.mds-event-grouping-meta {
+.mds-event-group-meta {
   flex-direction: column;
   align-items: flex-end;
   flex: 1;
-  margin-right: 12px;
+  margin: 0 12px;
 }
-.mds-event-grouping-date-range {
-  color: #797979;
+.mds-event-group-date-range {
+  color: #575757;
   font-size: 11px;
-  line-height: 14px;
-  white-space: nowrap;
   margin-bottom: 2px;
 }
-.mds-event-grouping-count {
+.mds-event-group-count {
   font-size: 11px;
-  line-height: 14px;
   white-space: nowrap;
 }
 /* Expand/collapse icon */
-.mds-event-grouping-icon {
+.mds-event-group-icon {
   font-size: 20px;
   cursor: pointer;
-  user-select: none;
-  transition: transform 0.2s ease; /* Reduced from 0.3s to 0.2s */
+  transition: transform 0.2s ease;
   width: 24px;
   height: 24px;
   align-items: center;
@@ -2953,96 +3190,119 @@ export default {
   transform: rotate(0deg);
 }
 /* Icon rotation when expanded */
-.mds-event-grouping-task.expanded .mds-event-grouping-icon {
+.mds-event-group-task.expanded .mds-event-group-icon {
   transform: rotate(180deg);
 }
 /* Grid wrapper for smooth animation */
-.mds-event-grouping-events {
+.mds-event-group-events {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.2s ease; /* Reduced from 0.25s to 0.2s */
+  transition: grid-template-rows 0.2s ease;
 }
-.mds-event-grouping-events-inner {
+.mds-event-group-events-inner {
   overflow: hidden;
-  padding: 0 14px;
-  transition: padding 0.2s ease; /* Reduced from 0.25s to 0.2s */
+  padding: 0 14px 4px;
+  transition: padding 0.2s ease;
 }
-.mds-event-grouping-task.expanded .mds-event-grouping-events {
+.mds-event-group-task.expanded .mds-event-group-events {
   grid-template-rows: 1fr;
 }
-.mds-event-grouping-task.expanded .mds-event-grouping-events-inner {
-  padding: 0 14px 10px 14px;
-}
 /* Individual event in expanded list */
-.mds-event-grouping-original-event {
-  background: #fff;
+.mds-event-group-original-event {
+  background: #f1f1f1;
   border-radius: 6px;
   margin-bottom: 6px;
-  padding: 8px 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  padding: 6px 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+  box-sizing: border-box;
+  min-height: 38px;
+  min-width: 100px;
+  overflow: hidden;
+  container-type: inline-size;
 }
-.mds-event-grouping-original-event:last-child {
-  margin-bottom: 0;
+@container (max-width: 180px) {
+  .mds-event-group-meta { display: none; }
+}
+@container (max-width: 130px) {
+  .mds-event-group-event-right { display: none; }
 }
 /* Event content layout */
-.mds-event-grouping-event-content {
+.mds-event-group-event-content {
   justify-content: space-between;
   align-items: center;
+  line-height: 14px;
 }
 /* Event title */
-.mds-event-grouping-event-title {
+.mds-event-group-event-title {
   font-weight: 600;
   color: #1e293b;
   font-size: 13px;
   line-height: 18px;
   flex: 1;
-  min-width: 0;
-  margin-right: 12px;
+  min-width: 30px;
+  margin-right: 8px;
+}
+.mds-event-group-text-truncate {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 /* Right side (date + detail) */
-.mds-event-grouping-event-right {
+.mds-event-group-event-right {
   flex-direction: column;
   align-items: flex-end;
-  min-width: 80px;
+  min-width: 0;
 }
-.mds-event-grouping-event-date {
+.mds-event-group-event-date {
   font-size: 11px;
   color: #94a3b8;
-  white-space: nowrap;
-  line-height: 14px;
   text-align: right;
   margin-bottom: 2px;
+  max-width: 100%;
 }
 /* Detail container (avatar/dot + text) */
-.mds-event-grouping-event-detail {
+.mds-event-group-event-detail {
   align-items: center;
   justify-content: flex-end;
+  overflow: hidden;
+  max-width: 100%;
 }
-.mds-event-grouping-event-info {
+.mds-event-group-event-info {
   font-size: 11px;
   font-weight: 700;
   color: #64748b;
-  white-space: nowrap;
-  line-height: 14px;
-  text-align: right;
   text-transform: capitalize;
 }
 /* Avatar for assignee in type view */
-.mds-event-grouping-event-avatar {
+.mds-event-group-event-avatar {
   width: 16px;
   height: 16px;
   border-radius: 50%;
   margin-right: 6px;
 }
 /* Colored dot for type in assignee view */
-.mds-event-grouping-type-dot {
+.mds-event-group-type-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   margin-right: 6px;
+}
+/* Edit button on subtask events */
+.mds-event-group-edit-btn {
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 4px;
+  margin-left: 8px;
+  border-radius: 4px;
+  transition: color 0.15s ease, background-color 0.15s ease;
+  flex-shrink: 0;
+}
+.mds-event-group-edit-btn:hover {
+  color: #1e293b;
+  background-color: rgba(0, 0, 0, 0.06);
 }
 /* Simple event styling (no grouping) */
 .mds-event-simple {
@@ -3053,28 +3313,37 @@ export default {
     0 1px 2px rgba(0, 0, 0, 0.1);
   justify-content: space-between;
   align-items: center;
-  height: 100%;
+  height: 42px;
+  box-sizing: border-box;
   color: #2c2c2c;
+  background-color: #dddddd;
+  container-type: inline-size;
+  gap: 8px;
+}
+@container (max-width: 130px) {
+  .mds-event-simple-right { display: none; }
 }
 /* Event title */
 .mds-event-simple-title {
-  flex: 1;
   font-size: 13px;
   font-weight: 600;
-  margin-right: 12px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  position: sticky;
+  left: 250px;
+  min-width: 0;
+}
+.mds-event-simple-title-inner {
+  display: inline-block;
+  max-width: 100%;
 }
 /* Right side container */
 .mds-event-simple-right {
   flex-direction: column;
-  position: relative;
+  z-index: 1;
+  background-color: #dddddd;
 }
 /* Date range */
 .mds-event-simple-date {
   font-size: 11px;
-  line-height: 14px;
   opacity: 0.85;
   white-space: nowrap;
   text-align: right;
@@ -3082,6 +3351,7 @@ export default {
 }
 /* Subtitle wrapper (avatar/dot + text) */
 .mds-event-simple-subtitle-wrapper {
+  position: relative;
   align-items: center;
   justify-content: flex-end;
 }
@@ -3106,14 +3376,23 @@ export default {
   font-size: 11px;
   font-weight: 700;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 /* Header controls */
-.mds-event-grouping-header-controls {
+.mds-event-group-header-controls {
   align-items: center;
 }
 /* Select input */
-.mds-event-grouping-select.mbsc-textfield {
+.mds-event-group-select.mbsc-textfield {
   width: 210px;
+  max-height: 34px;
+}
+.mds-event-group-select + .mbsc-ios.mbsc-select-icon {
+  font-size: 13px;
+  top: 8px;
+}
+.mds-event-group-calendar .mbsc-ios.mbsc-segmented-button {
+  padding: 1px 12px;
 }
   `,
 };

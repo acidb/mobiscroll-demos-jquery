@@ -20,7 +20,47 @@
     <div id="app-wrapper" mbsc-page>
       <div class="app-page" id="app"></div>
     </div>
-    <div class="app-footer mbsc-font"><div class="app-path" id="app-path"></div></div>
+    <div class="app-footer mbsc-font mbsc-flex mbsc-justify-content-between mbsc-align-items-center">
+      <div class="app-footer-controls mbsc-flex mbsc-align-items-center">
+        <label>
+          Theme
+          <input
+            mbsc-input
+            id="mobiscroll-theme"
+            data-dropdown="true"
+            data-theme="ios"
+            data-input-style="box"
+            data-label-style="stacked"
+            class="app-footer-select app-footer-theme-select"
+          />
+        </label>
+        <label>
+          Theme variant
+          <input
+            mbsc-input
+            id="mobiscroll-theme-variant"
+            data-dropdown="true"
+            data-theme="ios"
+            data-input-style="box"
+            data-label-style="stacked"
+            class="app-footer-select app-footer-theme-variant-select"
+          />
+        </label>
+        <label>
+          Locale
+          <input
+            mbsc-input
+            id="mobiscroll-locale"
+            data-dropdown="true"
+            data-theme="ios"
+            data-input-style="box"
+            data-label-style="stacked"
+            class="app-footer-select app-footer-locale-select"
+          />
+        </label>
+      </div>
+      <div class="app-path" id="app-path"></div>
+    </div>
 
     <script type="module" src="/main.js"></script>
   </body>

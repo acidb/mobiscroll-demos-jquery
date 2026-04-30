@@ -9,13 +9,13 @@ body,
 
 .app-page {
   height: 100%;
-  padding: 44px 0;
+  padding-top: 44px;
+  padding-bottom: 60px;
   box-sizing: border-box;
 }
 
 .app-header,
 .app-footer {
-  height: 44px;
   padding: 4px;
   background: #011742;
   color: #fff;
@@ -27,11 +27,49 @@ body,
 }
 
 .app-header {
+  height: 44px;
   top: 0;
 }
 
 .app-footer {
+  height: 60px;
   bottom: 0;
+}
+
+.app-footer-controls {
+  flex-shrink: 0;
+  gap: 0 16px;
+  flex-wrap: wrap;
+  padding: 0 12px;
+}
+
+.app-footer-controls .mbsc-form-control-wrapper {
+  margin: 0;
+}
+
+.app-footer-select.mbsc-select.mbsc-textfield {
+  height: 44px;
+}
+
+.app-footer-select + .mbsc-select-icon.mbsc-ios {
+  font-size: 13px;
+}
+
+.app-footer-theme-select.mbsc-select,
+.app-footer-theme-variant-select.mbsc-select {
+  width: clamp(90px, 27vw, 140px);
+}
+
+.app-footer-locale-select.mbsc-select {
+  width: clamp(90px, 27vw, 180px);
+}
+
+.app-path {
+  font-size: 12px;
+  line-height: 36px;
+  padding: 0 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .app-title {
@@ -44,12 +82,6 @@ body,
   font-size: 16px;
   font-weight: 500;
   line-height: 36px;
-}
-
-.app-path {
-  font-size: 12px;
-  line-height: 36px;
-  padding: 0 12px;
 }
 
 .app-back {
