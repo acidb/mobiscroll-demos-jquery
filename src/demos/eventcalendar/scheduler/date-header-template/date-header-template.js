@@ -119,6 +119,10 @@ export default {
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
+.md-date-header-template .mbsc-schedule-header-day-cont {
+  display: block;
+}
+
 .header-template-container {
     padding: 10px;
 }

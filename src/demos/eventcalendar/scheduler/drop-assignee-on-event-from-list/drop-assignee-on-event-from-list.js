@@ -26,7 +26,10 @@ export default {
           end: dyndatetime('y,m,d,11'),
           resource: 1,
           color: '#b52db9',
-          attendees: [],
+          attendees: [
+            { id: 'emp1', name: 'Alice Martin', avatar: 'AM', color: '#e74c3c' },
+            { id: 'emp2', name: 'Bob Johnson', avatar: 'BJ', color: '#3498db' },
+          ],
         },
         {
           id: 'evt2',
@@ -44,7 +47,10 @@ export default {
           end: dyndatetime('y,m,d,18'),
           resource: 2,
           color: '#88bd42',
-          attendees: [],
+          attendees: [
+            { id: 'emp3', name: 'Carol Smith', avatar: 'CS', color: '#2ecc71' },
+            { id: 'emp4', name: 'David Lee', avatar: 'DL', color: '#f39c12' },
+          ],
         },
         {
           id: 'evt4',
@@ -258,7 +264,7 @@ export default {
         { id: 'emp9', name: 'Ivy Torres', avatar: 'IT', color: '#e84393' },
       ];
 
-      var $container = $('.mds-scheduler-drop-assignee-on-event-from-list');
+      var $container = $('.mds-drop-on-events');
 
       function getAssignmentCount(empId) {
         var count = 0;
@@ -321,21 +327,21 @@ export default {
           var emp = employees[i];
           var count = getAssignmentCount(emp.id);
           listHtml +=
-            '<div class="mds-employee-item mbsc-flex" id="mds-emp-' +
+            '<div class="mds-drop-on-events-employee-item mbsc-flex" id="mds-emp-' +
             emp.id +
             '">' +
-            '<div class="mds-employee-avatar mbsc-flex" style="background:' +
+            '<div class="mds-drop-on-events-employee-avatar mbsc-flex" style="background:' +
             emp.color +
             '">' +
             emp.avatar +
             '</div>' +
-            '<div class="mds-employee-info mbsc-flex">' +
-            '<div class="mds-employee-name">' +
+            '<div class="mds-drop-on-events-employee-info mbsc-flex">' +
+            '<div class="mds-drop-on-events-employee-name">' +
             emp.name +
             '</div>' +
             (count > 0
-              ? '<div class="mds-employee-count">' + count + ' meeting' + (count > 1 ? 's' : '') + '</div>'
-              : '<div class="mds-employee-count">No assignments</div>') +
+              ? '<div class="mds-drop-on-events-employee-count">' + count + ' meeting' + (count > 1 ? 's' : '') + '</div>'
+              : '<div class="mds-drop-on-events-employee-count">No assignments</div>') +
             '</div>' +
             '</div>';
         }
@@ -354,13 +360,13 @@ export default {
         // Track drag start/end to toggle global dragging state
         $('#external-employee-list')
           .off('pointerdown.mds')
-          .on('pointerdown.mds', '.mds-employee-item', function () {
+          .on('pointerdown.mds', '.mds-drop-on-events-employee-item', function () {
             function onMove() {
-              $container.addClass('mds-external-dragging');
+              $container.addClass('mds-drop-on-events-external-dragging');
               $(document).off('pointermove.mds');
             }
             function onUp() {
-              $container.removeClass('mds-external-dragging');
+              $container.removeClass('mds-drop-on-events-external-dragging');
               $(document).off('pointermove.mds pointerup.mds');
             }
             $(document).on('pointermove.mds', onMove).on('pointerup.mds', onUp);
@@ -375,10 +381,10 @@ export default {
 
         var attendeesHtml = '';
         if (attendees.length > 0) {
-          attendeesHtml = '<div class="mds-event-attendees mbsc-flex">';
+          attendeesHtml = '<div class="mds-drop-on-events-event-attendees mbsc-flex">';
           for (var i = 0; i < attendees.length; i++) {
             attendeesHtml +=
-              '<span class="mds-attendee-chip" style="background:' +
+              '<span class="mds-drop-on-events-attendee-chip" style="background:' +
               attendees[i].color +
               '" title="' +
               attendees[i].name +
@@ -387,36 +393,36 @@ export default {
               attendees[i].id +
               '">' +
               attendees[i].avatar +
-              '<span class="mds-attendee-remove">&times;</span>' +
+              '<span class="mds-drop-on-events-attendee-remove">&times;</span>' +
               '</span>';
           }
           attendeesHtml += '</div>';
         }
 
         return (
-          '<div class="mds-custom-event mbsc-flex" style="border-left: 4px solid ' +
+          '<div class="mds-drop-on-events-custom-event mbsc-flex" style="border-left: 4px solid ' +
           event.color +
           '" data-event-id="' +
           event.id +
           '">' +
-          '<div class="mds-event-header mbsc-flex">' +
-          '<div class="mds-event-title">' +
+          '<div class="mds-drop-on-events-event-header mbsc-flex">' +
+          '<div class="mds-drop-on-events-event-title">' +
           event.title +
           '</div>' +
-          '<div class="mds-event-time">' +
+          '<div class="mds-drop-on-events-event-time">' +
           data.start +
           ' - ' +
           data.end +
           '</div>' +
           '</div>' +
           attendeesHtml +
-          '<div class="mds-event-drop-hint">Drop people to assign</div>' +
+          '<div class="mds-drop-on-events-event-drop-hint">Drop people to assign</div>' +
           '</div>'
         );
       }
 
       function initDropZones() {
-        $('.mds-custom-event').each(function () {
+        $('.mds-drop-on-events-custom-event').each(function () {
           var $zone = $(this);
           var eventId = $zone.data('event-id');
 
@@ -521,10 +527,10 @@ export default {
         });
 
         // Handle attendee removal on chip click
-        $('.mds-attendee-chip').on('click', function (e) {
+        $('.mds-drop-on-events-attendee-chip').on('click', function (e) {
           e.stopPropagation();
           var empId = $(this).data('emp-id');
-          var $event = $(this).closest('.mds-custom-event');
+          var $event = $(this).closest('.mds-drop-on-events-custom-event');
           var eventId = $event.data('event-id');
 
           for (var i = 0; i < meetings.length; i++) {
@@ -605,14 +611,14 @@ export default {
   },
   // eslint-disable-next-line es5/no-template-literals
   markup: `
-<div class="mds-scheduler-drop-assignee-on-event-from-list" mbsc-page>
+<div class="mds-drop-on-events" mbsc-page>
   <div class="mbsc-grid mbsc-no-padding">
     <div class="mbsc-row">
-      <div class="mbsc-col-sm-3 mbsc-flex-col mds-sidebar">
+      <div class="mbsc-col-sm-3 mbsc-flex-col mds-drop-on-events-sidebar">
         <div class="mbsc-form-group-title">Team Members</div>
-        <div id="external-employee-list" class="mds-employee-list mbsc-flex"></div>
+        <div id="external-employee-list" class="mds-drop-on-events-employee-list mbsc-flex"></div>
       </div>
-      <div class="mbsc-col-sm-9 mds-calendar-wrapper">
+      <div class="mbsc-col-sm-9 mds-drop-on-events-calendar-wrapper">
         <div id="demo-scheduler-drop-assignee-on-event-from-list"></div>
       </div>
     </div>
@@ -621,21 +627,20 @@ export default {
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
-.mds-scheduler-drop-assignee-on-event-from-list,
-.mds-scheduler-drop-assignee-on-event-from-list .mbsc-grid,
-.mds-scheduler-drop-assignee-on-event-from-list .mbsc-row,
-.mds-calendar-wrapper {
+.mds-drop-on-events,
+.mds-drop-on-events .mbsc-grid,
+.mds-drop-on-events .mbsc-row {
   height: 100%;
 }
-.mds-sidebar {
+.mds-drop-on-events-sidebar {
   overflow-y: auto;
 }
-.mds-employee-list {
+.mds-drop-on-events-employee-list {
   padding: 8px;
   flex-direction: column;
   gap: 4px;
 }
-.mds-employee-item {
+.mds-drop-on-events-employee-item {
   align-items: center;
   gap: 10px;
   padding: 10px 12px;
@@ -647,15 +652,15 @@ export default {
   touch-action: none;
   transition: background 0.15s, box-shadow 0.2s, transform 0.15s;
 }
-.mds-employee-item:hover {
+.mds-drop-on-events-employee-item:hover {
   background: rgba(128, 128, 128, .4);
   transform: translateY(-1px);
 }
-.mds-employee-item:active {
+.mds-drop-on-events-employee-item:active {
   transform: translateY(0);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
-.mds-employee-avatar {
+.mds-drop-on-events-employee-avatar {
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -668,32 +673,32 @@ export default {
   letter-spacing: 0.5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
-.mds-employee-info {
+.mds-drop-on-events-employee-info {
   flex-direction: column;
   overflow: hidden;
 }
-.mds-employee-name {
+.mds-drop-on-events-employee-name {
   font-size: 15px;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mds-employee-count {
+.mds-drop-on-events-employee-count {
   font-size: 13px;
   opacity: 0.55;
 }
-.mds-calendar-wrapper {
+.mds-drop-on-events-calendar-wrapper {
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 /* Source item left behind in the sidebar while dragging */
-.mds-employee-item.mbsc-drag-clone {
+.mds-drop-on-events-employee-item.mbsc-drag-clone {
   opacity: 0.8;
 }
-.mds-custom-event {
+.mds-drop-on-events-custom-event {
   background: #cccccc;
   border-radius: 6px;
-  padding: 6px;
+  padding: 6px 8px;
   height: 100%;
   box-sizing: border-box;
   flex-direction: column;
@@ -703,43 +708,44 @@ export default {
   transition: background 0.15s;
   position: relative;
 }
-.mds-event-header {
+.mds-drop-on-events-event-header {
   flex-direction: column;
   gap: 1px;
 }
-.mds-event-title {
-  font-size: 13px;
+.mds-drop-on-events-event-title {
+  font-size: 14px;
   font-weight: 600;
   color: #181818;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.mds-event-time {
-  font-size: 11px;
+.mds-drop-on-events-event-time {
+  font-size: 12px;
   color: #545454;
 }
-.mds-event-attendees {
+.mds-drop-on-events-event-attendees {
   flex-wrap: wrap;
   gap: 3px;
 }
 /* Drop hint - hidden by default, shown only during external drag */
-.mds-event-drop-hint {
+.mds-drop-on-events-event-drop-hint {
   display: none;
   font-size: 11px;
   font-style: italic;
   color: #686868;
 }
 /* Show drop hints and dashed borders on events during external drag */
-.mds-external-dragging .mds-event-drop-hint {
+.mds-drop-on-events-external-dragging .mds-drop-on-events-event-drop-hint {
   display: block;
 }
-.mds-external-dragging .mds-custom-event {
+.mds-drop-on-events-external-dragging .mds-drop-on-events-custom-event {
   outline: 2px dashed #b9b9b9;
 }
-.mds-attendee-chip {
+.mds-drop-on-events-attendee-chip {
   display: flex;
-  width: 22px;
-  height: 22px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   align-items: center;
   justify-content: center;
@@ -751,7 +757,7 @@ export default {
   cursor: pointer;
   position: relative;
 }
-.mds-attendee-remove {
+.mds-drop-on-events-attendee-remove {
   display: none;
   position: absolute;
   inset: 0;
@@ -759,26 +765,26 @@ export default {
   border-radius: 50%;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1;
 }
-.mds-attendee-chip:hover .mds-attendee-remove {
+.mds-drop-on-events-attendee-chip:hover .mds-drop-on-events-attendee-remove {
   display: flex;
 }
-.mds-custom-event.mds-drop-active {
+.mds-drop-on-events-custom-event.mds-drop-active {
   cursor: copy;
   outline: 2px solid rgba(54, 133, 43, 0.8);
   background: rgba(180, 223, 173, 0.8);
 }
-.mds-custom-event.mds-drop-conflict {
+.mds-drop-on-events-custom-event.mds-drop-conflict {
   cursor: not-allowed;
   outline: 2px solid rgba(145, 34, 34, 0.8);
   background: rgba(235, 194, 194, 0.8);
 }
-.mds-scheduler-drop-assignee-on-event-from-list .mbsc-scheduler-event {
+.mds-drop-on-events .mbsc-scheduler-event {
   min-height: 80px;
 }
-.mds-scheduler-drop-assignee-on-event-from-list .mbsc-schedule-event-inner {
+.mds-drop-on-events .mbsc-schedule-event-inner {
   height: 100%;
 }
   `,
