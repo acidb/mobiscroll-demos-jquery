@@ -8,6 +8,8 @@ Use it on mobile and desktop for listing different options with multiple select.
 
 As an alternative to the [checkbox list](https://demo.mobiscroll.com/jquery/forms/checkbox#) it works great for category filtering... eg. e-commerce solutions.
 
+- **Looking for single value selection?** [Check out the previous example →](https://demo.mobiscroll.com/jquery/select/single-select#)
+
 ## Related demos
 
-- **Looking for single value selection?** [Check out the previous example →](https://demo.mobiscroll.com/jquery/select/single-select#)
+- [Check out the previous example →](https://demo.mobiscroll.com/jquery/select/single-select#)

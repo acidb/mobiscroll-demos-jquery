@@ -8,6 +8,8 @@ Use the range picker for a new event creation. Let people pick start and end dat
 
 Dynamically switch between date only and date-time entry based on an "all-day" switch by changing the `controls` to `'date'` or `'datetime'`.
 
+- **Interested in an event calendar solution?** [Check out the event calendar →](https://demo.mobiscroll.com/jquery/eventcalendar/#)
+
 ## Related demos
 
-- **Interested in an event calendar solution?** [Check out the event calendar →](https://demo.mobiscroll.com/jquery/eventcalendar/#)
+- [Check out the event calendar →](https://demo.mobiscroll.com/jquery/eventcalendar/#)

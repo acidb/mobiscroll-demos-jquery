@@ -15,7 +15,9 @@ If you want to hide the native tooltip, you can set the `showEventTooltip` to `f
 Setting the `showEventTooltip` to false gives room for a fully custom tooltip that can be implemented by using the
 
 `onEventHoverIn` and 
-`onEventHoverOut` lifecycle events. With the help of the Mobiscroll popup you can show a custom tooltip that holds details, actions applicable to the event it is anchored to.
+
+`onEventHoverOut`
+lifecycle events. With the help of the Mobiscroll popup you can show a custom tooltip that holds details, actions applicable to the event it is anchored to.
 
 **Showing a third party popup**
 There are cases when you are using a third party library, something like md-boostrap. For those cases, turn the browser native tooltip off with the

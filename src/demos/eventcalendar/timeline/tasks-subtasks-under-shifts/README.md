@@ -15,6 +15,8 @@ These properties are used later in the validation logic to handle the two distin
 
 `onEventDeleted` lifecycle events.
 
+- **Do you want to learn about the event ordering?** [Learn more about it in the documentation &#8594;](https://docs.mobiscroll.com/jquery/eventcalendar/timeline#event-order)
+
 ## Related demos
 
-- **Do you want to learn about the event ordering?** [Learn more about it in the documentation &#8594;](https://docs.mobiscroll.com/jquery/eventcalendar/timeline#event-order)
+- [Learn more about it in the documentation &#8594;](https://docs.mobiscroll.com/jquery/eventcalendar/timeline#event-order)

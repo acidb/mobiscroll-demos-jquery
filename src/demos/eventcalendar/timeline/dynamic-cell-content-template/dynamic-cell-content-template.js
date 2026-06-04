@@ -46,6 +46,7 @@ export default {
         start: dyndatetime('y, m, d + 7, 0, 0'),
         end: dyndatetime('y, m, d + 7, 2, 0'),
       },
+      //<hide-comment>
       {
         id: 6,
         resource: 4,
@@ -144,7 +145,6 @@ export default {
         start: dyndatetime('y, m, d - 1, 0, 0'),
         end: dyndatetime('y, m, d - 1, 2, 0'),
       },
-      //<hidden>
       {
         id: 20,
         resource: 1,
@@ -495,7 +495,7 @@ export default {
         start: dyndatetime('y, m, d + 12, 0, 0'),
         end: dyndatetime('y, m, d + 12, 2, 0'),
       },
-      //</hidden>
+      //</hide-comment>
     ];
 
     var myResources = [
@@ -541,7 +541,7 @@ export default {
           view: {
             timeline: {
               endDay: 5,
-              eventList: true,
+              eventDisplay: 'fill',
               type: 'month',
               resolutionHorizontal: 'day',
               startDay: 1,
@@ -638,6 +638,22 @@ export default {
   `,
   // eslint-disable-next-line es5/no-template-literals
   css: `
+.mds-timeline-cell-content .mbsc-timeline-day-fri::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid var(--mbsc-eventcalendar-border-color);
+}
+
+.mds-timeline-cell-content .mbsc-timeline-day-fri.mbsc-ltr::after {
+  left: 100%;
+}
+
+.mds-timeline-cell-content .mbsc-timeline-day-fri.mbsc-rtl::after {
+  right: 100%;
+}
+
 .mds-timeline-cell-content .mbsc-timeline-events {
   top: 25px;
 }
@@ -700,7 +716,7 @@ export default {
 .mds-timeline-cell-content-add {
   opacity: 0;
   position: absolute;
-  inset: 6px 4px auto auto;
+  top: 6px;
   width: 17px;
   height: 17px;
   line-height: 13px;
@@ -713,6 +729,14 @@ export default {
   cursor: pointer;
   background: linear-gradient(135deg,rgb(73, 73, 73),rgb(22, 21, 21));
   transition: transform 0.2s ease;
+}
+
+.mbsc-timeline-column.mbsc-ltr .mds-timeline-cell-content-add {
+  right: 4px;
+}
+
+.mbsc-timeline-column.mbsc-rtl .mds-timeline-cell-content-add {
+  left: 4px;
 }
 
 .mbsc-timeline-column:hover .mds-timeline-cell-content-add {

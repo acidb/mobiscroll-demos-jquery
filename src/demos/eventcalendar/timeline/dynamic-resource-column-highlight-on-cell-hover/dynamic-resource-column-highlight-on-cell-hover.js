@@ -135,7 +135,7 @@ export default {
           renderCell: function (args) {
             return hoverDateTime && args.date.getTime() === hoverDateTime.getTime() ? '<div class="mds-highlight-col-hover"></div>' : '';
           },
-          renderDay: function (args) {
+          renderTimelineDay: function (args) {
             var isHover = hoverDateTime && args.date.getTime() === hoverDateTime.getTime();
             var hoverClass = isHover ? ' mds-highlight-col-hover' : '';
             return '<div class="mds-highlight-day-content ' + hoverClass + '">' + formatDate('D DDD', args.date) + '</div>';

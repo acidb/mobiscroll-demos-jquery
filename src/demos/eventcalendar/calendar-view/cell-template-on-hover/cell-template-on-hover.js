@@ -16,7 +16,7 @@ export default {
       function updateRenderDayContent() {
         if (calendar) {
           calendar.setOptions({
-            renderDayContent: function (args) {
+            renderCalendarDayContent: function (args) {
               // Only render the button on the hovered day
               if (hoveredDate && hoveredDate.getTime() === args.date.getTime()) {
                 return '<button class="mds-cell-summary-btn">Add event</button>';

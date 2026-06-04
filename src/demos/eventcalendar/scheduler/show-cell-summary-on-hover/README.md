@@ -8,5 +8,8 @@ This demo demonstrates how to surface detailed cell summaries through tooltips w
 
 Using 
 
-`onCellHoverIn` and 
-`onCellHoverOut` events, each tooltip dynamically displays the total number of events, invalid and colors in the hovered cell.
+`onCellHoverIn`
+and 
+
+`onCellHoverOut`
+events, each tooltip dynamically displays the total number of events, invalid and colors in the hovered cell.

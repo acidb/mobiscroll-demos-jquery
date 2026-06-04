@@ -11,6 +11,8 @@ Check out the [different display modes](https://demo.mobiscroll.com/jquery/popup
 You have full control over what is shown within the popup.
 Use  [Mobiscroll form elements](https://demo.mobiscroll.com/jquery/forms/#) or any components that you are already using throughout your application.
 
+- **Interested in exploring the event calendar?** [Check out these examples →](https://demo.mobiscroll.com/jquery/eventcalendar/#)
+
 ## Related demos
 
-- **Interested in exploring the event calendar?** [Check out these examples →](https://demo.mobiscroll.com/jquery/eventcalendar/#)
+- [Check out these examples →](https://demo.mobiscroll.com/jquery/eventcalendar/#)
