@@ -45,26 +45,27 @@ export default {
 
       function loadEvents(checked, calendarId) {
         if (checked) {
-          loadingEvents(true);
           calendarIds.push(calendarId);
-          googleCalendarSync
-            .getEvents([calendarId], startDate, endDate)
-            .then(function (resp) {
-              loadingEvents(false);
-              events = events.concat(resp);
-              inst.setEvents(events);
-            })
-            .catch(onError);
         } else {
           var index = calendarIds.indexOf(calendarId);
           if (index !== -1) {
             calendarIds.splice(index, 1);
           }
-          events = events.filter(function (event) {
-            return event.googleCalendarId !== calendarId;
-          });
-          inst.setEvents(events);
         }
+        if (calendarIds.length === 0) {
+          events = [];
+          inst.setEvents(events);
+          return;
+        }
+        loadingEvents(true);
+        googleCalendarSync
+          .getEvents(calendarIds, startDate, endDate)
+          .then(function (resp) {
+            loadingEvents(false);
+            events = resp;
+            inst.setEvents(events);
+          })
+          .catch(onError);
       }
 
       function onError(resp) {

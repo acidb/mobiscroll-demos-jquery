@@ -39,27 +39,28 @@ export default {
 
       function toggleCalendar(checked, calendarId) {
         if (checked) {
-          isLoading(true);
           calendarIds.push(calendarId);
-          googleCalendarSync
-            .getEvents([calendarId], startDate, endDate)
-            .then(function (resp) {
-              myEvents = myEvents.concat(resp);
-              inst.setEvents(myEvents);
-              isLoading(false);
-            })
-            .catch(function (error) {
-              onError(error);
-            });
         } else {
           calendarIds = calendarIds.filter(function (id) {
             return id !== calendarId;
           });
-          myEvents = myEvents.filter(function (event) {
-            return event.googleCalendarId !== calendarId;
-          });
-          inst.setEvents(myEvents);
         }
+        if (calendarIds.length === 0) {
+          myEvents = [];
+          inst.setEvents(myEvents);
+          return;
+        }
+        isLoading(true);
+        googleCalendarSync
+          .getEvents(calendarIds, startDate, endDate)
+          .then(function (resp) {
+            myEvents = resp;
+            inst.setEvents(myEvents);
+            isLoading(false);
+          })
+          .catch(function (error) {
+            onError(error);
+          });
       }
 
       function onError(resp) {
