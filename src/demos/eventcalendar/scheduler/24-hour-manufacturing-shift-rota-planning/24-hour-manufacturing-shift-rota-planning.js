@@ -328,7 +328,12 @@ export default {
               return ev.resource === event.resource || +new Date(ev.start) === +new Date(event.start);
             });
             if (conflict) {
-              mobiscroll.toast({ message: 'Already assigned' });
+              mobiscroll.toast({
+                //<hidden>
+                // theme,//</hidden>
+                // context,
+                message: 'Already assigned',
+              });
               return false;
             }
             currentColors = clearColorsForResource(currentColors, event.resource, event.start);
@@ -340,6 +345,8 @@ export default {
           },
           onEventClick: function () {
             mobiscroll.toast({
+              //<hidden>
+              // theme,//</hidden>
               // context,
               message: 'Already assigned',
             });
@@ -365,6 +372,8 @@ export default {
               colors: currentColors,
             });
             mobiscroll.toast({
+              //<hidden>
+              // theme,//</hidden>
               // context,
               message: args.event.title + ' deleted',
             });
@@ -376,6 +385,8 @@ export default {
           },
           onEventUpdateFailed: function () {
             mobiscroll.toast({
+              //<hidden>
+              // theme,//</hidden>
               // context,
               message: 'Already assigned',
             });

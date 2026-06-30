@@ -181,7 +181,7 @@ export default {
           //<hidden>
           // theme,//</hidden>
           // context,
-          message: 'All events selected this month',
+          message: 'All events selected from view',
         });
       });
 

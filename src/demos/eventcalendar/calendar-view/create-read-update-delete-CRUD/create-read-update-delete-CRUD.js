@@ -106,7 +106,7 @@ export default {
           },
         });
 
-        fillPopup(event);
+        fillPopup(Object.assign({}, event, { allDay: false }));
         addEditPopup.open();
       }
 
