@@ -1211,6 +1211,11 @@ export default {
       }
 
       function invalidateResources(event) {
+        //<hidden>
+        if (!event.pickup || !event.drop) {
+          return null;
+        }
+        //</hidden>
         now = new Date();
         var minTime = new Date(now.getTime() + 2 * 60 * 60 * 1000);
         var sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
