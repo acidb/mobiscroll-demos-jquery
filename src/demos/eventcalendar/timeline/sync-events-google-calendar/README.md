@@ -77,7 +77,7 @@ Customizing the interaction, event workflows, whether the events are read-only i
 - **Date positioning** Events are positioned by their assigned calendar resource and exact date range.
 - **Event interaction** Events highlight on hover and show drag and resize handles when editing is enabled.
 - **Event selection** Clicking an event selects and highlights it.
-- **Event creation** New events can be created by double-clicking the timeline or by clicking and dragging across a time range.
+- **Event creation** New events can be created by double-clicking the timeline or by clicking and dragging across a time range when editing is enabled.
 - **Scrolling** The timeline supports horizontal and vertical scrolling for navigating through dates and calendar resources.
 
 ## Best for
