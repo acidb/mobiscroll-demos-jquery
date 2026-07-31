@@ -6,7 +6,12 @@ To see this example live, check it out on our [demo page](https://demo.mobiscrol
 
 Dynamically switch views within one instance. Use a UI control to let users do the switching or do it programmatically.
 
-The example features a month view with events as labels, a weekly schedule view, a daily schedule and a weekly agenda. Use the `setOptions` method to dynamically change the settings.
+:::inline-fw-group
+prefix: The example features a month view with events as labels, a weekly schedule view, a daily schedule and a weekly agenda.
+suffix:
+
+Use the `setOptions` method to dynamically change the settings.
+:::end-inline-fw-group
 
 ## Implementation instructions
 
@@ -49,6 +54,6 @@ The example features a month view with events as labels, a weekly schedule view,
 
 - **Multi-level schedule browsing** Apps where users need to move between year, month, week, day, and agenda views without leaving the same calendar instance.
 - **Operational planning** Workflows that need both a broad overview of upcoming activity and detailed time-grid planning for a selected week or day.
-- **Daily event review** Interfaces where users need to select a date and review that day’s events in an agenda list.
+- **Daily event review** Interfaces where users need to select a date and review that day's events in an agenda list.
 - **Dense calendars** Schedules where month and year views need to handle days with more events than can fit visibly in the cell.
 - **Interactive scheduling** Use cases where users create events directly from the calendar or scheduler grid.
