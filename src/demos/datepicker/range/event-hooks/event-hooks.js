@@ -57,9 +57,6 @@ export default {
           onPageLoading: function () {
             // Use it to load data on demand
           },
-          onPosition: function () {
-            // Logic for component positioning
-          },
           onTempChange: function () {
             // Logic for temporary value change
           },
