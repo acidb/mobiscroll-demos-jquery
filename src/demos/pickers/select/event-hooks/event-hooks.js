@@ -36,9 +36,6 @@ export default {
           onOpen: function () {
             // Your custom event handler goes here
           },
-          onPosition: function () {
-            // Logic for component positioning
-          },
           onTempChange: function () {
             // Logic for temporary value change
           },

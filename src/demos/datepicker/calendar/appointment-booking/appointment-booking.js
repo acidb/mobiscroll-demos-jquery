@@ -42,7 +42,6 @@ export default {
           minTime: '08:00',
           maxTime: '19:59',
           stepMinute: 60,
-          width: null,
           onPageLoading: function (event, inst) {
             getDatetimes(event.firstDay, function callback(bookings) {
               inst.setOptions({
