@@ -237,6 +237,39 @@ export default {
         return { meetings: nrMeetings, appointments: nrAppointments };
       }
 
+      function renderDay(args) {
+        var date = args.date;
+        var nrEvents = getNrEvents(args.events);
+        var nrAllEvents = args.events.length;
+        var stressLevel = getStressLevel(nrAllEvents);
+        var weather = getWeatherForDate(date);
+
+        return (
+          '<div class="mds-cell-template-cont" ' +
+          (selectedView === 'week' ? 'data-date="' + date.getTime() + '"' : '') +
+          (stressLevel.color && selectedView !== 'day' ? 'style="background:' + stressLevel.color : '') +
+          '">' +
+          '<div class="mds-cell-template-day">' +
+          formatDate('DDD D, MMM', date) +
+          ' ' +
+          stressLevel.emoji +
+          '</div>' +
+          '<div>' +
+          weather.emoji +
+          ' ' +
+          weather.degree +
+          '°C</div>' +
+          '<div class="mds-cell-template-info" style="color:#634b67">Internal mtgs: ' +
+          nrEvents.meetings +
+          '</div>' +
+          '<div class="mds-cell-template-info" style="color:#656d49">Client mtgs: ' +
+          nrEvents.appointments +
+          '</div>' +
+          '<button class="mds-cell-template-add" mbsc-button data-icon="plus"></button>' +
+          '</div>'
+        );
+      }
+
       function setSelectedView(view, date) {
         if (view === 'day') {
           previousView = selectedView;
@@ -306,38 +339,8 @@ export default {
               color: '#656d49',
             };
           },
-          renderCalendarDay: function (args) {
-            var date = args.date;
-            var nrEvents = getNrEvents(args.events);
-            var nrAllEvents = args.events.length;
-            var stressLevel = getStressLevel(nrAllEvents);
-            var weather = getWeatherForDate(date);
-
-            return (
-              '<div class="mds-cell-template-cont" ' +
-              (selectedView === 'week' ? 'data-date="' + date.getTime() + '"' : '') +
-              (stressLevel.color && selectedView !== 'day' ? 'style="background:' + stressLevel.color : '') +
-              '">' +
-              '<div class="mds-cell-template-day">' +
-              formatDate('DDD D, MMM', date) +
-              ' ' +
-              stressLevel.emoji +
-              '</div>' +
-              '<div>' +
-              weather.emoji +
-              ' ' +
-              weather.degree +
-              '°C</div>' +
-              '<div class="mds-cell-template-info" style="color:#634b67">Internal mtgs: ' +
-              nrEvents.meetings +
-              '</div>' +
-              '<div class="mds-cell-template-info" style="color:#656d49">Client mtgs: ' +
-              nrEvents.appointments +
-              '</div>' +
-              '<button class="mds-cell-template-add" mbsc-button data-icon="plus"></button>' +
-              '</div>'
-            );
-          },
+          renderCalendarDay: renderDay,
+          renderSchedulerDay: renderDay,
           renderHeader: function () {
             return (
               '<div mbsc-calendar-nav class="mds-cell-template-nav"></div>' +
@@ -448,14 +451,21 @@ export default {
 .mds-cell-template-back.mbsc-button {
   width: 100%;
   height: 32px;
-  font-size: 14px;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 0 6px;
+  padding: 0 12px;
   display: none;
 }
 
+.mds-cell-template-back .mbsc-button-txt {
+  font-size: 14px;
+  line-height: 32px;
+}
+
 .mds-cell-template-back .mbsc-icon {
+  width: 18px;
+  height: 18px;
   line-height: 18px;
+  font-size: 14px;
 }
 
 /* Cell template */
