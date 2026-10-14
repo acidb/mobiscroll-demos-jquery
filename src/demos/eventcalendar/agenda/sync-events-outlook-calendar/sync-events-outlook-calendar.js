@@ -204,8 +204,8 @@ export default {
 
       // Init Outlook Client
       outlookCalendarSync.init({
-        apiKey: '<YOUR_outlook_API_KEY>',
-        clientId: '<YOUR_outlook_CLIENT_ID>',
+        clientId: '<YOUR_OUTLOOK_CLIENT_ID>',
+        redirectUri: '<YOUR_OUTLOOK_REDIRECT_URI>',
         onSignedIn: onSignedIn,
         onSignedOut: onSignedOut,
       });
