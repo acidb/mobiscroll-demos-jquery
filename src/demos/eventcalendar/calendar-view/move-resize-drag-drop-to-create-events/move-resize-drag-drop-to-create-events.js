@@ -18,6 +18,7 @@ export default {
           view: {
             calendar: { labels: true },
           },
+          selectMultipleEvents: true,
           dragToCreate: true,
           dragToMove: true,
           dragToResize: true,
